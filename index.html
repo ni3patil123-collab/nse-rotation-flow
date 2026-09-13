@@ -41,50 +41,89 @@ function pick(s){document.getElementById('sector').value=s;show('scanner',docume
 function detail(s){document.getElementById('detailTitle').textContent=s+' • 5M Chart';show('detail',null)}
 function show(id,btn){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active')}
 function toggleTheme(){document.body.classList.toggle('light');if(document.body.classList.contains('light')){document.documentElement.style.setProperty('--bg','#f4f8fc');document.documentElement.style.setProperty('--card','#fff');document.documentElement.style.setProperty('--card2','#fff');document.documentElement.style.setProperty('--text','#17324d');document.documentElement.style.setProperty('--muted','#71869a');document.documentElement.style.setProperty('--line','#dce7f0');document.body.style.background='#f4f8fc'}else{document.documentElement.style.setProperty('--bg','#07111f');document.documentElement.style.setProperty('--card','#0d1b2d');document.documentElement.style.setProperty('--card2','#11243a');document.documentElement.style.setProperty('--text','#edf5ff');document.documentElement.style.setProperty('--muted','#91a7bd');document.documentElement.style.setProperty('--line','#1c334b');document.body.style.background='linear-gradient(180deg,#06101d,#0a1727)'}}
-window.onload=init;
-<script> १. तुमची एंजल वनची खरी API Key इथे पेस्ट करा
-const ANGEL_API_KEY = "ItydFCma";
+window.onload=init;      
+// --- Angel One Daily Token Input Panel ---
+window.addEventListener('DOMContentLoaded', () => {
+    let rotationSection = document.getElementById('rotation');
+    if (rotationSection) {
+        let panelHtml = `
+        <div class="card" style="border: 1px solid var(--blue); background: #0a1f38; margin-top:15px; padding:12px; border-radius:14px;">
+            <div class="title" style="color: var(--blue); font-size: 13px;">🔒 Angel One Morning Activation Panel</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                <div style="display: flex; gap: 6px;">
+                    <input type="password" id="ghToken" placeholder="Enter GitHub PAT Key" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: #11283e; color: #fff; font-size: 11px;">
+                    <input type="text" id="totpCode" placeholder="6-Digit Code" maxlength="6" style="width: 100px; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: #11283e; color: #fff; text-align: center; font-weight: bold; font-size: 11px;">
+                </div>
+                <button type="button" onclick="triggerGitHubWorkflow()" class="setting-btn on" style="width: 100%; padding: 10px; font-weight: 900; background:var(--green); color:#000; border-radius:8px; border:none; cursor:pointer;">🚀 START SYSTEM</button>
+            </div>
+            <div id="apiStatus" style="font-size: 10px; color: var(--muted); margin-top: 6px; text-align: center;"></div>
+        </div>`;
+        rotationSection.insertAdjacentHTML('afterbegin', panelHtml);
+    }
+});
 
+// Function to send the manual token to GitHub Actions
+async function triggerGitHubWorkflow() {
+    const token = document.getElementById('ghToken').value;
+    const totp = document.getElementById('totpCode').value;
+    const statusDiv = document.getElementById('apiStatus');
 
-// २. एंजल वन कडून लाईव्ह डेटा मागवणारे फंक्शन
-async function fetchAngelLiveData() {
-    const url = "https://angelone.in"; 
+    if(!token || !totp) {
+        alert("Please fill in both the GitHub Key and today's 6-digit TOTP code!");
+        return;
+    }
+
+    statusDiv.style.color = "var(--yellow)";
+    statusDiv.innerText = "⏳ Connecting to backend server... Please wait...";
+
+    const url = `https://github.com`;
+    
     try {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'api-key': ANGEL_API_KEY,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github+json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "action": "securities",
-                "exchange": "NSE"
+                ref: 'main',
+                inputs: { daily_token: totp }
             })
         });
-        const result = await response.json();
-        if(result.status === true) {
-            updateLiveDashboard(result.data);
+
+        if(response.status === 204) {
+            statusDiv.style.color = "var(--green)";
+            statusDiv.innerText = "✅ System started successfully! Data will update in 5 minutes.";
+            alert("Data feed successfully activated!");
+        } else {
+            statusDiv.style.color = "var(--red)";
+            statusDiv.innerText = "❌ Error: Connection failed. Check token or key.";
         }
-    } catch (error) {
-        console.log("लाईव्ह डेटा मिळण्यात अडचण आली:", error);
+    } catch (e) {
+        statusDiv.style.color = "var(--red)";
+        statusDiv.innerText = "❌ Network Error: " + e.message;
     }
 }
 
-// ३. डेटा आल्यावर डॅशबोर्ड लाइव्ह अपडेट करणे
-function updateLiveDashboard(stockData) {
-    if(document.getElementById("update")) document.getElementById("update").innerText = new Date().toLocaleTimeString();
-    if(document.getElementById("mstatus")) document.getElementById("mstatus").innerText = "LIVE ACTIVE";
-    
-    // तुमच्या मूळ रेंडर हीट फंक्शनला डेटा आल्यावर पुन्हा चालू करणे
-    if(typeof renderHeat === "function") {
-        renderHeat(); 
+// Function to read data.json and update the UI screen
+async function loadSavedData() {
+    try {
+        const response = await fetch('data.json?t=' + new Date().getTime());
+        const data = await response.json();
+        if(document.getElementById('update')) document.getElementById('update').innerText = data.last_updated || "--:--";
+        if(document.getElementById('mstatus')) document.getElementById('mstatus').innerText = data.market_status || "NO CLEAR";
+        
+        if(typeof renderHeat === "function") {
+            renderHeat();
+        }
+    } catch (e) { 
+        console.log("Waiting for data.json..."); 
     }
 }
-
-// दर ६० सेकंदांनी डेटा ऑटोमॅटिक अपडेट करण्यासाठी
-setInterval(fetchAngelLiveData, 60000);
-fetchAngelLiveData(); // पहिल्यांदा लगेच रन करण्यासाठी
+setInterval(loadSavedData, 30000);
+loadSavedData();
 </script>
 </body>
 </html>
+
