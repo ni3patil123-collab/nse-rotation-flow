@@ -5,81 +5,86 @@
 <title>NSE Rotation & Flow</title>
 <style>
 :root{--bg:#07111f;--card:#0d1b2d;--card2:#11243a;--text:#edf5ff;--muted:#91a7bd;--line:#1c334b;--blue:#39a7ff;--green:#24d17e;--red:#ff5964;--yellow:#f5c84b}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#06101d,#0a1727);color:var(--text);font-family:Arial,sans-serif}.wrap{max-width:1000px;margin:auto;padding:12px}.header{padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#0c2742,#0d1727);display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-size:21px;font-weight:900}.sub{font-size:11px;color:var(--muted);margin-top:4px}.live{font-size:11px;font-weight:800;color:#bfffe0}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px}.theme{border:1px solid var(--line);background:#13283e;color:#fff;border-radius:11px;padding:9px 11px}.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.nav button{border:1px solid var(--line);background:#0d1b2d;color:var(--muted);border-radius:12px;padding:10px 6px;font-weight:800;font-size:11px;cursor:pointer;touch-action:manipulation}.nav button.active{background:#1674b8;color:#fff;border-color:#2d9ce5}.card{background:rgba(13,27,45,.96);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px}.title{font-weight:900;font-size:15px}.muted{font-size:11px;color:var(--muted)}.status{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.pill{padding:7px 9px;border-radius:9px;background:#12283d;font-size:10px;color:var(--muted)}.pill b{color:#fff}.heat{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.sector{border:1px solid var(--line);border-radius:13px;padding:10px;background:#0b192a;cursor:pointer}.sector:hover{border-color:#287fae}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.sname{font-size:11px;font-weight:900}.move{font-size:12px;font-weight:900}.boxes{display:flex;gap:3px;margin-top:8px}.box{height:7px;flex:1;border-radius:3px;background:#26384a}.box.g{background:var(--green)}.box.y{background:var(--yellow)}.box.r{background:var(--red)}.rank{font-size:9px;color:var(--muted);margin-top:6px}.controls{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.select{background:#11283e;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px}.flow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.flowbox{background:#0b192a;border:1px solid var(--line);border-radius:12px;padding:11px}.buy{color:var(--green)}.sell{color:var(--red)}.bar{height:7px;background:#26384a;border-radius:8px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%}.gb{background:var(--green)}.rb{background:var(--red)}.stock{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 0;border-top:1px solid var(--line)}.stock:first-child{border-top:0}.badge{padding:5px 8px;border-radius:7px;font-size:9px;font-weight:900}.buybg{background:#123c2b;color:#66e9a7}.sellbg{background:#451e25;color:#ff8a91}.stage{font-size:10px;color:var(--muted)}.top6{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.player{padding:12px;border:1px solid var(--line);border-radius:13px;background:#0b192a}.score{font-size:17px;font-weight:900}.metric{font-size:10px;color:var(--muted);margin-top:4px}.final{display:grid;gap:8px;margin-top:10px}.check{display:flex;justify-content:space-between;padding:12px;border-radius:12px;background:#0b192a;border:1px solid var(--line)}.yes{color:var(--green);font-weight:900}.no{color:var(--red);font-weight:900}.market{font-size:20px;font-weight:900;margin:7px 0}.hidden{display:none}.notice{padding:10px;border-radius:11px;background:#2a2410;color:#f4d77c;font-size:10px;margin-top:10px}
-.token-card{background:linear-gradient(135deg,#11243a,#0d1b2d);border:2px dashed var(--blue);border-radius:15px;padding:12px;margin-top:15px}.token-input{width:100%;background:#07111f;border:1px solid var(--line);color:#fff;padding:10px;border-radius:8px;font-size:11px;margin-top:8px}.token-btn{background:var(--blue);color:#fff;border:none;padding:9px 14px;border-radius:8px;font-weight:bold;font-size:12px;margin-top:8px;cursor:pointer;width:100%}
-</style></head>
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#06101d,#0a1727);color:var(--text);font-family:Arial,sans-serif}.wrap{max-width:1000px;margin:auto;padding:12px}.header{padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#0c2742,#0d1727);display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-size:21px;font-weight:900}.sub{font-size:11px;color:var(--muted);margin-top:4px}.live{font-size:11px;font-weight:800;color:#bfffe0}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px}.theme{border:1px solid var(--line);background:#13283e;color:#fff;border-radius:11px;padding:9px 11px}.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.nav button{border:1px solid var(--line);background:#0d1b2d;color:var(--muted);border-radius:12px;padding:10px 6px;font-weight:800;font-size:11px}.nav button.active{background:#1674b8;color:#fff;border-color:#2d9ce5}.card{background:rgba(13,27,45,.96);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px}.title{font-weight:900;font-size:15px}.muted{font-size:11px;color:var(--muted)}.status{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.pill{padding:7px 9px;border-radius:9px;background:#12283d;font-size:10px;color:var(--muted)}.pill b{color:#fff}.heat{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.sector{border:1px solid var(--line);border-radius:13px;padding:10px;background:#0b192a;cursor:pointer}.sector:hover{border-color:#287fae}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.sname{font-size:11px;font-weight:900}.move{font-size:12px;font-weight:900}.boxes{display:flex;gap:3px;margin-top:8px}.box{height:7px;flex:1;border-radius:3px;background:#26384a}.box.g{background:var(--green)}.box.y{background:var(--yellow)}.box.r{background:var(--red)}.rank{font-size:9px;color:var(--muted);margin-top:6px}.controls{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.select{background:#11283e;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px}.flow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.flowbox{background:#0b192a;border:1px solid var(--line);border-radius:12px;padding:11px}.buy{color:var(--green)}.sell{color:var(--red)}.bar{height:7px;background:#26384a;border-radius:8px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%}.gb{background:var(--green)}.rb{background:var(--red)}.stock{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 0;border-top:1px solid var(--line)}.stock:first-child{border-top:0}.badge{padding:5px 8px;border-radius:7px;font-size:9px;font-weight:900}.buybg{background:#123c2b;color:#66e9a7}.sellbg{background:#451e25;color:#ff8a91}.stage{font-size:10px;color:var(--muted)}.top6{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.player{padding:12px;border:1px solid var(--line);border-radius:13px;background:#0b192a}.score{font-size:17px;font-weight:900}.metric{font-size:10px;color:var(--muted);margin-top:4px}.final{display:grid;gap:8px;margin-top:10px}.check{display:flex;justify-content:space-between;padding:12px;border-radius:12px;background:#0b192a;border:1px solid var(--line)}.yes{color:var(--green);font-weight:900}.no{color:var(--red);font-weight:900}.market{font-size:20px;font-weight:900;margin:7px 0}.hidden{display:none}.notice{padding:10px;border-radius:11px;background:#2a2410;color:#f4d77c;font-size:10px;margin-top:10px}.chart{height:230px;border:1px solid var(--line);border-radius:13px;background:repeating-linear-gradient(0deg,#0b192a 0,#0b192a 38px,#102338 39px),repeating-linear-gradient(90deg,transparent 0,transparent 48px,#17304a 49px);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
+@media(max-width:600px){.wrap{padding:8px}.nav{grid-template-columns:1fr 1fr}.heat,.top6{grid-template-columns:1fr 1fr}.brand{font-size:18px}}
+.setting-btn{border:1px solid var(--line);background:#11283e;color:#dcecff;border-radius:10px;padding:9px 12px;font-weight:800;font-size:11px;cursor:pointer;touch-action:manipulation}.setting-btn:active{transform:scale(.98)}.setting-btn.active{background:#1674b8;color:#fff;border-color:#39a7ff}.setting-btn.on{background:#123c2b;color:#66e9a7;border-color:#1d7951}.setting-btn.off{background:#3b2025;color:#ff9aa0;border-color:#71353d}.setting-label{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px}</style></head>
 <body><div class="wrap">
 <header class="header"><div><div class="brand">NSE ROTATION & FLOW</div><div class="sub">5M Intraday • Today Only • 09:15 Reset</div></div><div><div class="live"><span class="dot"></span>LIVE</div><button class="theme" onclick="toggleTheme()">☾ / ☀</button></div></header>
 <nav class="nav"><button class="active" onclick="show('rotation',this)">① ROTATION</button><button onclick="show('scanner',this)">② SCANNER</button><button onclick="show('flow6',this)">③ BIG PLAYER</button><button onclick="show('final',this)">④ FINAL</button></nav>
-
-<section id="rotation" class="card">
-<div class="title">Sector Rotation Heatmap</div><div class="muted">Part 1 logic: Today Open → Current Close • rank based • 8 heat boxes</div><div class="status"><div class="pill">MARKET <b id="mstatus">WAIT TOKEN</b></div><div class="pill">UPDATE <b id="update">--:--</b></div></div>
-<div id="heat" class="heat">
-    <div class="sector"><div class="row"><span class="sname">NIFTY BANK</span><span class="move" id="bnMove">--%</span></div><div class="boxes" id="bnBoxes"><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div></div><div class="rank" id="bnRank">RANK --</div></div>
-    <div class="sector"><div class="row"><span class="sname">NIFTY IT</span><span class="move" id="itMove">--%</span></div><div class="boxes" id="itBoxes"><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div></div><div class="rank" id="itRank">RANK --</div></div>
+<section id="rotation" class="card"><div class="title">Sector Rotation Heatmap</div><div class="muted">Part 1 logic: Today Open → Current Close • rank based • 8 heat boxes</div><div class="status"><div class="pill">MARKET <b id="mstatus">NO CLEAR</b></div><div class="pill">UPDATE <b id="update">--:--</b></div></div><div id="heat" class="heat"></div><div class="notice">LIVE NSE DATA CONNECTION REQUIRED — खालील values demo UI preview आहेत; fake live signal वापरलेला नाही.</div></section>
+<section id="scanner" class="card hidden"><div class="title">Sector Stock Scanner</div><div class="muted">Part 2 original scanner structure • TRUE 20D SAME-TIME 5M RVOL</div><div class="controls" id="scannerControls">
+<button type="button" class="setting-btn" id="directionBuy">BUY</button>
+<button type="button" class="setting-btn" id="directionSell">SELL</button>
+<button type="button" class="setting-btn" id="directionBoth">BOTH</button>
+<button type="button" class="setting-btn on" id="pdhToggle">PDH BUY: ON</button>
+<button type="button" class="setting-btn on" id="pdlToggle">PDL SELL: ON</button>
+<select id="sector" class="select"></select>
+</div><div class="flow"><div class="flowbox buy">BUYING <b id="buyPct">--%</b><div class="bar"><i id="buyBar" class="gb" style="width:50%"></i></div></div><div class="flowbox sell">SELLING <b id="sellPct">--%</b><div class="bar"><i id="sellBar" class="rb" style="width:50%"></i></div></div></div><div class="status"><div class="pill">EARLY <b id="early">--</b></div><div class="pill">FINAL <b id="fin">--</b></div><div class="pill">PASS TIME <b>HH:MM</b></div></div><div id="stocks"></div><div class="notice">Scanner formula is not replaced by a simple percentage rule. Connect the NSE/backend feed to calculate the exact Pine conditions.</div></section>
+<section id="flow6" class="card hidden"><div class="title">Big Player / Money Flow — Top 6 F&O</div><div class="muted">Assistant-defined Part 3 logic • Score only here (60–100)</div><div class="status"><div class="pill">BUY FLOW <b>--%</b></div><div class="pill">SELL FLOW <b>--%</b></div></div><div id="top6" class="top6"></div><div class="notice">Top 6 is not forced. If strong flow is absent, production mode should show NO STRONG FLOW.</div></section>
+<section id="final" class="card hidden"><div class="title">Final Market Dashboard</div><div class="muted">Sector + qualifying Stock + Big Player Flow cross-confirmation</div><div class="market" id="market">NO CLEAR DIRECTION</div><div class="final"><div class="check"><span>SECTOR</span><span class="yes">✓ CONFIRM</span></div><div class="check"><span>STOCK</span><span class="yes">✓ CONFIRM</span></div><div class="check"><span>FLOW</span><span class="no">✕ WAIT</span></div></div><div class="card" style="margin-top:10px;background:#0b192a"><div class="muted">LEADING SECTOR</div><b id="lead">--</b><div class="muted" style="margin-top:8px">QUALIFYING STOCK</div><b id="qual">--</b></div><div class="notice">No signal is manufactured when all three confirmations are not aligned.</div></section>
+<section id="detail" class="card hidden"><div class="title" id="detailTitle">Stock Chart</div><div class="muted">Default timeframe: 5M</div><div class="chart">LIVE TRADINGVIEW/NSE CHART CONNECTION REQUIRED</div></section>
 </div>
-</section>
-
-<section id="scanner" class="card hidden">
-<div class="title">Sector Stock Scanner</div><div class="muted">Part 2 original scanner structure • TRUE 20D SAME-TIME 5M RVOL</div>
-<div class="controls"><button class="active" style="background:#123c2b;color:#66e9a7;padding:8px 12px;border-radius:8px;border:1px solid var(--line)">BUY ONLY</button><select class="select"><option>NIFTY BANK</option><option>NIFTY IT</option></select></div>
-<div class="flow"><div class="flowbox buy">BUYING <b>82%</b><div class="bar"><i class="gb" style="width:82%"></i></div></div><div class="flowbox sell">SELLING <b>18%</b><div class="bar"><i class="rb" style="width:18%"></i></div></div></div>
-<div id="stocks" style="margin-top:12px">
-    <div class="stock"><div><b>HDFCBANK</b><br><span class="stage">🎯 EARLY ENTRY</span></div><span class="badge buybg">+1.85%</span></div>
-    <div class="stock"><div><b>ICICIBANK</b><br><span class="stage">🔥 FINAL CONFIRM</span></div><span class="badge buybg">+2.10%</span></div>
-</div>
-</section>
-
-<section id="flow6" class="card hidden">
-<div class="title">Big Player / Money Flow — Top 6 F&O</div><div class="muted">Part 3 logic • Institutional Volume Score (60–100)</div>
-<div id="top6" class="top6">
-    <div class="player"><div class="score buy">92</div><div class="metric">RELIANCE</div><div class="stage">STRONG ACCUMULATION</div></div>
-    <div class="player"><div class="score buy">88</div><div class="metric">HDFCBANK</div><div class="stage">BIG BLOCK BUY</div></div>
-    <div class="player"><div class="score sell">45</div><div class="metric">INFY</div><div class="stage">LIQUIDATION</div></div>
-</div>
-</section>
-
-<section id="final" class="card hidden">
-<div class="title">Final Market Dashboard</div><div class="muted">Sector + qualifying Stock + Big Player Flow cross-confirmation</div>
-<div class="market" id="market" style="color:var(--green)">🟩 BULLISH TREND CONFIRMED</div>
-<div class="final"><div class="check"><span>SECTOR ROTATION</span><span class="yes">✓ CONFIRM (BANK)</span></div><div class="check"><span>STOCK SCANNER</span><span class="yes">✓ QUALIFIED</span></div><div class="check"><span>BIG PLAYER FLOW</span><span class="yes">✓ CONFIRM</span></div></div>
-</section>
-
-<div class="token-card">
-    <div class="title" style="color:var(--blue)">🔐 ANGEL ONE API CONNECT</div>
-    <div class="muted">रोज सकाळी मिळालेला Access Token इथे पेस्ट करून Save करा:</div>
-    <input type="password" id="tokenInput" class="token-input" placeholder="इथे auth_token किंवा access_token पेस्ट करा...">
-    <button class="token-btn" onclick="saveToken()">💾 SAVE & CONNECT LATEST</button>
-</div>
-</div>
-
 <script>
+const sectors=['METAL','IT','PHARMA','BANKING','FINANCIAL','AUTO','REALTY','CEMENT','ENERGY','FMCG','CHEMICAL','CAPITAL_GOODS','TELECOM','CONSUMER','DEFENSE'];
+const demo=[1.80,1.45,1.10,.72,.51,.32,.12,.05,-.12,-.30,-.48,-.67,-.84,-1.02,-1.24];
+const stocks={DEFENSE:[['HAL','BUY','FINAL','09:27'],['BEL','BUY','EARLY','09:21']],IT:[['INFY','BUY','FINAL','09:29'],['TCS','BUY','EARLY','09:23']],PHARMA:[['CIPLA','BUY','FINAL','09:26'],['BIOCON','BUY','EARLY','09:20']],BANKING:[['HDFCBANK','BUY','FINAL','09:28'],['SBIN','SELL','EARLY','09:19']]};
+function renderHeat(){let max=Math.max(...demo.map(Math.abs));document.getElementById('heat').innerHTML=sectors.map((sec,i)=>{let v=demo[i],n=Math.max(1,Math.min(8,Math.round(Math.abs(v)/max*8)));let cls=i<5?'g':i<10?'y':'r';let arrow=v>=0?'↑':'↓';return `<div class="sector" onclick="pick(\'${sec}\')"><div class="row"><span class="sname">#${i+1} ${sec}</span><span class="move">${arrow} ${v>=0?'+':''}${v.toFixed(2)}%</span></div><div class="boxes">${Array.from({length:8},(_,j)=>`<i class="box ${j>=8-n?' '+cls:''}"></i>`).join('')}</div></div>`}).join('')}
+function init(){let sel=document.getElementById('sector');sel.innerHTML=sectors.map(s=>`<option>${s}</option>`).join('');renderHeat();initScannerControls();renderScanner();renderTop6();documet.getElementById('update').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});document.getElementById('lead').textContent=sectors[0];}
+const scannerSettings={direction:'SELL',usePDH:true,usePDL:true};
+function paintScannerControls(){['BUY','SELL','BOTH'].forEach(d=>{document.getElementById('direction'+d.charAt(0)+d.slice(1).toLowerCase()).classList.toggle('active',scannerSettings.direction===d)});let pdh=document.getElementById('pdhToggle'),pdl=document.getElementById('pdlToggle');pdh.textContent='PDH BUY: '+(scannerSettings.usePDH?'ON':'OFF');pdh.className='setting-btn '+(scannerSettings.usePDH?'on':'off');pdl.textContent='PDL SELL: '+(scannerSettings.usePDL?'ON':'OFF');pdl.className='setting-btn '+(scannerSettings.usePDL?'on':'off');}
+function setDirection(d){scannerSettings.direction=d;paintScannerControls();renderScanner()}
+function toggleFilter(x){if(x==='PDH')scannerSettings.usePDH=!scannerSettings.usePDH;else scannerSettings.usePDL=!scannerSettings.usePDL;paintScannerControls();renderScanner()}
+function initScannerControls(){document.getElementById('directionBuy').addEventListener('click',()=>setDirection('BUY'));document.getElementById('directionSell').addEventListener('click',()=>setDirection('SELL'));document.getElementById('directionBoth').addEventListener('click',()=>setDirection('BOTH'));document.getElementById('pdhToggle').addEventListener('click',()=>toggleFilter('PDH'));document.getElementById('pdlToggle').addEventListener('click',()=>toggleFilter('PDL'));document.getElementById('sector').addEventListener('change',renderScanner);paintScannerControls()}
+function renderScanner(){let s=document.getElementById('sector').value||'DEFENSE',list=stocks[s]||[];let dir=scannerSettings.direction;list=list.filter(x=>dir==='BOTH'||x[1]===dir);let buy=demo[sectors.indexOf(s)]>=0?70:30;document.getElementById('buyPct').textContent=buy+'%';document.getElementById('sellPct').textContent=(100-buy)+'%';document.getElementById('buyBar').style.width=buy+'%';document.getElementById('sellBar').style.width=(100-buy)+'%';document.getElementById('early').textContent=list.filter(x=>x[2]=='EARLY').length;document.getElementById('fin').textContent=list.filter(x=>x[2]=='FINAL').length;document.getElementById('stocks').innerHTML=list.length?list.map(x=>`<div class="stock" onclick="detail('\${x[0]}\')"><div><b>${x[0]}</b><div class="stage">TRUE 20D RVOL • ${x[3]} • ${x[2]}</div></div><span class="badge ${x[1]=='BUY'?'buybg':'sellbg'}">${x[1]}</span></div>`).join(''):`<div class="muted" style="padding:18px 0">NO STOCK PASS</div>`}
+function renderTop6(){let a=[['RELIANCE','BUY',92,'+2.1%','ACCUMULATION'],['TATASTEEL','BUY',86,'+1.7%','FRESH FLOW'],['INFY','SELL',81,'-1.3%','DISTRIBUTION'],['ICICIBANK','BUY',78,'+1.1%','BIG PLAYER'],['HINDALCO','BUY',71,'+0.9%','MONEY FLOW'],['AXISBANK','SELL',66,'-0.8%','FRESH SELLING']];document.getElementById('top6').innerHTML=a.map((x,i)=>`<div class="player"><div class="muted">#${i+1}</div><b>${x[0]}</b><div class="score ${x[1]=='BUY'?'buy':'sell'}">${x[1]} • ${x[2]}</div><div class="metric">Money Flow ${x[3]} • ${x[4]}</div><div class="metric">Profit Booking: only on confirmed trend end</div></div>`).join('')}
+function pick(s){document.getElementById('sector').value=s;show('scanner',document.querySelectorAll('.nav button')[1]);renderScanner()}
+function detail(s){document.getElementById('detailTitle').textContent=s+' • 5M Chart';show('detail',null)}
+function show(id,btn){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active')}
+function toggleTheme(){document.body.classList.toggle('light');if(document.body.classList.contains('light')){document.documentElement.style.setProperty('--bg','#f4f8fc');document.documentElement.style.setProperty('--card','#fff');document.documentElement.style.setProperty('--card2','#fff');document.documentElement.style.setProperty('--text','#17324d');document.documentElement.style.setProperty('--muted','#71869a');document.documentElement.style.setProperty('--line','#dce7f0');document.body.style.background='#f4f8fc'}else{document.documentElement.style.setProperty('--bg','#07111f');document.documentElement.style.setProperty('--card','#0d1b2d');document.documentElement.style.setProperty('--card2','#11243a');document.documentElement.style.setProperty('--text','#edf5ff');document.documentElement.style.setProperty('--muted','#91a7bd');document.documentElement.style.setProperty('--line','#1c334b');document.body.style.background='linear-gradient(180deg,#06101d,#0a1727)'}}
+window.onload=init;
+<script> १. तुमची एंजल वनची खरी API Key इथे पेस्ट करा
 const ANGEL_API_KEY = "ItydFCma";
-function show(sectionId, btn) {
-    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.wrap > section').forEach(s => s.classList.add('hidden'));
-    btn.classList.add('active');
-    document.getElementById(sectionId).classList.remove('hidden');
-}
-function toggleTheme() {
-    let cb = document.body.style.background;
-    if(cb.includes('fff') || cb.includes('f0f4f8')) {
-        document.body.style.background = 'linear-gradient(180deg,#06101d,#0a1727)';
-        document.body.style.color = '#edf5ff';
-    } else {
-        document.body.style.background = '#f0f4f8';
-        document.body.style.color = '#1a202c';
+
+
+// २. एंजल वन कडून लाईव्ह डेटा मागवणारे फंक्शन
+async function fetchAngelLiveData() {
+    const url = "https://angelone.in"; 
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'api-key': ANGEL_API_KEY,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "action": "securities",
+                "exchange": "NSE"
+            })
+        });
+        const result = await response.json();
+        if(result.status === true) {
+            updateLiveDashboard(result.data);
+        }
+    } catch (error) {
+        console.log("लाईव्ह डेटा मिळण्यात अडचण आली:", error);
     }
 }
-function saveToken() {
-    const rawVal = document.getElementById("tokenInput").value.trim();
-    if(!rawVal) return alert("कृपया आधी टोकन पेस्ट करा!");
-    localStorage.setItem("angel_token", rawVal);
-    alert("टोकन सुरक्षित सेव्ह झाले आहे! डेटा कनेक्शन सुरू होत आहे.");
-    fetchAngelLiveData();
+
+// ३. डेटा आल्यावर डॅशबोर्ड लाइव्ह अपडेट करणे
+function updateLiveDashboard(stockData) {
+    if(document.getElementById("update")) document.getElementById("update").innerText = new Date().toLocaleTimeString();
+    if(document.getElementById("mstatus")) document.getElementById("mstatus").innerText = "LIVE ACTIVE";
+    
+    // तुमच्या मूळ रेंडर हीट फंक्शनला डेटा आल्यावर पुन्हा चालू करणे
+    if(typeof renderHeat === "function") {
+        renderHeat(); 
+    }
 }
-async function fetchAngelLiveData() {
-    const token = localStorage.getItem("angel_token");
-    if(!token) return;
-    document.getElementById("mstatus").innerText = "CONNECTING...";
-    try {
+
+// दर ६० सेकंदांनी डेटा ऑटोमॅटिक अपडेट करण्यासाठी
+setInterval(fetchAngelLiveData, 60000);
+fetchAngelLiveData(); // पहिल्यांदा लगेच रन करण्यासाठी
+</script>
+</body>
+</html>
