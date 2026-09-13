@@ -29,7 +29,7 @@ const sectors=['METAL','IT','PHARMA','BANKING','FINANCIAL','AUTO','REALTY','CEME
 const demo=[1.80,1.45,1.10,.72,.51,.32,.12,.05,-.12,-.30,-.48,-.67,-.84,-1.02,-1.24];
 const stocks={DEFENSE:[['HAL','BUY','FINAL','09:27'],['BEL','BUY','EARLY','09:21']],IT:[['INFY','BUY','FINAL','09:29'],['TCS','BUY','EARLY','09:23']],PHARMA:[['CIPLA','BUY','FINAL','09:26'],['BIOCON','BUY','EARLY','09:20']],BANKING:[['HDFCBANK','BUY','FINAL','09:28'],['SBIN','SELL','EARLY','09:19']]};
 function renderHeat(){let max=Math.max(...demo.map(Math.abs));document.getElementById('heat').innerHTML=sectors.map((sec,i)=>{let v=demo[i],n=Math.max(1,Math.min(8,Math.round(Math.abs(v)/max*8)));let cls=i<5?'g':i<10?'y':'r';let arrow=v>=0?'↑':'↓';return `<div class="sector" onclick="pick(\'${sec}\')"><div class="row"><span class="sname">#${i+1} ${sec}</span><span class="move">${arrow} ${v>=0?'+':''}${v.toFixed(2)}%</span></div><div class="boxes">${Array.from({length:8},(_,j)=>`<i class="box ${j>=8-n?' '+cls:''}"></i>`).join('')}</div></div>`}).join('')}
-function init(){let sel=document.getElementById('sector');sel.innerHTML=sectors.map(s=>`<option>${s}</option>`).join('');renderHeat();initScannerControls();renderScanner();renderTop6();document.getElementById('update').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});document.getElementById('lead').textContent=sectors[0];}
+function init(){let sel=document.getElementById('sector');sel.innerHTML=sectors.map(s=>`<option>${s}</option>`).join('');renderHeat();initScannerControls();renderScanner();renderTop6();documet.getElementById('update').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});document.getElementById('lead').textContent=sectors[0];}
 const scannerSettings={direction:'SELL',usePDH:true,usePDL:true};
 function paintScannerControls(){['BUY','SELL','BOTH'].forEach(d=>{document.getElementById('direction'+d.charAt(0)+d.slice(1).toLowerCase()).classList.toggle('active',scannerSettings.direction===d)});let pdh=document.getElementById('pdhToggle'),pdl=document.getElementById('pdlToggle');pdh.textContent='PDH BUY: '+(scannerSettings.usePDH?'ON':'OFF');pdh.className='setting-btn '+(scannerSettings.usePDH?'on':'off');pdl.textContent='PDL SELL: '+(scannerSettings.usePDL?'ON':'OFF');pdl.className='setting-btn '+(scannerSettings.usePDL?'on':'off');}
 function setDirection(d){scannerSettings.direction=d;paintScannerControls();renderScanner()}
@@ -42,4 +42,50 @@ function detail(s){document.getElementById('detailTitle').textContent=s+' • 5M
 function show(id,btn){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active')}
 function toggleTheme(){document.body.classList.toggle('light');if(document.body.classList.contains('light')){document.documentElement.style.setProperty('--bg','#f4f8fc');document.documentElement.style.setProperty('--card','#fff');document.documentElement.style.setProperty('--card2','#fff');document.documentElement.style.setProperty('--text','#17324d');document.documentElement.style.setProperty('--muted','#71869a');document.documentElement.style.setProperty('--line','#dce7f0');document.body.style.background='#f4f8fc'}else{document.documentElement.style.setProperty('--bg','#07111f');document.documentElement.style.setProperty('--card','#0d1b2d');document.documentElement.style.setProperty('--card2','#11243a');document.documentElement.style.setProperty('--text','#edf5ff');document.documentElement.style.setProperty('--muted','#91a7bd');document.documentElement.style.setProperty('--line','#1c334b');document.body.style.background='linear-gradient(180deg,#06101d,#0a1727)'}}
 window.onload=init;
-</script></body></html>
+<script> १. तुमची एंजल वनची खरी API Key इथे पेस्ट करा
+const ANGEL_API_KEY = "ItydFCma";
+
+
+// २. एंजल वन कडून लाईव्ह डेटा मागवणारे फंक्शन
+async function fetchAngelLiveData() {
+    const url = "https://angelone.in"; 
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'api-key': ANGEL_API_KEY,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                "action": "securities",
+                "exchange": "NSE"
+            })
+        });
+        const result = await response.json();
+        if(result.status === true) {
+            updateLiveDashboard(result.data);
+        }
+    } catch (error) {
+        console.log("लाईव्ह डेटा मिळण्यात अडचण आली:", error);
+    }
+}
+
+// ३. डेटा आल्यावर डॅशबोर्ड लाइव्ह अपडेट करणे
+function updateLiveDashboard(stockData) {
+    if(document.getElementById("update")) document.getElementById("update").innerText = new Date().toLocaleTimeString();
+    if(document.getElementById("mstatus")) document.getElementById("mstatus").innerText = "LIVE ACTIVE";
+    
+    // तुमच्या मूळ रेंडर हीट फंक्शनला डेटा आल्यावर पुन्हा चालू करणे
+    if(typeof renderHeat === "function") {
+        renderHeat(); 
+    }
+}
+
+// दर ६० सेकंदांनी डेटा ऑटोमॅटिक अपडेट करण्यासाठी
+setInterval(fetchAngelLiveData, 60000);
+fetchAngelLiveData(); // पहिल्यांदा लगेच रन करण्यासाठी
+</script>
+</body>
+</html>
+
