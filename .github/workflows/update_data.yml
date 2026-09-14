@@ -23,10 +23,11 @@ jobs:
 
       - name: Run Trading Script
         env:
-          ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
-          ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
-          ANGEL_PASSWORD: ${{ secrets.ANGEL_PASSWORD }}
-          ANGEL_TOTP_KEY: ${{ secrets.ANGEL_TOTP_KEY }}
+          ANGEL_API_KEY: ${{ secrets.API_KEY }}
+          ANGEL_CLIENT_CODE: ${{ secrets.CLIENT_ID }}
+          ANGEL_PASSWORD: ${{ secrets.MPIN }}
+          ANGEL_TOTP_KEY: ${{ secrets.TOTP_KEY }}
+
         run: |
           python main.py
 
