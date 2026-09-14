@@ -95,79 +95,34 @@ async function triggerGitHubWorkflow() {
         if(response.status === 204) {
             statusDiv.style.color = "var(--green)";
             statusDiv.innerText = "✅ System started successfully! Data will update in 5 minutes.";
-                    alert("Data feed successfully activated!");
-      } else {
+            alert("Data feed successfully activated!");
+        } else {
+            statusDiv.style.color = "var(--red)";
+            statusDiv.innerText = "❌ Error: Connection failed. Check token or key.";
+        }
+    } catch (e) {
         statusDiv.style.color = "var(--red)";
-        statusDiv.innerText = "❌ Activation Failed: Invalid Response";
-      }
-    } catch (e) {
-      console.error(e);
-      statusDiv.style.color = "var(--red)";
-      statusDiv.innerText = "❌ Network Error: Failed to fetch (CORS / PAT Issue)";
+        statusDiv.innerText = "❌ Network Error: " + e.message;
     }
-  }
+}
 
-      async function updateGitHubData(patKey, payload) {
-    const repoOwner = "ni3patil123-collab";
-    const repoName = "nse-rotation-flow";
-    const filePath = "data.json";
-
-        const githubApiUrl = `https://github.com{repoOwner}/${repoName}/contents/${filePath}`;
-
+// Function to read data.json and update the UI screen
+async function loadSavedData() {
     try {
-      const fileRes = await fetch(githubApiUrl, {
-        headers: { "Authorization": `token ${patKey}` }
-      });
-      let sha = "";
-      if (fileRes.ok) {
-        const fileData = await fileRes.json();
-        sha = fileData.sha;
-      }
-
-      const updateRes = await fetch(githubApiUrl, {
-        method: "PUT",
-        headers: {
-          "Authorization": `token ${patKey}`,
-          "Content-Type": "application/json"
-        },
-
-    
-          message: "Update market data via web panel",
-          content: btoa(JSON.stringify(payload)),
-          sha: sha
-        })
-      });
-
-      return updateRes.ok;
-    } catch (err) {
-      console.error("GitHub Update Error:", err);
-      return false;
+        const response = await fetch('data.json?t=' + new Date().getTime());
+        const data = await response.json();
+        if(document.getElementById('update')) document.getElementById('update').innerText = data.last_updated || "--:--";
+        if(document.getElementById('mstatus')) document.getElementById('mstatus').innerText = data.market_status || "NO CLEAR";
+        
+        if(typeof renderHeat === "function") {
+            renderHeat();
+        }
+    } catch (e) { 
+        console.log("Waiting for data.json..."); 
     }
-  }
-
-  async function loadSavedData() {
-    try {
-      const response = await fetch(`data.json?t=${new Date().getTime()}`);
-      if (!response.ok) throw new Error("File not found");
-      const data = await response.json();
-      
-      if(document.getElementById('update')) {
-         document.getElementById('update').innerText = data.last_updated || "--:--";
-      }
-      if(document.getElementById('mstatus')) {
-         document.getElementById('mstatus').innerText = data.market_status || "LIVE";
-      }
-
-      if (typeof renderHeat === "function" && data.sectors) {
-        renderHeat(data.sectors);
-      }
-    } catch (e) {
-      console.log("Waiting for data.json...");
-    }
-  }
-
-  setInterval(loadSavedData, 5000);
-  loadSavedData();
+}
+setInterval(loadSavedData, 30000);
+loadSavedData();
 </script>
 </body>
 </html>
