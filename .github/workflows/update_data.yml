@@ -1,1 +1,40 @@
+name: Market Data Fetcher
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 3-10 * * 1-5' # सोमवार ते शुक्रवार, सकाळी ९:०० ते दुपारी ३:३० पर्यंत दर ५ मिनिटांनी चालेल
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-core: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install smartapi-python pandas requests
+
+      - name: Run Trading Script
+        env:
+          ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+          ANGEL_CLIENT_CODE: ${{ secrets.ANGEL_CLIENT_CODE }}
+          ANGEL_PASSWORD: ${{ secrets.ANGEL_PASSWORD }}
+          ANGEL_TOTP_KEY: ${{ secrets.ANGEL_TOTP_KEY }}
+        run: |
+          python main.py
+
+      - name: Commit and Push Data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add data.json
+          git commit -m "Automated live market data update [skip ci]" || exit 0
+          git push
 
