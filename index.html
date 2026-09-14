@@ -112,12 +112,10 @@ async function triggerGitHubWorkflow() {
     const repoName = "nse-rotation-flow";
     const filePath = "data.json";
 
-    
-    const proxyUrl = "https://herokuapp.com";
-    const githubApiUrl = `https://github.com{repoOwner}/${repoName}/contents/${filePath}`;
+        const githubApiUrl = `https://github.com{repoOwner}/${repoName}/contents/${filePath}`;
 
     try {
-      const fileRes = await fetch(proxyUrl + githubApiUrl, {
+      const fileRes = await fetch(githubApiUrl, {
         headers: { "Authorization": `token ${patKey}` }
       });
       let sha = "";
@@ -126,13 +124,14 @@ async function triggerGitHubWorkflow() {
         sha = fileData.sha;
       }
 
-      const updateRes = await fetch(proxyUrl + githubApiUrl, {
+      const updateRes = await fetch(githubApiUrl, {
         method: "PUT",
         headers: {
           "Authorization": `token ${patKey}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
+
+    
           message: "Update market data via web panel",
           content: btoa(JSON.stringify(payload)),
           sha: sha
