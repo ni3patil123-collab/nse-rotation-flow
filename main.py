@@ -1,5 +1,7 @@
+# =========================================================
 # NSE ROTATION & FLOW
-# LIVE MARKET DATA ENGINE - PART 1
+# LIVE MARKET DATA ENGINE
+# =========================================================
 
 import os
 import json
@@ -14,27 +16,95 @@ import pyotp
 IST = ZoneInfo("Asia/Kolkata")
 DATA_FILE = "data.json"
 
+TOKEN_CACHE = {}
+
 
 # =========================================================
-# SECTOR ROTATION - EXACT SECTOR SYMBOLS
+# SECTOR INDEX SYMBOL CANDIDATES
+# Angel One symbol names can differ from TradingView names
 # =========================================================
 
 SECTORS = {
-    "METAL": "CNXMETAL",
-    "IT": "CNXIT",
-    "PHARMA": "CNXPHARMA",
-    "BANKING": "BANKNIFTY",
-    "FINANCIAL": "CNXFINANCE",
-    "AUTO": "CNXAUTO",
-    "REALTY": "CNXREALTY",
-    "CEMENT": "NIFTY_CEMENT",
-    "ENERGY": "CNXENERGY",
-    "FMCG": "CNXFMCG",
-    "CHEMICAL": "NIFTY_CHEMICALS",
-    "CAPITAL_GOODS": "CG",
-    "TELECOM": "NIFTY_IND_DIGITAL",
-    "CONSUMER": "NIFTY_CONSR_DURBL",
-    "DEFENSE": "NIFTY_IND_DEFENCE"
+
+    "METAL": [
+        ("NSE", "NIFTY METAL"),
+        ("NSE", "NIFTY METAL INDEX"),
+        ("NSE", "CNXMETAL")
+    ],
+
+    "IT": [
+        ("NSE", "NIFTY IT"),
+        ("NSE", "CNXIT")
+    ],
+
+    "PHARMA": [
+        ("NSE", "NIFTY PHARMA"),
+        ("NSE", "CNXPHARMA")
+    ],
+
+    "BANKING": [
+        ("NSE", "NIFTY BANK"),
+        ("NSE", "BANKNIFTY")
+    ],
+
+    "FINANCIAL": [
+        ("NSE", "NIFTY FIN SERVICE"),
+        ("NSE", "NIFTY FINANCIAL SERVICES"),
+        ("NSE", "CNXFINANCE")
+    ],
+
+    "AUTO": [
+        ("NSE", "NIFTY AUTO"),
+        ("NSE", "CNXAUTO")
+    ],
+
+    "REALTY": [
+        ("NSE", "NIFTY REALTY"),
+        ("NSE", "CNXREALTY")
+    ],
+
+    "CEMENT": [
+        ("NSE", "NIFTY CEMENT"),
+        ("NSE", "NIFTY CEMENT INDEX")
+    ],
+
+    "ENERGY": [
+        ("NSE", "NIFTY ENERGY"),
+        ("NSE", "CNXENERGY")
+    ],
+
+    "FMCG": [
+        ("NSE", "NIFTY FMCG"),
+        ("NSE", "CNXFMCG")
+    ],
+
+    "CHEMICAL": [
+        ("NSE", "NIFTY CHEMICALS"),
+        ("NSE", "NIFTY CHEMICAL")
+    ],
+
+    "CAPITAL_GOODS": [
+        ("NSE", "NIFTY CAPITAL MARKET"),
+        ("NSE", "NIFTY INDIA MANUFACTURING"),
+        ("NSE", "NIFTY INDUSTRIAL MANUFACTURING")
+    ],
+
+    "TELECOM": [
+        ("NSE", "NIFTY TELECOM"),
+        ("NSE", "NIFTY INDIA DIGITAL"),
+        ("NSE", "NIFTY IND DIGITAL")
+    ],
+
+    "CONSUMER": [
+        ("NSE", "NIFTY CONSUMER DURABLES"),
+        ("NSE", "NIFTY CONSR DURBL"),
+        ("NSE", "NIFTY INDIA CONSUMPTION")
+    ],
+
+    "DEFENSE": [
+        ("NSE", "NIFTY INDIA DEFENCE"),
+        ("NSE", "NIFTY INDIA DEFENSE")
+    ]
 }
 
 
@@ -102,7 +172,7 @@ STOCKS = {
     """,
 
     "FMCG": """
-    BRITANNIA COLPAL DABUR GODFRYPHLP GODREJCP HINDUNILVR ITC
+    BRITANNIA COLPAL DABUR GODFRYPHL GODREJCP HINDUNILVR ITC
     MARICO NESTLEIND PATANJALI RADICO TATACONSUM UNITDSPR VBL
     """,
 
@@ -132,7 +202,7 @@ for sector in STOCKS:
 
 
 # =========================================================
-# INDICATOR FUNCTIONS
+# INDICATORS
 # =========================================================
 
 def ema(series, length):
@@ -164,9 +234,11 @@ def rsi(series, length=14):
         float("nan")
     )
 
-    return 100 - (
+    result = 100 - (
         100 / (1 + rs)
     )
+
+    return result.fillna(50)
 
 
 def dmi(df, length=14):
@@ -208,7 +280,7 @@ def dmi(df, length=14):
             alpha=1 / length,
             adjust=False
         ).mean() /
-        atr
+        atr.replace(0, float("nan"))
     )
 
     di_minus = (
@@ -217,7 +289,7 @@ def dmi(df, length=14):
             alpha=1 / length,
             adjust=False
         ).mean() /
-        atr
+        atr.replace(0, float("nan"))
     )
 
     dx = (
@@ -234,15 +306,16 @@ def dmi(df, length=14):
         adjust=False
     ).mean()
 
-    return di_plus, di_minus, adx
+    return (
+        di_plus.fillna(0),
+        di_minus.fillna(0),
+        adx.fillna(0)
+    )
 
 
 # =========================================================
-# ANGEL ONE
+# ANGEL ONE LOGIN
 # =========================================================
-
-TOKEN_CACHE = {}
-
 
 def login():
 
@@ -254,81 +327,41 @@ def login():
         os.environ["ANGEL_TOTP_KEY"]
     ).now()
 
-    api.generateSession(
+    response = api.generateSession(
         os.environ["ANGEL_CLIENT_CODE"],
         os.environ["ANGEL_PASSWORD"],
         otp
     )
 
+    if not response or not response.get("status"):
+        raise RuntimeError(
+            "Angel One login failed: " +
+            str(response)
+        )
+
+    print("Angel One login SUCCESS")
+
     return api
 
 
-def get_token(api, symbol):
+# =========================================================
+# TOKEN SEARCH
+# IMPORTANT:
+# Angel One response uses tradingsymbol
+# =========================================================
 
-    if symbol in TOKEN_CACHE:
-        return TOKEN_CACHE[symbol]
+def search_token(api, exchange, search_symbol):
 
-    try:
+    cache_key = exchange + ":" + search_symbol
 
-        result = api.searchScrip(
-            "NSE",
-            symbol
-        )
-
-        rows = (
-            (result or {}).get("data")
-            or []
-        )
-
-        for row in rows:
-
-            actual = row.get(
-                "symbol",
-                ""
-            ).upper()
-
-            if actual in {
-                symbol.upper(),
-                (symbol + "-EQ").upper()
-            }:
-
-                TOKEN_CACHE[symbol] = (
-                    row["symboltoken"]
-                )
-
-                return row["symboltoken"]
-
-    except Exception:
-        pass
-
-    return None
-
-
-def get_candles(
-    api,
-    symbol,
-    from_date,
-    to_date
-):
-
-    token = get_token(
-        api,
-        symbol
-    )
-
-    if not token:
-        return pd.DataFrame()
+    if cache_key in TOKEN_CACHE:
+        return TOKEN_CACHE[cache_key]
 
     try:
 
-        response = api.getCandleData(
-            {
-                "exchange": "NSE",
-                "symboltoken": token,
-                "interval": "FIVE_MINUTE",
-                "fromdate": from_date,
-                "todate": to_date
-            }
+        response = api.searchScrip(
+            exchange,
+            search_symbol
         )
 
         rows = (
@@ -337,6 +370,206 @@ def get_candles(
         )
 
         if not rows:
+            print(
+                "NO SEARCH RESULT:",
+                exchange,
+                search_symbol
+            )
+            return None
+
+        wanted = search_symbol.upper()
+
+        # Exact match first
+        for row in rows:
+
+            actual = str(
+                row.get("tradingsymbol")
+                or row.get("symbol")
+                or ""
+            ).upper()
+
+            if actual == wanted:
+
+                token = str(
+                    row.get("symboltoken")
+                )
+
+                if token and token != "None":
+
+                    TOKEN_CACHE[
+                        cache_key
+                    ] = token
+
+                    return token
+
+        # If stock was searched without -EQ
+        if not wanted.endswith("-EQ"):
+
+            eq_wanted = wanted + "-EQ"
+
+            for row in rows:
+
+                actual = str(
+                    row.get("tradingsymbol")
+                    or row.get("symbol")
+                    or ""
+                ).upper()
+
+                if actual == eq_wanted:
+
+                    token = str(
+                        row.get("symboltoken")
+                    )
+
+                    if token and token != "None":
+
+                        TOKEN_CACHE[
+                            cache_key
+                        ] = token
+
+                        return token
+
+        print(
+            "TOKEN NOT FOUND:",
+            exchange,
+            search_symbol
+        )
+
+    except Exception as e:
+
+        print(
+            "SEARCH ERROR:",
+            exchange,
+            search_symbol,
+            str(e)
+        )
+
+    return None
+
+
+# =========================================================
+# STOCK TOKEN
+# =========================================================
+
+def get_stock_token(api, stock):
+
+    # First try exact EQ symbol
+    token = search_token(
+        api,
+        "NSE",
+        stock + "-EQ"
+    )
+
+    if token:
+        return token
+
+    # Then try without EQ
+    return search_token(
+        api,
+        "NSE",
+        stock
+    )
+
+
+# =========================================================
+# SECTOR TOKEN
+# =========================================================
+
+def get_sector_token(api, sector):
+
+    candidates = SECTORS.get(
+        sector,
+        []
+    )
+
+    for exchange, symbol in candidates:
+
+        token = search_token(
+            api,
+            exchange,
+            symbol
+        )
+
+        if token:
+
+            print(
+                "SECTOR TOKEN:",
+                sector,
+                exchange,
+                symbol,
+                token
+            )
+
+            return (
+                exchange,
+                token,
+                symbol
+            )
+
+    print(
+        "SECTOR TOKEN NOT FOUND:",
+        sector
+    )
+
+    return None
+
+
+# =========================================================
+# CANDLE DATA
+# =========================================================
+
+def get_candles(
+    api,
+    exchange,
+    token,
+    from_date,
+    to_date
+):
+
+    try:
+
+        response = api.getCandleData(
+            {
+                "exchange": exchange,
+                "symboltoken": token,
+                "interval": "FIVE_MINUTE",
+                "fromdate": from_date,
+                "todate": to_date
+            }
+        )
+
+        if not response:
+
+            print(
+                "EMPTY CANDLE RESPONSE:",
+                exchange,
+                token
+            )
+
+            return pd.DataFrame()
+
+        if not response.get("status"):
+
+            print(
+                "CANDLE API ERROR:",
+                response
+            )
+
+            return pd.DataFrame()
+
+        rows = (
+            response.get("data")
+            or []
+        )
+
+        if not rows:
+
+            print(
+                "NO CANDLES:",
+                exchange,
+                token
+            )
+
             return pd.DataFrame()
 
         df = pd.DataFrame(
@@ -352,7 +585,8 @@ def get_candles(
         )
 
         df["timestamp"] = pd.to_datetime(
-            df["timestamp"]
+            df["timestamp"],
+            errors="coerce"
         )
 
         for column in [
@@ -368,17 +602,30 @@ def get_candles(
                 errors="coerce"
             )
 
-        return (
+        df = (
             df
             .dropna()
             .sort_values("timestamp")
             .reset_index(drop=True)
         )
 
-    except Exception:
+        return df
+
+    except Exception as e:
+
+        print(
+            "CANDLE ERROR:",
+            exchange,
+            token,
+            str(e)
+        )
+
         return pd.DataFrame()
-        # =========================================================
-# TRUE 20D RVOL - SAME 5 MINUTE TIME
+
+
+# =========================================================
+# TRUE 20D RVOL
+# SAME 5-MINUTE TIME
 # =========================================================
 
 def rvol20(df):
@@ -388,23 +635,30 @@ def rvol20(df):
 
     x = df.copy()
 
-    x["day"] = x["timestamp"].dt.date
-    x["hm"] = x["timestamp"].dt.strftime("%H:%M")
+    x["day"] = (
+        x["timestamp"]
+        .dt.date
+    )
+
+    x["hm"] = (
+        x["timestamp"]
+        .dt.strftime("%H:%M")
+    )
 
     today = x["day"].iloc[-1]
     current_hm = x["hm"].iloc[-1]
 
-    # Today's cumulative volume up to current 5M candle
     today_data = x[
         (x["day"] == today) &
         (x["hm"] <= current_hm)
     ]
 
-    current_cum = today_data["volume"].sum()
+    current_cum = (
+        today_data["volume"].sum()
+    )
 
     previous_days = []
 
-    # Same-time cumulative volume from previous trading days
     for day in sorted(
         x["day"].unique(),
         reverse=True
@@ -418,7 +672,6 @@ def rvol20(df):
             (x["hm"] <= current_hm)
         ]
 
-        # Only use a day if that exact 5M time exists
         if (
             not old.empty and
             current_hm in set(old["hm"])
@@ -442,11 +695,14 @@ def rvol20(df):
     if average_previous <= 0:
         return float("nan")
 
-    return current_cum / average_previous
+    return (
+        current_cum /
+        average_previous
+    )
 
 
 # =========================================================
-# STOCK METRICS
+# METRICS
 # =========================================================
 
 def get_metrics(df):
@@ -476,21 +732,33 @@ def get_metrics(df):
         14
     )
 
-    # Pine ta.vwap(hlc3)
     hlc3 = (
         df["high"] +
         df["low"] +
         df["close"]
     ) / 3
 
-    day = df["timestamp"].dt.date
+    day = (
+        df["timestamp"]
+        .dt.date
+    )
 
-    vwap = (
-        hlc3 * df["volume"]
-    ).groupby(day).cumsum() / (
+    cumulative_volume = (
         df["volume"]
         .groupby(day)
         .cumsum()
+    )
+
+    cumulative_pv = (
+        hlc3 * df["volume"]
+    ).groupby(day).cumsum()
+
+    vwap = (
+        cumulative_pv /
+        cumulative_volume.replace(
+            0,
+            float("nan")
+        )
     )
 
     candle_range = (
@@ -517,7 +785,10 @@ def get_metrics(df):
 
     volume_accel = (
         df["volume"] /
-        volume_sma20
+        volume_sma20.replace(
+            0,
+            float("nan")
+        )
     )
 
     current_rvol = rvol20(
@@ -528,10 +799,10 @@ def get_metrics(df):
         df.iloc[:-1]
     )
 
-    return {
+    values = {
 
         "close":
-            float(ema20.index[-1] and close.iloc[-1]),
+            float(close.iloc[-1]),
 
         "ema20":
             float(ema20.iloc[-1]),
@@ -573,9 +844,11 @@ def get_metrics(df):
             float(body_ratio.iloc[-1])
     }
 
+    return values
+
 
 # =========================================================
-# EXACT STRONG EARLY + FINAL SCANNER
+# SCANNER
 # =========================================================
 
 def scanner_signal(df):
@@ -584,6 +857,28 @@ def scanner_signal(df):
 
     if m is None:
         return None
+
+    required = [
+        "close",
+        "ema20",
+        "ema20_prev",
+        "ema50",
+        "vwap",
+        "rsi",
+        "di_plus",
+        "di_minus",
+        "adx",
+        "adx_prev",
+        "rvol20",
+        "rvol20_prev",
+        "volume_accel",
+        "body_ratio"
+    ]
+
+    for key in required:
+
+        if pd.isna(m[key]):
+            return None
 
     # -----------------------------------------------------
     # FINAL BUY
@@ -618,7 +913,7 @@ def scanner_signal(df):
     )
 
     # -----------------------------------------------------
-    # STRONG EARLY BUY - 8 CONDITIONS
+    # EARLY BUY
     # -----------------------------------------------------
 
     early_buy_count = sum([
@@ -647,7 +942,7 @@ def scanner_signal(df):
     ])
 
     # -----------------------------------------------------
-    # STRONG EARLY SELL - 8 CONDITIONS
+    # EARLY SELL
     # -----------------------------------------------------
 
     early_sell_count = sum([
@@ -675,9 +970,7 @@ def scanner_signal(df):
         m["volume_accel"] >= 1.20
     ])
 
-    # -----------------------------------------------------
-    # FINAL HAS PRIORITY
-    # -----------------------------------------------------
+    # FINAL PRIORITY
 
     if final_buy:
 
@@ -697,9 +990,7 @@ def scanner_signal(df):
             "early_count": early_sell_count
         }
 
-    # -----------------------------------------------------
-    # EARLY PASS = 7 OF 8
-    # -----------------------------------------------------
+    # EARLY 7/8
 
     if early_buy_count >= 7:
 
@@ -720,22 +1011,44 @@ def scanner_signal(df):
         }
 
     return None
-    # =========================================================
+
+
+# =========================================================
 # ROTATION
-# Today Open -> Current Close
+# TODAY OPEN -> CURRENT CLOSE
 # =========================================================
 
-def build_rotation(api, from_date, to_date):
+def build_rotation(
+    api,
+    from_date,
+    to_date
+):
 
     result = []
 
-    today = datetime.now(IST).date()
+    today = (
+        datetime.now(IST)
+        .date()
+    )
 
-    for sector, symbol in SECTORS.items():
+    for sector in SECTORS:
+
+        sector_info = get_sector_token(
+            api,
+            sector
+        )
+
+        if not sector_info:
+            continue
+
+        exchange, token, symbol = (
+            sector_info
+        )
 
         df = get_candles(
             api,
-            symbol,
+            exchange,
+            token,
             from_date,
             to_date
         )
@@ -750,8 +1063,13 @@ def build_rotation(api, from_date, to_date):
         if today_df.empty:
             continue
 
-        today_open = today_df["open"].iloc[0]
-        current_close = today_df["close"].iloc[-1]
+        today_open = float(
+            today_df["open"].iloc[0]
+        )
+
+        current_close = float(
+            today_df["close"].iloc[-1]
+        )
 
         if today_open <= 0:
             continue
@@ -761,18 +1079,27 @@ def build_rotation(api, from_date, to_date):
         ) * 100
 
         result.append({
-            "sector": sector,
-            "move": round(float(move), 3)
+
+            "sector":
+                sector,
+
+            "move":
+                round(
+                    float(move),
+                    3
+                )
         })
 
-    # Strong -> Weak
     result.sort(
         key=lambda x: x["move"],
         reverse=True
     )
 
     max_abs = max(
-        [abs(x["move"]) for x in result],
+        [
+            abs(x["move"])
+            for x in result
+        ],
         default=0.0001
     )
 
@@ -796,18 +1123,26 @@ def build_rotation(api, from_date, to_date):
 
         fill = max(
             1,
-            min(8, fill)
+            min(
+                8,
+                fill
+            )
         )
 
         item["rank"] = rank
         item["stage"] = stage
         item["fill"] = fill
 
+    print(
+        "ROTATION COUNT:",
+        len(result)
+    )
+
     return result
 
 
 # =========================================================
-# BIG PLAYER / MONEY FLOW
+# BIG PLAYER
 # =========================================================
 
 def build_big_player(scanner):
@@ -833,7 +1168,6 @@ def build_big_player(scanner):
             ""
         )
 
-        # RVOL strength
         if rvol >= 2.0:
             score += 15
 
@@ -843,14 +1177,12 @@ def build_big_player(scanner):
         elif rvol >= 1.2:
             score += 5
 
-        # Early confirmation
         if early >= 8:
             score += 10
 
         elif early >= 7:
             score += 5
 
-        # Final confirmation
         if stage.startswith("FINAL"):
             score += 10
 
@@ -859,10 +1191,10 @@ def build_big_player(scanner):
             score
         )
 
-        # No weak Big Player signal
         if score >= 70:
 
             result.append({
+
                 "stock":
                     item["stock"],
 
@@ -891,7 +1223,7 @@ def build_big_player(scanner):
 
 
 # =========================================================
-# FINAL CONFIRMATION
+# FINAL
 # =========================================================
 
 def build_final(
@@ -902,22 +1234,15 @@ def build_final(
 
     result = []
 
-    # Rotation stage lookup
-    rotation_map = {}
+    rotation_map = {
+        item["sector"]: item
+        for item in rotation
+    }
 
-    for item in rotation:
-        rotation_map[
-            item["sector"]
-        ] = item
-
-    # Big Player lookup
-    bp_map = {}
-
-    for item in big_player:
-
-        bp_map[
-            item["stock"]
-        ] = item
+    bp_map = {
+        item["stock"]: item
+        for item in big_player
+    }
 
     for item in scanner:
 
@@ -934,13 +1259,11 @@ def build_final(
 
         direction = item["direction"]
 
-        # BUY should have positive/strong sector
         if direction == "BUY":
 
             if rot["stage"] == "WEAK":
                 continue
 
-        # SELL should not be in strong sector
         if direction == "SELL":
 
             if rot["stage"] == "STRONG":
@@ -1011,10 +1334,10 @@ def main():
             {}
     }
 
-    # -----------------------------------------------------
-    # MARKET OPEN ONLY
-    # 09:15 - 15:30
-    # -----------------------------------------------------
+    # =====================================================
+    # MARKET WINDOW
+    # 09:15 - 15:30 IST
+    # =====================================================
 
     if (
         now.weekday() >= 5 or
@@ -1037,14 +1360,26 @@ def main():
                 indent=2
             )
 
+        print(
+            "MARKET CLOSED:",
+            output["last_updated"]
+        )
+
         return
 
-    # -----------------------------------------------------
-    # ANGEL ONE LOGIN
-    # -----------------------------------------------------
+    # =====================================================
+    # LOGIN
+    # =====================================================
+
+    print(
+        "MARKET OPEN:",
+        now.strftime("%I:%M %p")
+    )
 
     api = login()
 
+    # 35 calendar days gives enough previous trading days
+    # for TRUE 20D RVOL.
     from_date = (
         now -
         timedelta(days=35)
@@ -1056,9 +1391,16 @@ def main():
         "%Y-%m-%d %H:%M"
     )
 
-    # -----------------------------------------------------
+    print(
+        "DATA RANGE:",
+        from_date,
+        "TO",
+        to_date
+    )
+
+    # =====================================================
     # ROTATION
-    # -----------------------------------------------------
+    # =====================================================
 
     rotation = build_rotation(
         api,
@@ -1068,19 +1410,35 @@ def main():
 
     output["sectors"] = rotation
 
-    # -----------------------------------------------------
+    # =====================================================
     # SCANNER
-    # -----------------------------------------------------
+    # =====================================================
 
     scanner = []
 
     for sector, stocks in STOCKS.items():
 
+        print(
+            "SCANNING SECTOR:",
+            sector,
+            "COUNT:",
+            len(stocks)
+        )
+
         for stock in stocks:
+
+            token = get_stock_token(
+                api,
+                stock
+            )
+
+            if not token:
+                continue
 
             df = get_candles(
                 api,
-                stock + "-EQ",
+                "NSE",
+                token,
                 from_date,
                 to_date
             )
@@ -1128,26 +1486,43 @@ def main():
                     )
             })
 
+    print(
+        "SCANNER COUNT:",
+        len(scanner)
+    )
+
     output["scanner"] = scanner
 
-    # -----------------------------------------------------
+    # =====================================================
     # BIG PLAYER
-    # -----------------------------------------------------
+    # =====================================================
 
     big_player = build_big_player(
         scanner
     )
 
-    output["big_player"] = big_player
+    print(
+        "BIG PLAYER COUNT:",
+        len(big_player)
+    )
 
-    # -----------------------------------------------------
+    output["big_player"] = (
+        big_player
+    )
+
+    # =====================================================
     # FINAL
-    # -----------------------------------------------------
+    # =====================================================
 
     final_signals = build_final(
         rotation,
         scanner,
         big_player
+    )
+
+    print(
+        "FINAL COUNT:",
+        len(final_signals)
     )
 
     output["final"] = {
@@ -1165,9 +1540,9 @@ def main():
             final_signals
     }
 
-    # -----------------------------------------------------
+    # =====================================================
     # SAVE
-    # -----------------------------------------------------
+    # =====================================================
 
     with open(
         DATA_FILE,
@@ -1181,6 +1556,10 @@ def main():
             ensure_ascii=False,
             indent=2
         )
+
+    print(
+        "DATA.JSON UPDATED SUCCESSFULLY"
+    )
 
 
 # =========================================================
