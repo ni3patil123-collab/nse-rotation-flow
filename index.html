@@ -18,411 +18,157 @@
 --red:#ff5964;
 --yellow:#f5c84b
 }
-
 *{box-sizing:border-box}
-
 body{
 margin:0;
 background:linear-gradient(180deg,#06101d,#0a1727);
 color:var(--text);
 font-family:Arial,sans-serif
 }
-
-.wrap{
-max-width:1000px;
-margin:auto;
-padding:12px
-}
-
+.wrap{max-width:1000px;margin:auto;padding:12px}
 .header{
-padding:16px;
-border:1px solid var(--line);
-border-radius:20px;
+padding:16px;border:1px solid var(--line);border-radius:20px;
 background:linear-gradient(135deg,#0c2742,#0d1727);
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px
+display:flex;justify-content:space-between;align-items:center;gap:10px
 }
-
-.brand{
-font-size:21px;
-font-weight:900
-}
-
-.sub{
-font-size:11px;
-color:var(--muted);
-margin-top:4px
-}
-
-.live{
-font-size:11px;
-font-weight:800;
-color:#bfffe0
-}
-
+.brand{font-size:21px;font-weight:900}
+.sub{font-size:11px;color:var(--muted);margin-top:4px}
+.live{font-size:11px;font-weight:800;color:#bfffe0}
 .dot{
-display:inline-block;
-width:8px;
-height:8px;
-border-radius:50%;
-background:var(--green);
-margin-right:5px
+display:inline-block;width:8px;height:8px;border-radius:50%;
+background:var(--green);margin-right:5px
 }
-
 .theme{
-border:1px solid var(--line);
-background:#13283e;
-color:#fff;
-border-radius:11px;
-padding:9px 11px
+border:1px solid var(--line);background:#13283e;color:#fff;
+border-radius:11px;padding:9px 11px
 }
-
 .nav{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:7px;
-margin:10px 0
+display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0
 }
-
 .nav button{
-border:1px solid var(--line);
-background:#0d1b2d;
-color:var(--muted);
-border-radius:12px;
-padding:10px 6px;
-font-weight:800;
-font-size:11px
+border:1px solid var(--line);background:#0d1b2d;color:var(--muted);
+border-radius:12px;padding:10px 6px;font-weight:800;font-size:11px
 }
-
 .nav button.active{
-background:#1674b8;
-color:#fff;
-border-color:#2d9ce5
+background:#1674b8;color:#fff;border-color:#2d9ce5
 }
-
 .card{
-background:rgba(13,27,45,.96);
-border:1px solid var(--line);
-border-radius:18px;
-padding:14px;
-margin-bottom:10px
+background:rgba(13,27,45,.96);border:1px solid var(--line);
+border-radius:18px;padding:14px;margin-bottom:10px
 }
-
-.title{
-font-weight:900;
-font-size:15px
-}
-
-.muted{
-font-size:11px;
-color:var(--muted)
-}
-
-.status{
-display:flex;
-gap:7px;
-flex-wrap:wrap;
-margin:10px 0
-}
-
+.title{font-weight:900;font-size:15px}
+.muted{font-size:11px;color:var(--muted)}
+.status{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
 .pill{
-padding:7px 9px;
-border-radius:9px;
-background:#12283d;
-font-size:10px;
-color:var(--muted)
+padding:7px 9px;border-radius:9px;background:#12283d;
+font-size:10px;color:var(--muted)
 }
-
-.pill b{
-color:#fff
-}
-
+.pill b{color:#fff}
 .heat{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:7px;
-margin-top:10px
+display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px
 }
-
 .sector{
-border:1px solid var(--line);
-border-radius:13px;
-padding:10px;
-background:#0b192a;
-cursor:pointer
+border:1px solid var(--line);border-radius:13px;padding:10px;
+background:#0b192a;cursor:pointer
 }
-
-.sector:hover{
-border-color:#287fae
-}
-
+.sector:hover{border-color:#287fae}
 .row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:8px
+display:flex;justify-content:space-between;align-items:center;gap:8px
 }
-
-.sname{
-font-size:11px;
-font-weight:900
-}
-
-.move{
-font-size:12px;
-font-weight:900
-}
-
-.boxes{
-display:flex;
-gap:3px;
-margin-top:8px
-}
-
+.sname{font-size:11px;font-weight:900}
+.move{font-size:12px;font-weight:900}
+.boxes{display:flex;gap:3px;margin-top:8px}
 .box{
-height:7px;
-flex:1;
-border-radius:3px;
-background:#26384a
+height:7px;flex:1;border-radius:3px;background:#26384a
 }
-
 .box.g{background:var(--green)}
 .box.y{background:var(--yellow)}
 .box.r{background:var(--red)}
-
-.rank{
-font-size:9px;
-color:var(--muted);
-margin-top:6px
-}
-
-.controls{
-display:flex;
-gap:7px;
-flex-wrap:wrap;
-margin:10px 0
-}
-
+.rank{font-size:9px;color:var(--muted);margin-top:6px}
+.controls{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
 .select{
-background:#11283e;
-color:#fff;
-border:1px solid var(--line);
-border-radius:10px;
-padding:9px
+background:#11283e;color:#fff;border:1px solid var(--line);
+border-radius:10px;padding:9px
 }
-
 .setting-btn{
-border:1px solid var(--line);
-background:#11283e;
-color:#dcecff;
-border-radius:10px;
-padding:9px 12px;
-font-weight:800;
-font-size:11px;
-cursor:pointer;
-touch-action:manipulation
+border:1px solid var(--line);background:#11283e;color:#dcecff;
+border-radius:10px;padding:9px 12px;font-weight:800;font-size:11px;
+cursor:pointer;touch-action:manipulation
 }
-
-.setting-btn:active{
-transform:scale(.98)
-}
-
+.setting-btn:active{transform:scale(.98)}
 .setting-btn.active{
-background:#1674b8;
-color:#fff;
-border-color:#39a7ff
+background:#1674b8;color:#fff;border-color:#39a7ff
 }
-
 .setting-btn.on{
-background:#123c2b;
-color:#66e9a7;
-border-color:#1d7951
+background:#123c2b;color:#66e9a7;border-color:#1d7951
 }
-
 .setting-btn.off{
-background:#3b2025;
-color:#ff9aa0;
-border-color:#71353d
+background:#3b2025;color:#ff9aa0;border-color:#71353d
 }
-
-.flow{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px
-}
-
+.flow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .flowbox{
-background:#0b192a;
-border:1px solid var(--line);
-border-radius:12px;
-padding:11px
+background:#0b192a;border:1px solid var(--line);
+border-radius:12px;padding:11px
 }
-
-.buy{
-color:var(--green)
-}
-
-.sell{
-color:var(--red)
-}
-
+.buy{color:var(--green)}
+.sell{color:var(--red)}
 .bar{
-height:7px;
-background:#26384a;
-border-radius:8px;
-overflow:hidden;
-margin-top:7px
+height:7px;background:#26384a;border-radius:8px;
+overflow:hidden;margin-top:7px
 }
-
-.bar i{
-display:block;
-height:100%
-}
-
+.bar i{display:block;height:100%}
 .gb{background:var(--green)}
 .rb{background:var(--red)}
-
 .stock{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:8px;
-padding:11px 0;
-border-top:1px solid var(--line)
+display:flex;align-items:center;justify-content:space-between;
+gap:8px;padding:11px 0;border-top:1px solid var(--line)
 }
-
-.stock:first-child{
-border-top:0
-}
-
+.stock:first-child{border-top:0}
 .badge{
-padding:5px 8px;
-border-radius:7px;
-font-size:9px;
-font-weight:900
+padding:5px 8px;border-radius:7px;font-size:9px;font-weight:900
 }
-
-.buybg{
-background:#123c2b;
-color:#66e9a7
-}
-
-.sellbg{
-background:#451e25;
-color:#ff8a91
-}
-
-.stage{
-font-size:10px;
-color:var(--muted)
-}
-
+.buybg{background:#123c2b;color:#66e9a7}
+.sellbg{background:#451e25;color:#ff8a91}
+.stage{font-size:10px;color:var(--muted)}
 .top6{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin-top:10px
+display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px
 }
-
 .player{
-padding:12px;
-border:1px solid var(--line);
-border-radius:13px;
-background:#0b192a
+padding:12px;border:1px solid var(--line);
+border-radius:13px;background:#0b192a
 }
-
-.score{
-font-size:17px;
-font-weight:900
-}
-
-.metric{
-font-size:10px;
-color:var(--muted);
-margin-top:4px
-}
-
-.final{
-display:grid;
-gap:8px;
-margin-top:10px
-}
-
+.score{font-size:17px;font-weight:900}
+.metric{font-size:10px;color:var(--muted);margin-top:4px}
+.final{display:grid;gap:8px;margin-top:10px}
 .check{
-display:flex;
-justify-content:space-between;
-padding:12px;
-border-radius:12px;
-background:#0b192a;
-border:1px solid var(--line)
+display:flex;justify-content:space-between;padding:12px;
+border-radius:12px;background:#0b192a;border:1px solid var(--line)
 }
-
-.yes{
-color:var(--green);
-font-weight:900
-}
-
-.no{
-color:var(--red);
-font-weight:900
-}
-
-.market{
-font-size:20px;
-font-weight:900;
-margin:7px 0
-}
-
-.hidden{
-display:none
-}
-
+.yes{color:var(--green);font-weight:900}
+.no{color:var(--red);font-weight:900}
+.market{font-size:20px;font-weight:900;margin:7px 0}
+.hidden{display:none}
 .notice{
-padding:10px;
-border-radius:11px;
-background:#2a2410;
-color:#f4d77c;
-font-size:10px;
-margin-top:10px
+padding:10px;border-radius:11px;background:#2a2410;
+color:#f4d77c;font-size:10px;margin-top:10px
 }
-
 .chart{
-height:230px;
-border:1px solid var(--line);
-border-radius:13px;
+height:230px;border:1px solid var(--line);border-radius:13px;
 background:
 repeating-linear-gradient(
-0deg,
-#0b192a 0,
-#0b192a 38px,
-#102338 39px
+0deg,#0b192a 0,#0b192a 38px,#102338 39px
 ),
 repeating-linear-gradient(
-90deg,
-transparent 0,
-transparent 48px,
-#17304a 49px
+90deg,transparent 0,transparent 48px,#17304a 49px
 );
-display:flex;
-align-items:center;
-justify-content:center;
-color:var(--muted);
-font-size:12px
+display:flex;align-items:center;justify-content:center;
+color:var(--muted);font-size:12px
 }
-
 .system-status{
-margin-top:10px;
-padding:10px;
-border:1px solid var(--line);
-border-radius:11px;
-background:#0b192a;
-font-size:10px;
-text-align:center;
-color:var(--muted)
+margin-top:10px;padding:10px;border:1px solid var(--line);
+border-radius:11px;background:#0b192a;font-size:10px;
+text-align:center;color:var(--muted)
 }
-
 @media(max-width:600px){
 .wrap{padding:8px}
 .nav{grid-template-columns:1fr 1fr}
@@ -437,7 +183,6 @@ color:var(--muted)
 <div class="wrap">
 
 <header class="header">
-
 <div>
 <div class="brand">NSE ROTATION & FLOW</div>
 <div class="sub">5M Intraday • Today Only • 09:15 Reset</div>
@@ -448,41 +193,20 @@ color:var(--muted)
 <span class="dot"></span>
 <span id="liveText">LIVE</span>
 </div>
-
 <button class="theme" onclick="toggleTheme()">☾ / ☀</button>
 </div>
-
 </header>
 
-
 <nav class="nav">
-
-<button class="active" onclick="show('rotation',this)">
-① ROTATION
-</button>
-
-<button onclick="show('scanner',this)">
-② SCANNER
-</button>
-
-<button onclick="show('flow6',this)">
-③ BIG PLAYER
-</button>
-
-<button onclick="show('final',this)">
-④ FINAL
-</button>
-
+<button class="active" onclick="show('rotation',this)">① ROTATION</button>
+<button onclick="show('scanner',this)">② SCANNER</button>
+<button onclick="show('flow6',this)">③ BIG PLAYER</button>
+<button onclick="show('final',this)">④ FINAL</button>
 </nav>
-
-
-<!-- ROTATION -->
 
 <section id="rotation" class="card">
 
-<div class="title">
-Sector Rotation Heatmap
-</div>
+<div class="title">Sector Rotation Heatmap</div>
 
 <div class="muted">
 Part 1 logic: Today Open → Current Close • rank based • 8 heat boxes
@@ -509,13 +233,9 @@ Waiting for NSE data...
 </section>
 
 
-<!-- SCANNER -->
-
 <section id="scanner" class="card hidden">
 
-<div class="title">
-Sector Stock Scanner
-</div>
+<div class="title">Sector Stock Scanner</div>
 
 <div class="muted">
 Part 2 original scanner structure • TRUE 20D SAME-TIME 5M RVOL
@@ -523,33 +243,15 @@ Part 2 original scanner structure • TRUE 20D SAME-TIME 5M RVOL
 
 <div class="controls">
 
-<button type="button"
-class="setting-btn"
-id="directionBuy">
-BUY
-</button>
+<button type="button" class="setting-btn" id="directionBuy">BUY</button>
+<button type="button" class="setting-btn" id="directionSell">SELL</button>
+<button type="button" class="setting-btn" id="directionBoth">BOTH</button>
 
-<button type="button"
-class="setting-btn"
-id="directionSell">
-SELL
-</button>
-
-<button type="button"
-class="setting-btn"
-id="directionBoth">
-BOTH
-</button>
-
-<button type="button"
-class="setting-btn on"
-id="pdhToggle">
+<button type="button" class="setting-btn on" id="pdhToggle">
 PDH BUY: ON
 </button>
 
-<button type="button"
-class="setting-btn on"
-id="pdlToggle">
+<button type="button" class="setting-btn on" id="pdlToggle">
 PDL SELL: ON
 </button>
 
@@ -557,30 +259,23 @@ PDL SELL: ON
 
 </div>
 
-
 <div class="flow">
 
 <div class="flowbox buy">
 BUYING <b id="buyPct">--%</b>
-
 <div class="bar">
 <i id="buyBar" class="gb" style="width:0%"></i>
 </div>
-
 </div>
-
 
 <div class="flowbox sell">
 SELLING <b id="sellPct">--%</b>
-
 <div class="bar">
 <i id="sellBar" class="rb" style="width:0%"></i>
 </div>
-
 </div>
 
 </div>
-
 
 <div class="status">
 
@@ -598,17 +293,15 @@ PASS TIME <b id="passTime">--:--</b>
 
 </div>
 
-
 <div id="stocks"></div>
 
 <div class="notice">
-Exact Scanner result comes from backend Pine-equivalent calculation. No fake signal is created in the browser.
+Exact Scanner result comes from backend Pine-equivalent calculation.
+No fake signal is created in the browser.
 </div>
 
 </section>
 
-
-<!-- BIG PLAYER -->
 
 <section id="flow6" class="card hidden">
 
@@ -640,8 +333,6 @@ Top 6 is not forced. If strong flow is absent, production mode shows NO STRONG F
 
 </section>
 
-
-<!-- FINAL -->
 
 <section id="final" class="card hidden">
 
@@ -676,14 +367,9 @@ NO CLEAR DIRECTION
 
 </div>
 
+<div class="card" style="margin-top:10px;background:#0b192a">
 
-<div class="card"
-style="margin-top:10px;background:#0b192a">
-
-<div class="muted">
-LEADING SECTOR
-</div>
-
+<div class="muted">LEADING SECTOR</div>
 <b id="lead">--</b>
 
 <div class="muted" style="margin-top:8px">
@@ -694,15 +380,12 @@ QUALIFYING STOCK
 
 </div>
 
-
 <div class="notice">
 No signal is manufactured when all three confirmations are not aligned.
 </div>
 
 </section>
 
-
-<!-- DETAIL -->
 
 <section id="detail" class="card hidden">
 
@@ -791,10 +474,45 @@ loadSavedData();
 
 function clearBrowserDemo(){
 
+/* ORIGINAL 15 SECTOR BOXES
+   remain visible while backend is waiting */
+
 document.getElementById("heat").innerHTML=
-`<div class="muted" style="padding:18px 0">
-Waiting for backend NSE data...
-</div>`;
+sectors.map((name,i)=>{
+
+return `
+<div class="sector"
+onclick="pick('${name}')">
+
+<div class="row">
+
+<span class="sname">
+#${i+1} ${name}
+</span>
+
+<span class="move">
+--%
+</span>
+
+</div>
+
+<div class="boxes">
+
+${Array.from(
+{length:8},
+()=>`<i class="box"></i>`
+).join("")}
+
+</div>
+
+<div class="rank">
+WAITING FOR LIVE DATA
+</div>
+
+</div>
+`;
+
+}).join("");
 
 document.getElementById("stocks").innerHTML=
 `<div class="muted" style="padding:18px 0">
@@ -878,14 +596,10 @@ status==="LIVE" ? "LIVE" : status;
 const dot=document.querySelector(".dot");
 
 if(status==="LIVE"){
-
 dot.style.background="var(--green)";
-
 }
 else{
-
 dot.style.background="var(--red)";
-
 }
 
 }
@@ -901,16 +615,53 @@ const list=Array.isArray(liveData.sectors)
 ? liveData.sectors
 :[];
 
+
+/* NO BACKEND DATA:
+   KEEP ORIGINAL SECTOR BOXES VISIBLE */
+
 if(!list.length){
 
 document.getElementById("heat").innerHTML=
-`<div class="muted" style="padding:18px 0">
-NO SECTOR DATA
-</div>`;
+sectors.map((name,i)=>{
+
+return `
+<div class="sector"
+onclick="pick('${name}')">
+
+<div class="row">
+
+<span class="sname">
+#${i+1} ${name}
+</span>
+
+<span class="move">
+--%
+</span>
+
+</div>
+
+<div class="boxes">
+
+${Array.from(
+{length:8},
+()=>`<i class="box"></i>`
+).join("")}
+
+</div>
+
+<div class="rank">
+WAITING FOR LIVE DATA
+</div>
+
+</div>
+`;
+
+}).join("");
 
 return;
 
 }
+
 
 const sorted=[...list].sort(
 (a,b)=>
@@ -920,7 +671,9 @@ Number(a.move ?? a.change ?? a.value ?? 0)
 );
 
 const moves=sorted.map(x=>
-Math.abs(Number(x.move ?? x.change ?? x.value ?? 0))
+Math.abs(
+Number(x.move ?? x.change ?? x.value ?? 0)
+)
 );
 
 const maxAbs=Math.max(...moves,0.0001);
@@ -934,14 +687,21 @@ item.name ||
 "--";
 
 const value=
-Number(item.move ?? item.change ?? item.value ?? 0);
+Number(
+item.move ??
+item.change ??
+item.value ??
+0
+);
 
 const n=
 Math.max(
 1,
 Math.min(
 8,
-Math.round(Math.abs(value)/maxAbs*8)
+Math.round(
+Math.abs(value)/maxAbs*8
+)
 )
 );
 
@@ -964,7 +724,8 @@ onclick="pick('${name}')">
 </span>
 
 <span class="move">
-${arrow} ${value>=0?"+":""}${value.toFixed(2)}%
+${arrow}
+${value>=0?"+":""}${value.toFixed(2)}%
 </span>
 
 </div>
@@ -1189,7 +950,6 @@ x.side ||
 ).toUpperCase();
 
 if(d==="BUY") buyCount++;
-
 if(d==="SELL") sellCount++;
 
 });
