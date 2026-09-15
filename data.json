@@ -1,13 +1,9 @@
 {
-  "last_updated": "03:27 PM",
+  "last_updated": "03:38 PM",
   "market_date": "2026-09-15",
-  "market_status": "LIVE",
+  "market_status": "CLOSED",
   "sectors": [],
   "scanner": [],
   "big_player": [],
-  "final": {
-    "sector_count": 0,
-    "scanner_count": 0,
-    "big_player_count": 0
-  }
+  "final": {}
 }
