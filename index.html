@@ -76,7 +76,8 @@ async function triggerGitHubWorkflow() {
     statusDiv.style.color = "var(--yellow)";
     statusDiv.innerText = "⏳ Connecting to backend server... Please wait...";
 
-    const url = `https://github.com`;
+    const url = 'https://github.com';
+
     
     try {
         const response = await fetch(url, {
