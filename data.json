@@ -1,1 +1,96 @@
-{}
+{
+  "last_updated": "05:06 AM",
+  "market_status": "\ud83d\udfe2 BULLISH FLOW",
+  "sectors": [
+    {
+      "name": "METAL",
+      "move": "+1.80%",
+      "trend": "g",
+      "rank": "Rank 1 \u2022 Strong Buying"
+    },
+    {
+      "name": "IT",
+      "move": "+1.45%",
+      "trend": "g",
+      "rank": "Rank 2 \u2022 Inflow"
+    },
+    {
+      "name": "PHARMA",
+      "move": "+1.10%",
+      "trend": "g",
+      "rank": "Rank 3 \u2022 Positive"
+    },
+    {
+      "name": "BANKING",
+      "move": "+0.72%",
+      "trend": "g",
+      "rank": "Rank 4 \u2022 Buying"
+    },
+    {
+      "name": "FINANCIAL",
+      "move": "+0.51%",
+      "trend": "g",
+      "rank": "Rank 5 \u2022 Stable"
+    },
+    {
+      "name": "AUTO",
+      "move": "+0.32%",
+      "trend": "y",
+      "rank": "Rank 6 \u2022 Neutral"
+    },
+    {
+      "name": "REALTY",
+      "move": "+0.12%",
+      "trend": "y",
+      "rank": "Rank 7 \u2022 Sideways"
+    },
+    {
+      "name": "CEMENT",
+      "move": "+0.05%",
+      "trend": "y",
+      "rank": "Rank 8 \u2022 Flat"
+    },
+    {
+      "name": "ENERGY",
+      "move": "-0.12%",
+      "trend": "y",
+      "rank": "Rank 9 \u2022 Weak"
+    },
+    {
+      "name": "FMCG",
+      "move": "-0.30%",
+      "trend": "r",
+      "rank": "Rank 10 \u2022 Outflow"
+    },
+    {
+      "name": "CHEMICAL",
+      "move": "-0.48%",
+      "trend": "r",
+      "rank": "Rank 11 \u2022 Selling"
+    },
+    {
+      "name": "CAPITAL_GOODS",
+      "move": "-0.67%",
+      "trend": "r",
+      "rank": "Rank 12 \u2022 Weak Flow"
+    },
+    {
+      "name": "TELECOM",
+      "move": "-0.84%",
+      "trend": "r",
+      "rank": "Rank 13 \u2022 Shorting"
+    },
+    {
+      "name": "CONSUMER",
+      "move": "-1.02%",
+      "trend": "r",
+      "rank": "Rank 14 \u2022 Strong Selling"
+    },
+    {
+      "name": "DEFENSE",
+      "move": "-1.24%",
+      "trend": "r",
+      "rank": "Rank 15 \u2022 Heavy Dumping"
+    }
+  ]
+}
