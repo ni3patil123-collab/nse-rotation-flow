@@ -1,41 +1,44 @@
-name: Market Data Fetcher
+name: NSE Live Market Data
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 3-10 * * 1-5' # सोमवार ते शुक्रवार, सकाळी ९:०० ते दुपारी ३:३० पर्यंत दर ५ मिनिटांनी चालेल
+    - cron: "*/5 3-10 * * 1-5"
+
+permissions:
+  contents: write
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-core: '3.10'
+          python-version: "3.10"
 
-      - name: Install Dependencies
+      - name: Install packages
         run: |
-          pip install smartapi-python pandas requests
+          python -m pip install --upgrade pip
+          pip install smartapi-python pyotp requests pandas
 
-      - name: Run Trading Script
+      - name: Fetch NSE data
         env:
           ANGEL_API_KEY: ${{ secrets.API_KEY }}
           ANGEL_CLIENT_CODE: ${{ secrets.CLIENT_ID }}
           ANGEL_PASSWORD: ${{ secrets.MPIN }}
           ANGEL_TOTP_KEY: ${{ secrets.TOTP_KEY }}
-
         run: |
           python main.py
 
-      - name: Commit and Push Data
+      - name: Save data.json
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@://github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json
-          git commit -m "Automated live market data update [skip ci]" || exit 0
+          git diff --cached --quiet || git commit -m "Update live NSE data"
           git push
-
