@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/angelone/(.*)",
+      "destination": "https://angelone.in"
+    }
+  ]
+}
