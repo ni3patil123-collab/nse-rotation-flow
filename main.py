@@ -384,20 +384,144 @@ SECTOR_INDEX_CANDIDATES = {
 
 def get_sector_token(sector):
 
-    candidates = SECTOR_INDEX_CANDIDATES.get(
-        sector,
-        []
-    )
+    SECTOR_SEARCH_NAMES = {
+        "METAL": [
+            "Nifty Metal", "CNXMETAL", "NIFTY METAL"
+        ],
+        "IT": [
+            "Nifty IT", "CNXIT", "NIFTY IT"
+        ],
+        "PHARMA": [
+            "Nifty Pharma", "CNXPHARMA", "NIFTY PHARMA"
+        ],
+        "BANKING": [
+            "Nifty Bank", "BANKNIFTY", "NIFTY BANK"
+        ],
+        "FINANCIAL": [
+            "Nifty Financial Services",
+            "Nifty Fin Service",
+            "CNXFINANCE",
+            "NIFTY FIN SERVICE"
+        ],
+        "AUTO": [
+            "Nifty Auto", "CNXAUTO", "NIFTY AUTO"
+        ],
+        "REALTY": [
+            "Nifty Realty", "CNXREALTY", "NIFTY REALTY"
+        ],
+        "CEMENT": [
+            "Nifty Cement", "NIFTY CEMENT"
+        ],
+        "ENERGY": [
+            "Nifty Energy", "CNXENERGY", "NIFTY ENERGY"
+        ],
+        "FMCG": [
+            "Nifty FMCG", "CNXFMCG", "NIFTY FMCG"
+        ],
+        "CHEMICAL": [
+            "Nifty Chemicals", "NIFTY CHEMICALS"
+        ],
+        "CAPITAL_GOODS": [
+            "Nifty India Manufacturing",
+            "Nifty Industrial Manufacturing",
+            "Nifty Capital Market",
+            "CG"
+        ],
+        "TELECOM": [
+            "Nifty India Digital",
+            "Nifty Digital",
+            "Nifty Telecom",
+            "NIFTY IND DIGITAL"
+        ],
+        "CONSUMER": [
+            "Nifty Consumer Durables",
+            "Nifty Consumer Durable",
+            "NIFTY CONSR DURBL"
+        ],
+        "DEFENSE": [
+            "Nifty India Defence",
+            "Nifty India Defense",
+            "NIFTY IND DEFENCE",
+            "NIFTY IND DEFENSE"
+        ]
+    }
+
+    names = SECTOR_SEARCH_NAMES.get(sector, [])
+
+    # 1) Try existing candidate names
+    candidates = SECTOR_INDEX_CANDIDATES.get(sector, [])
 
     for exchange, symbol in candidates:
 
-        token = search_token(
-            symbol,
-            exchange
-        )
+        try:
+            result = api.searchScrip(exchange, symbol)
 
-        if token:
-            return exchange, symbol, token
+            data = result.get("data") or []
+
+            # Prefer AMXIDX index instrument
+            for item in data:
+                if str(item.get("instrumenttype", "")).upper() == "AMXIDX":
+                    token = item.get("symboltoken")
+                    tradingsymbol = item.get("tradingsymbol")
+
+                    if token:
+                        return (
+                            exchange,
+                            tradingsymbol or symbol,
+                            str(token)
+                        )
+
+            # Fallback: first valid result
+            for item in data:
+                token = item.get("symboltoken")
+
+                if token:
+                    return (
+                        exchange,
+                        item.get("tradingsymbol") or symbol,
+                        str(token)
+                    )
+
+        except Exception:
+            continue
+
+    # 2) Search current SmartAPI index names
+    for exchange in ["NSE", "BSE"]:
+
+        for name in names:
+
+            try:
+                result = api.searchScrip(exchange, name)
+
+                data = result.get("data") or []
+
+                # First preference = AMXIDX
+                for item in data:
+
+                    if str(
+                        item.get("instrumenttype", "")
+                    ).upper() != "AMXIDX":
+                        continue
+
+                    token = item.get("symboltoken")
+
+                    if token:
+                        return (
+                            exchange,
+                            item.get("tradingsymbol") or name,
+                            str(token)
+                        )
+
+            except Exception:
+                continue
+
+    # 3) Known Bank Nifty fallback
+    if sector == "BANKING":
+        return (
+            "NSE",
+            "BANKNIFTY",
+            "99926009"
+        )
 
     return None, None, None
 
