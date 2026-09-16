@@ -1,89 +1,35 @@
 {
-  "last_updated": "10:01 AM",
+  "last_updated": "10:16 AM",
   "market_date": "2026-09-16",
   "market_status": "LIVE",
   "sectors": [],
   "scanner": [
     {
-      "stock": "OFSS",
-      "sector": "IT",
+      "stock": "COCHINSHIP",
+      "sector": "DEFENCE",
       "direction": "SELL",
       "stage": "FINAL SELL",
       "early_count": 5,
-      "rvol20": 1.26,
-      "pass_time": "10:01 AM"
+      "rvol20": 1.74,
+      "pass_time": "10:16 AM"
     },
     {
-      "stock": "LAURUSLABS",
+      "stock": "LUPIN",
       "sector": "PHARMA",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "early_count": 7,
-      "rvol20": 1.34,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "CDSL",
-      "sector": "FINANCIAL 1",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 1.24,
-      "pass_time": "10:01 AM"
+      "early_count": 5,
+      "rvol20": 1.73,
+      "pass_time": "10:16 AM"
     },
     {
       "stock": "CHOLAFIN",
       "sector": "FINANCIAL 1",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 1.14,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "IRFC",
-      "sector": "FINANCIAL 1",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
       "early_count": 5,
-      "rvol20": 1.98,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "LODHA",
-      "sector": "REALTY",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.21,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "NBCC",
-      "sector": "REALTY",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.76,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "COLPAL",
-      "sector": "FMCG",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 8,
-      "rvol20": 3.38,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "ITC",
-      "sector": "FMCG",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 2.15,
-      "pass_time": "10:01 AM"
+      "rvol20": 1.23,
+      "pass_time": "10:16 AM"
     },
     {
       "stock": "MARICO",
@@ -91,26 +37,26 @@
       "direction": "BUY",
       "stage": "FINAL BUY",
       "early_count": 8,
-      "rvol20": 2.28,
-      "pass_time": "10:01 AM"
+      "rvol20": 2.56,
+      "pass_time": "10:16 AM"
     },
     {
-      "stock": "LT",
-      "sector": "CAPITAL_GOODS",
+      "stock": "PATANJALI",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "FINAL BUY",
+      "early_count": 8,
+      "rvol20": 13.12,
+      "pass_time": "10:16 AM"
+    },
+    {
+      "stock": "UPL",
+      "sector": "CHEMICAL",
       "direction": "SELL",
       "stage": "EARLY SELL",
       "early_count": 7,
-      "rvol20": 0.73,
-      "pass_time": "10:01 AM"
-    },
-    {
-      "stock": "RVNL",
-      "sector": "CAPITAL_GOODS",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.15,
-      "pass_time": "10:01 AM"
+      "rvol20": 3.11,
+      "pass_time": "10:16 AM"
     }
   ],
   "big_player": [
@@ -120,52 +66,52 @@
       "direction": "BUY",
       "stage": "FINAL BUY",
       "score": 95,
-      "rvol20": 2.28
+      "rvol20": 2.56
     },
     {
-      "stock": "COLPAL",
+      "stock": "PATANJALI",
       "sector": "FMCG",
       "direction": "BUY",
-      "stage": "EARLY BUY",
-      "score": 85,
-      "rvol20": 3.38
+      "stage": "FINAL BUY",
+      "score": 95,
+      "rvol20": 13.12
     },
     {
-      "stock": "LAURUSLABS",
+      "stock": "COCHINSHIP",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "score": 80,
+      "rvol20": 1.74
+    },
+    {
+      "stock": "LUPIN",
       "sector": "PHARMA",
       "direction": "SELL",
       "stage": "FINAL SELL",
       "score": 80,
-      "rvol20": 1.34
+      "rvol20": 1.73
     },
     {
-      "stock": "IRFC",
+      "stock": "UPL",
+      "sector": "CHEMICAL",
+      "direction": "SELL",
+      "stage": "EARLY SELL",
+      "score": 80,
+      "rvol20": 3.11
+    },
+    {
+      "stock": "CHOLAFIN",
       "sector": "FINANCIAL 1",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "score": 80,
-      "rvol20": 1.98
-    },
-    {
-      "stock": "NBCC",
-      "sector": "REALTY",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "score": 80,
-      "rvol20": 1.76
-    },
-    {
-      "stock": "ITC",
-      "sector": "FMCG",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "score": 80,
-      "rvol20": 2.15
+      "score": 75,
+      "rvol20": 1.23
     }
   ],
   "final": {
     "sector_count": 0,
-    "scanner_count": 12,
+    "scanner_count": 6,
     "big_player_count": 6,
     "signals": []
   }
