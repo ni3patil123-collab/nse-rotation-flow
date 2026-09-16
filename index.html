@@ -1,1393 +1,2150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>NSE Rotation & Flow</title>
+
+<style>
+:root{
+  --bg:#07111f;
+  --card:#0d1b2d;
+  --card2:#11243a;
+  --text:#edf5ff;
+  --muted:#91a7bd;
+  --line:#1c334b;
+  --green:#16c784;
+  --red:#ff4d67;
+  --yellow:#f4c95d;
+  --blue:#4da3ff;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#06101d,#0a1727);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.wrap{
+  max-width:900px;
+  margin:auto;
+  padding:14px;
+}
+
+header{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:12px;
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+h1{
+  font-size:21px;
+  margin:0;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.live{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--red);
+}
+
+.theme{
+  border:1px solid var(--line);
+  background:var(--card2);
+  color:var(--text);
+  border-radius:10px;
+  padding:8px 10px;
+}
+
+.nav{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-bottom:12px;
+}
+
+.nav button,
+.control button{
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--muted);
+  border-radius:10px;
+  padding:10px 5px;
+  font-weight:bold;
+  font-size:11px;
+}
+
+.nav button.active,
+.control button.active{
+  color:var(--text);
+  background:var(--card2);
+  border-color:var(--blue);
+}
+
+section{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.title{
+  font-size:17px;
+  font-weight:bold;
+}
+
+.desc{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+  line-height:1.5;
+}
+
+.statusbar{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:14px 0;
+}
+
+.statusbox{
+  background:var(--card2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+}
+
+.label{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.value{
+  margin-top:5px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.heat{
+  display:grid;
+  gap:7px;
+}
+
+.sector{
+  border:1px solid var(--line);
+  background:var(--card2);
+  border-radius:12px;
+  padding:10px;
+  cursor:pointer;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.sname{
+  font-size:12px;
+  font-weight:bold;
+}
+
+.move{
+  font-size:12px;
+  font-weight:bold;
+}
+
+.boxes{
+  display:flex;
+  gap:4px;
+  margin-top:8px;
+}
+
+.box{
+  height:8px;
+  flex:1;
+  border-radius:3px;
+  background:#24364b;
+}
+
+.box.g{background:var(--green)}
+.box.r{background:var(--red)}
+.box.y{background:var(--yellow)}
+
+.rank{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:7px;
+}
+
+.control{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:13px 0;
+}
+
+.control button{
+  padding:8px 10px;
+}
+
+.control .on{
+  color:var(--green);
+  border-color:var(--green);
+}
+
+.control .off{
+  color:var(--red);
+  border-color:var(--red);
+}
+
+select{
+  width:100%;
+  background:var(--card2);
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:12px;
+}
+
+.flowgrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.flowbox{
+  background:var(--card2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:11px;
+}
+
+.bar{
+  height:6px;
+  background:#24364b;
+  border-radius:4px;
+  overflow:hidden;
+  margin-top:7px;
+}
+
+.bar span{
+  display:block;
+  height:100%;
+  width:0%;
+}
+
+.buybar{background:var(--green)}
+.sellbar{background:var(--red)}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:8px;
+}
+
+.stat{
+  background:var(--card2);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:9px;
+}
+
+.stocks{
+  margin-top:12px;
+  display:grid;
+  gap:7px;
+}
+
+.stock{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--card2);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:11px;
+  cursor:pointer;
+}
+
+.stock b{
+  font-size:13px;
+}
+
+.stage{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:4px;
+}
+
+.badge{
+  padding:5px 8px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.buybg{
+  color:var(--green);
+  border:1px solid var(--green);
+}
+
+.sellbg{
+  color:var(--red);
+  border:1px solid var(--red);
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.top6{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+
+.player{
+  background:var(--card2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+}
+
+.player b{
+  font-size:14px;
+}
+
+.score{
+  font-size:11px;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.score.buy{color:var(--green)}
+.score.sell{color:var(--red)}
+
+.metric{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:5px;
+}
+
+.finalDirection{
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  padding:18px 5px;
+}
+
+.confirmgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+
+.confirm{
+  background:var(--card2);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:11px;
+  text-align:center;
+}
+
+.yes{color:var(--green);font-weight:bold}
+.no{color:var(--red);font-weight:bold}
+
+.finalinfo{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+
+footer{
+  color:var(--muted);
+  text-align:center;
+  font-size:10px;
+  padding:10px;
+}
+
+@media(max-width:600px){
+  .wrap{padding:9px}
+  h1{font-size:18px}
+  .nav button{font-size:9px}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .confirmgrid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<header>
+  <div class="head">
+
+    <div>
+      <h1>NSE ROTATION & FLOW</h1>
+      <div class="sub">
+        5M Intraday • Today Only • 09:15 Reset
+      </div>
+    </div>
+
+    <div>
+      <div class="live">
+        <span class="dot"></span>
+        <span id="liveText">WAITING</span>
+      </div>
+
+      <button class="theme" onclick="toggleTheme()">☾ / ☀</button>
+    </div>
+
+  </div>
+</header>
+
+
+<div class="nav">
+
+<button class="active"
+onclick="show('rotation',this)">
+① ROTATION
+</button>
+
+<button
+onclick="show('scanner',this)">
+② SCANNER
+</button>
+
+<button
+onclick="show('bigplayer',this)">
+③ BIG PLAYER
+</button>
+
+<button
+onclick="show('final',this)">
+④ FINAL
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     ROTATION
+===================================================== -->
+
+<section id="rotation">
+
+<div class="title">
+Sector Rotation Heatmap
+</div>
+
+<div class="desc">
+Part 1 logic: Today Open → Current Close • rank based • 8 heat boxes
+</div>
+
+<div class="statusbar">
+
+<div class="statusbox">
+<div class="label">MARKET</div>
+<div class="value" id="mstatus">WAITING</div>
+</div>
+
+<div class="statusbox">
+<div class="label">UPDATE</div>
+<div class="value" id="update">--:--</div>
+</div>
+
+</div>
+
+<div id="heat" class="heat"></div>
+
+</section>
+
+
+<!-- =====================================================
+     SCANNER
+===================================================== -->
+
+<section id="scanner" class="hidden">
+
+<div class="title">
+Sector Stock Scanner
+</div>
+
+<div class="desc">
+Part 2 original scanner structure • TRUE 20D SAME-TIME 5M RVOL
+</div>
+
+<div class="control">
+
+<button id="directionBuy">
+BUY
+</button>
+
+<button id="directionSell">
+SELL
+</button>
+
+<button id="directionBoth">
+BOTH
+</button>
+
+<button id="pdhToggle">
+PDH BUY: ON
+</button>
+
+<button id="pdlToggle">
+PDL SELL: ON
+</button>
+
+</div>
+
+<select id="sector"></select>
+
+
+<div class="flowgrid">
+
+<div class="flowbox">
+<div class="label">BUYING</div>
+<div class="value" id="buyPct">--%</div>
+<div class="bar">
+<span id="buyBar" class="buybar"></span>
+</div>
+</div>
+
+<div class="flowbox">
+<div class="label">SELLING</div>
+<div class="value" id="sellPct">--%</div>
+<div class="bar">
+<span id="sellBar" class="sellbar"></span>
+</div>
+</div>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<div class="label">EARLY</div>
+<div class="value" id="early">--</div>
+</div>
+
+<div class="stat">
+<div class="label">FINAL</div>
+<div class="value" id="fin">--</div>
+</div>
+
+<div class="stat">
+<div class="label">PASS TIME</div>
+<div class="value" id="passTime">--:--</div>
+</div>
+
+</div>
+
+
+<div class="desc" style="margin-top:12px">
+Exact Scanner result comes from backend Pine-equivalent calculation.
+No fake signal is created in the browser.
+</div>
+
+<div id="stocks" class="stocks"></div>
+
+</section>
+
+
+<!-- =====================================================
+     BIG PLAYER
+===================================================== -->
+
+<section id="bigplayer" class="hidden">
+
+<div class="title">
+Big Player / Money Flow — Top 6 F&O
+</div>
+
+<div class="desc">
+Assistant-defined Part 3 logic • Score only here (60–100)
+</div>
+
+
+<div class="flowgrid" style="margin-top:13px">
+
+<div class="flowbox">
+<div class="label">BUY FLOW</div>
+<div class="value" id="bigBuyPct">--%</div>
+</div>
+
+<div class="flowbox">
+<div class="label">SELL FLOW</div>
+<div class="value" id="bigSellPct">--%</div>
+</div>
+
+</div>
+
+
+<div id="top6" class="top6"></div>
+
+<div class="desc">
+Top 6 is not forced. If strong flow is absent,
+production mode shows NO STRONG FLOW.
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FINAL
+===================================================== -->
+
+<section id="final" class="hidden">
+
+<div class="title">
+Final Market Dashboard
+</div>
+
+<div class="desc">
+Sector + qualifying Stock + Big Player Flow cross-confirmation
+</div>
+
+
+<div id="market" class="finalDirection">
+NO CLEAR DIRECTION
+</div>
+
+
+<div class="confirmgrid">
+
+<div class="confirm">
+<div class="label">SECTOR</div>
+<div id="sectorConfirm" class="no">✕ WAIT</div>
+</div>
+
+<div class="confirm">
+<div class="label">STOCK</div>
+<div id="stockConfirm" class="no">✕ WAIT</div>
+</div>
+
+<div class="confirm">
+<div class="label">FLOW</div>
+<div id="flowConfirm" class="no">✕ WAIT</div>
+</div>
+
+</div>
+
+
+<div class="finalinfo">
+
+<div class="statusbox">
+<div class="label">LEADING SECTOR</div>
+<div class="value" id="lead">--</div>
+</div>
+
+<div class="statusbox">
+<div class="label">QUALIFYING STOCK</div>
+<div class="value" id="qual">--</div>
+</div>
+
+</div>
+
+
+<div class="desc" style="margin-top:12px">
+No signal is manufactured when all three confirmations are not aligned.
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     DETAIL
+===================================================== -->
+
+<section id="detail" class="hidden">
+
+<div class="title" id="detailTitle">
+Stock Chart
+</div>
+
+<div class="desc">
+Default timeframe: 5M
+</div>
+
+<div class="statusbox" style="margin-top:12px">
+LIVE TRADINGVIEW/NSE CHART CONNECTION REQUIRED
+</div>
+
+</section>
+
+
+<footer>
+<span id="systemStatus">
+Waiting for backend NSE data...
+</span>
+</footer>
+
+</div>
+
+
 <script>
 
-/* =========================
-   BASIC CONFIG
-========================= */
+/* =====================================================
+   CONFIG
+===================================================== */
 
 const sectors = [
-"METAL",
-"IT",
-"PHARMA",
-"BANKING",
-"FINANCIAL",
-"AUTO",
-"REALTY",
-"CEMENT",
-"ENERGY",
-"FMCG",
-"CHEMICAL",
-"CAPITAL_GOODS",
-"TELECOM",
-"CONSUMER",
-"DEFENSE"
+  "METAL",
+  "IT",
+  "PHARMA",
+  "BANKING",
+  "FINANCIAL",
+  "AUTO",
+  "REALTY",
+  "CEMENT",
+  "ENERGY",
+  "FMCG",
+  "CHEMICAL",
+  "CAPITAL_GOODS",
+  "TELECOM",
+  "CONSUMER",
+  "DEFENSE"
 ];
 
+
 let liveData = {
-last_updated:"",
-market_date:"",
-status:"MARKET CLOSED",
-rotation:[],
-scanner:[],
-big_player:[],
-final_dashboard:[]
+  last_updated:"",
+  market_date:"",
+  status:"MARKET CLOSED",
+  rotation:[],
+  scanner:[],
+  big_player:[],
+  final_dashboard:[]
 };
+
 
 const scannerSettings = {
-direction:"SELL",
-usePDH:true,
-usePDL:true
+  direction:"SELL",
+  usePDH:true,
+  usePDL:true
 };
 
 
-/* =========================
+/* =====================================================
    INIT
-========================= */
+===================================================== */
 
 function init(){
 
-const sel=document.getElementById("sector");
+  const select=document.getElementById("sector");
 
-/* ALWAYS SHOW ALL 15 SECTORS */
-sel.innerHTML=sectors
-.map(s=>`<option value="${s}">${s}</option>`)
-.join("");
+  select.innerHTML=sectors
+    .map(s=>`<option value="${s}">${s}</option>`)
+    .join("");
 
-initScannerControls();
+  initScannerControls();
 
-clearBrowserDemo();
+  showWaitingRotation();
 
-loadSavedData();
+  loadSavedData();
+}
+
+
+/* =====================================================
+   WAITING ROTATION
+===================================================== */
+
+function showWaitingRotation(){
+
+  document.getElementById("heat").innerHTML=
+
+  sectors.map((name,i)=>`
+
+    <div class="sector" onclick="pick('${name}')">
+
+      <div class="row">
+
+        <span class="sname">
+          #${i+1} ${name}
+        </span>
+
+        <span class="move">
+          --%
+        </span>
+
+      </div>
+
+      <div class="boxes">
+
+        ${Array.from(
+          {length:8},
+          ()=>`<i class="box"></i>`
+        ).join("")}
+
+      </div>
+
+      <div class="rank">
+        WAITING FOR LIVE DATA
+      </div>
+
+    </div>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   NO FAKE DATA
-========================= */
-
-function clearBrowserDemo(){
-
-document.getElementById("heat").innerHTML=
-sectors.map((name,i)=>{
-
-return `
-<div class="sector"
-onclick="pick('${name}')">
-
-<div class="row">
-
-<span class="sname">
-#${i+1} ${name}
-</span>
-
-<span class="move">
---%
-</span>
-
-</div>
-
-<div class="boxes">
-
-${Array.from(
-{length:8},
-()=>`<i class="box"></i>`
-).join("")}
-
-</div>
-
-<div class="rank">
-WAITING FOR LIVE DATA
-</div>
-
-</div>
-`;
-
-}).join("");
-
-document.getElementById("stocks").innerHTML=
-`<div class="muted" style="padding:18px 0">
-NO STOCK DATA
-</div>`;
-
-document.getElementById("top6").innerHTML=
-`<div class="muted" style="padding:18px 0">
-NO STRONG FLOW
-</div>`;
-
-}
-
-
-/* =========================
+/* =====================================================
    LOAD DATA.JSON
-========================= */
+===================================================== */
 
 async function loadSavedData(){
 
-try{
+  try{
 
-const response=await fetch(
-"data.json?t="+Date.now(),
-{
-cache:"no-store"
+    const response=await fetch(
+      "data.json?t="+Date.now(),
+      {
+        cache:"no-store"
+      }
+    );
+
+    if(!response.ok){
+      throw new Error("data.json unavailable");
+    }
+
+    const data=await response.json();
+
+    if(data && typeof data==="object"){
+      liveData=data;
+    }
+
+    updateHeader();
+
+    renderRotation();
+
+    renderScanner();
+
+    renderBigPlayer();
+
+    renderFinal();
+
+    document.getElementById("systemStatus").innerText=
+      "Backend data connected • "+
+      formatTime(liveData.last_updated);
+
+  }
+  catch(error){
+
+    console.log(
+      "Waiting for data.json",
+      error
+    );
+
+    document.getElementById("systemStatus").innerText=
+      "Waiting for backend NSE data...";
+
+  }
+
 }
-);
-
-if(!response.ok){
-throw new Error("data.json not available");
-}
-
-const data=await response.json();
-
-liveData=data || liveData;
-
-updateHeader();
-
-renderRotation();
-
-renderScanner();
-
-renderBigPlayer();
-
-renderFinal();
-
-document.getElementById("systemStatus").innerText=
-"Backend data connected • "+
-formatTime(liveData.last_updated);
-
-}
-catch(error){
-
-console.log(
-"Waiting for data.json...",
-error
-);
-
-document.getElementById("systemStatus").innerText=
-"Waiting for backend NSE data...";
-
-}
-
-}
 
 
-/* =========================
+/* =====================================================
    TIME
-========================= */
+===================================================== */
 
 function formatTime(value){
 
-if(!value){
-return "--:--";
+  if(!value){
+    return "--:--";
+  }
+
+  try{
+
+    const d=new Date(value);
+
+    if(isNaN(d.getTime())){
+      return String(value);
+    }
+
+    return d.toLocaleTimeString(
+      "en-IN",
+      {
+        hour:"2-digit",
+        minute:"2-digit",
+        hour12:false,
+        timeZone:"Asia/Kolkata"
+      }
+    );
+
+  }
+  catch(e){
+
+    return String(value);
+
+  }
+
 }
 
-try{
 
-const d=new Date(value);
-
-if(isNaN(d.getTime())){
-return String(value);
-}
-
-return d.toLocaleTimeString(
-"en-IN",
-{
-hour:"2-digit",
-minute:"2-digit",
-hour12:false,
-timeZone:"Asia/Kolkata"
-}
-);
-
-}
-catch(e){
-
-return String(value);
-
-}
-
-}
-
-
-/* =========================
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
 function updateHeader(){
 
-const status=
-String(
-liveData.status ||
-liveData.market_status ||
-"NO CLEAR"
-).toUpperCase();
+  const status=
+    String(
+      liveData.status ||
+      liveData.market_status ||
+      "NO CLEAR"
+    ).toUpperCase();
 
-document.getElementById("mstatus").innerText=
-status;
+  document.getElementById("mstatus").innerText=
+    status;
 
-document.getElementById("update").innerText=
-formatTime(liveData.last_updated);
+  document.getElementById("update").innerText=
+    formatTime(liveData.last_updated);
 
-/* MARKET OPEN = LIVE */
 
-const isLive=
-status==="MARKET OPEN" ||
-status==="LIVE" ||
-status==="OPEN";
+  const isLive=
+    status==="MARKET OPEN" ||
+    status==="LIVE" ||
+    status==="OPEN";
 
-document.getElementById("liveText").innerText=
-isLive ? "LIVE" : status;
 
-const dot=
-document.querySelector(".dot");
+  document.getElementById("liveText").innerText=
+    isLive ? "LIVE" : status;
 
-if(isLive){
 
-dot.style.background=
-"var(--green)";
-
-}
-else{
-
-dot.style.background=
-"var(--red)";
-
-}
+  document.querySelector(".dot").style.background=
+    isLive
+      ? "var(--green)"
+      : "var(--red)";
 
 }
 
 
-/* =========================
+/* =====================================================
    ROTATION
-========================= */
+===================================================== */
 
 function renderRotation(){
 
-/*
-IMPORTANT:
-Python data.json uses:
-rotation:[...]
-
-OLD HTML was looking for:
-sectors:[...]
-
-FIXED HERE
-*/
-
-const list=
-Array.isArray(liveData.rotation)
-? liveData.rotation
-:[];
+  const list=
+    Array.isArray(liveData.rotation)
+      ? liveData.rotation
+      : [];
 
 
-/* KEEP ALL 15 SECTORS EVEN IF DATA IS EMPTY */
-
-const map={};
-
-list.forEach(item=>{
-
-const name=
-String(
-item.sector ||
-item.name ||
-""
-).toUpperCase();
-
-if(name){
-map[name]=item;
-}
-
-});
+  const map={};
 
 
-document.getElementById("heat").innerHTML=
-sectors.map((name,i)=>{
+  list.forEach(item=>{
 
-/* support DEFENCE / DEFENSE naming */
+    const name=
+      String(
+        item.sector ||
+        item.name ||
+        ""
+      ).toUpperCase();
 
-let item=
-map[name];
+    if(name){
+      map[name]=item;
+    }
 
-if(!item && name==="DEFENSE"){
-item=map["DEFENCE"];
-}
-
-if(!item && name==="DEFENCE"){
-item=map["DEFENSE"];
-}
-
-
-/* NO DATA FOR THIS SECTOR */
-
-if(!item){
-
-return `
-<div class="sector"
-onclick="pick('${name}')">
-
-<div class="row">
-
-<span class="sname">
-#${i+1} ${name}
-</span>
-
-<span class="move">
---%
-</span>
-
-</div>
-
-<div class="boxes">
-
-${Array.from(
-{length:8},
-()=>`<i class="box"></i>`
-).join("")}
-
-</div>
-
-<div class="rank">
-WAITING FOR LIVE DATA
-</div>
-
-</div>
-`;
-
-}
+  });
 
 
-const value=
-Number(
-item.move ??
-item.change ??
-item.value ??
-0
-);
+  document.getElementById("heat").innerHTML=
 
-const arrow=
-value>=0 ? "↑" : "↓";
+  sectors.map((name,i)=>{
+
+    let item=map[name];
 
 
-/*
-Use backend stage if available.
-Otherwise preserve original rank logic.
-*/
+    if(!item && name==="DEFENSE"){
+      item=map["DEFENCE"];
+    }
 
-let stage=
-String(
-item.stage ||
-""
-).toUpperCase();
-
-if(!stage){
-
-stage=
-i<5
-?"STRONG"
-:i<10
-?"NEUTRAL"
-:"WEAK";
-
-}
+    if(!item && name==="DEFENCE"){
+      item=map["DEFENSE"];
+    }
 
 
-/* heat strength */
+    if(!item){
 
-const allMoves=
-list.map(x=>
-Math.abs(
-Number(
-x.move ??
-x.change ??
-x.value ??
-0
-)
-)
-);
+      return `
 
-const maxAbs=
-Math.max(
-...allMoves,
-0.0001
-);
+      <div class="sector"
+           onclick="pick('${name}')">
 
-const n=
-Math.max(
-1,
-Math.min(
-8,
-Math.round(
-Math.abs(value)/maxAbs*8
-)
-)
-);
+        <div class="row">
 
+          <span class="sname">
+            #${i+1} ${name}
+          </span>
 
-let cls="y";
+          <span class="move">
+            --%
+          </span>
 
-if(stage==="STRONG"){
-cls="g";
-}
-else if(stage==="WEAK"){
-cls="r";
-}
-else{
-cls="y";
-}
+        </div>
+
+        <div class="boxes">
+
+          ${Array.from(
+            {length:8},
+            ()=>`<i class="box"></i>`
+          ).join("")}
+
+        </div>
+
+        <div class="rank">
+          WAITING FOR LIVE DATA
+        </div>
+
+      </div>
+
+      `;
+
+    }
 
 
-return `
-<div class="sector"
-onclick="pick('${name}')">
+    const value=
+      Number(
+        item.move ??
+        item.change ??
+        item.value ??
+        0
+      );
 
-<div class="row">
 
-<span class="sname">
-#${i+1} ${name}
-</span>
+    const arrow=
+      value>=0
+        ? "↑"
+        : "↓";
 
-<span class="move">
-${arrow}
-${value>=0?"+":""}${value.toFixed(2)}%
-</span>
 
-</div>
+    let stage=
+      String(
+        item.stage ||
+        ""
+      ).toUpperCase();
 
-<div class="boxes">
 
-${Array.from(
-{length:8},
-(_,j)=>
-`<i class="box ${
-j>=8-n ? cls : ""
-}"></i>`
-).join("")}
+    if(!stage){
 
-</div>
+      stage=
+        i<5
+          ? "STRONG"
+          : i<10
+            ? "NEUTRAL"
+            : "WEAK";
 
-<div class="rank">
-${stage}
-</div>
+    }
 
-</div>
-`;
 
-}).join("");
+    const allMoves=
+      list.map(x=>
+        Math.abs(
+          Number(
+            x.move ??
+            x.change ??
+            x.value ??
+            0
+          )
+        )
+      );
+
+
+    const maxAbs=
+      Math.max(
+        ...allMoves,
+        0.0001
+      );
+
+
+    const n=
+      Math.max(
+        1,
+        Math.min(
+          8,
+          Math.round(
+            Math.abs(value)/maxAbs*8
+          )
+        )
+      );
+
+
+    let cls="y";
+
+    if(stage==="STRONG"){
+      cls="g";
+    }
+    else if(stage==="WEAK"){
+      cls="r";
+    }
+
+
+    return `
+
+    <div class="sector"
+         onclick="pick('${name}')">
+
+      <div class="row">
+
+        <span class="sname">
+          #${i+1} ${name}
+        </span>
+
+        <span class="move">
+          ${arrow}
+          ${value>=0?"+":""}${value.toFixed(2)}%
+        </span>
+
+      </div>
+
+      <div class="boxes">
+
+        ${Array.from(
+          {length:8},
+          (_,j)=>
+            `<i class="box ${
+              j>=8-n ? cls : ""
+            }"></i>`
+        ).join("")}
+
+      </div>
+
+      <div class="rank">
+        ${stage}
+      </div>
+
+    </div>
+
+    `;
+
+  }).join("");
 
 }
 
 
-/* =========================
+/* =====================================================
    SCANNER CONTROLS
-========================= */
+===================================================== */
 
 function initScannerControls(){
 
-document
-.getElementById("directionBuy")
-.addEventListener(
-"click",
-()=>setDirection("BUY")
-);
+  document
+    .getElementById("directionBuy")
+    .addEventListener(
+      "click",
+      ()=>setDirection("BUY")
+    );
 
-document
-.getElementById("directionSell")
-.addEventListener(
-"click",
-()=>setDirection("SELL")
-);
 
-document
-.getElementById("directionBoth")
-.addEventListener(
-"click",
-()=>setDirection("BOTH")
-);
+  document
+    .getElementById("directionSell")
+    .addEventListener(
+      "click",
+      ()=>setDirection("SELL")
+    );
 
-document
-.getElementById("pdhToggle")
-.addEventListener(
-"click",
-()=>toggleFilter("PDH")
-);
 
-document
-.getElementById("pdlToggle")
-.addEventListener(
-"click",
-()=>toggleFilter("PDL")
-);
+  document
+    .getElementById("directionBoth")
+    .addEventListener(
+      "click",
+      ()=>setDirection("BOTH")
+    );
 
-document
-.getElementById("sector")
-.addEventListener(
-"change",
-renderScanner
-);
 
-paintScannerControls();
+  document
+    .getElementById("pdhToggle")
+    .addEventListener(
+      "click",
+      ()=>toggleFilter("PDH")
+    );
+
+
+  document
+    .getElementById("pdlToggle")
+    .addEventListener(
+      "click",
+      ()=>toggleFilter("PDL")
+    );
+
+
+  document
+    .getElementById("sector")
+    .addEventListener(
+      "change",
+      renderScanner
+    );
+
+
+  paintScannerControls();
 
 }
 
 
-/* =========================
+/* =====================================================
    CONTROLS
-========================= */
+===================================================== */
 
 function paintScannerControls(){
 
-document
-.getElementById("directionBuy")
-.classList.toggle(
-"active",
-scannerSettings.direction==="BUY"
-);
+  document
+    .getElementById("directionBuy")
+    .classList.toggle(
+      "active",
+      scannerSettings.direction==="BUY"
+    );
 
-document
-.getElementById("directionSell")
-.classList.toggle(
-"active",
-scannerSettings.direction==="SELL"
-);
 
-document
-.getElementById("directionBoth")
-.classList.toggle(
-"active",
-scannerSettings.direction==="BOTH"
-);
+  document
+    .getElementById("directionSell")
+    .classList.toggle(
+      "active",
+      scannerSettings.direction==="SELL"
+    );
 
-const pdh=
-document.getElementById("pdhToggle");
 
-const pdl=
-document.getElementById("pdlToggle");
+  document
+    .getElementById("directionBoth")
+    .classList.toggle(
+      "active",
+      scannerSettings.direction==="BOTH"
+    );
 
-pdh.innerText=
-"PDH BUY: "+
-(
-scannerSettings.usePDH
-?"ON"
-:"OFF"
-);
 
-pdh.className=
-"setting-btn "+
-(
-scannerSettings.usePDH
-?"on"
-:"off"
-);
+  const pdh=
+    document.getElementById("pdhToggle");
 
-pdl.innerText=
-"PDL SELL: "+
-(
-scannerSettings.usePDL
-?"ON"
-:"OFF"
-);
+  const pdl=
+    document.getElementById("pdlToggle");
 
-pdl.className=
-"setting-btn "+
-(
-scannerSettings.usePDL
-?"on"
-:"off"
-);
+
+  pdh.innerText=
+    "PDH BUY: "+
+    (
+      scannerSettings.usePDH
+        ? "ON"
+        : "OFF"
+    );
+
+
+  pdh.className=
+    "on";
+
+
+  if(!scannerSettings.usePDH){
+    pdh.className="off";
+  }
+
+
+  pdl.innerText=
+    "PDL SELL: "+
+    (
+      scannerSettings.usePDL
+        ? "ON"
+        : "OFF"
+    );
+
+
+  pdl.className="on";
+
+
+  if(!scannerSettings.usePDL){
+    pdl.className="off";
+  }
 
 }
 
+
+/* =====================================================
+   DIRECTION
+===================================================== */
 
 function setDirection(direction){
 
-scannerSettings.direction=
-direction;
+  scannerSettings.direction=
+    direction;
 
-paintScannerControls();
+  paintScannerControls();
 
-renderScanner();
+  renderScanner();
 
 }
 
+
+/* =====================================================
+   TOGGLE
+===================================================== */
 
 function toggleFilter(type){
 
-if(type==="PDH"){
+  if(type==="PDH"){
 
-scannerSettings.usePDH=
-!scannerSettings.usePDH;
+    scannerSettings.usePDH=
+      !scannerSettings.usePDH;
+
+  }
+  else{
+
+    scannerSettings.usePDL=
+      !scannerSettings.usePDL;
+
+  }
+
+  paintScannerControls();
+
+  renderScanner();
 
 }
-else{
-
-scannerSettings.usePDL=
-!scannerSettings.usePDL;
-
-}
-
-paintScannerControls();
-
-renderScanner();
-
-}
 
 
-/* =========================
+/* =====================================================
    SCANNER
-========================= */
+===================================================== */
 
 function renderScanner(){
 
-const selected=
-document.getElementById("sector").value;
-
-let list=
-Array.isArray(liveData.scanner)
-? [...liveData.scanner]
-:[];
+  const selected=
+    document.getElementById("sector").value;
 
 
-/*
-IMPORTANT:
-Selected sector is only a UI filter.
-ALL 15 sectors remain in dropdown.
-*/
-
-list=list.filter(x=>{
-
-const sector=
-String(
-x.sector ||
-x.sector_name ||
-""
-).toUpperCase();
-
-return sector===selected;
-
-});
+  let list=
+    Array.isArray(liveData.scanner)
+      ? [...liveData.scanner]
+      : [];
 
 
-/* DIRECTION FILTER */
+  list=list.filter(x=>{
 
-if(scannerSettings.direction!=="BOTH"){
+    const sector=
+      String(
+        x.sector ||
+        x.sector_name ||
+        ""
+      ).toUpperCase();
 
-list=list.filter(x=>{
 
-const direction=
-String(
-x.direction ||
-x.signal ||
-x.side ||
-""
-).toUpperCase();
+    return sector===selected;
 
-return direction===
-scannerSettings.direction;
+  });
 
-});
+
+  if(scannerSettings.direction!=="BOTH"){
+
+    list=list.filter(x=>{
+
+      const direction=
+        String(
+          x.direction ||
+          x.signal ||
+          x.side ||
+          ""
+        ).toUpperCase();
+
+
+      return direction===
+        scannerSettings.direction;
+
+    });
+
+  }
+
+
+  let buyCount=0;
+  let sellCount=0;
+
+
+  list.forEach(x=>{
+
+    const d=
+      String(
+        x.direction ||
+        x.signal ||
+        x.side ||
+        ""
+      ).toUpperCase();
+
+
+    if(d==="BUY"){
+      buyCount++;
+    }
+
+    if(d==="SELL"){
+      sellCount++;
+    }
+
+  });
+
+
+  const total=
+    buyCount+sellCount;
+
+
+  const buyPct=
+    total
+      ? Math.round(
+          buyCount/total*100
+        )
+      : 0;
+
+
+  const sellPct=
+    total
+      ? 100-buyPct
+      : 0;
+
+
+  document.getElementById("buyPct").innerText=
+    buyPct+"%";
+
+
+  document.getElementById("sellPct").innerText=
+    sellPct+"%";
+
+
+  document.getElementById("buyBar").style.width=
+    buyPct+"%";
+
+
+  document.getElementById("sellBar").style.width=
+    sellPct+"%";
+
+
+  const early=
+    list.filter(x=>
+      String(
+        x.stage ||
+        x.type ||
+        ""
+      ).toUpperCase()==="EARLY"
+    ).length;
+
+
+  const final=
+    list.filter(x=>
+      String(
+        x.stage ||
+        x.type ||
+        ""
+      ).toUpperCase()==="FINAL"
+    ).length;
+
+
+  document.getElementById("early").innerText=
+    early;
+
+
+  document.getElementById("fin").innerText=
+    final;
+
+
+  let firstPass="--:--";
+
+
+  for(const x of list){
+
+    if(x.pass_time){
+
+      firstPass=
+        formatTime(x.pass_time);
+
+      break;
+
+    }
+
+
+    if(x.passTime){
+
+      firstPass=
+        formatTime(x.passTime);
+
+      break;
+
+    }
+
+  }
+
+
+  document.getElementById("passTime").innerText=
+    firstPass;
+
+
+  if(!list.length){
+
+    document.getElementById("stocks").innerHTML=
+
+      `<div class="muted"
+            style="padding:18px 0">
+        NO STOCK PASS
+      </div>`;
+
+    return;
+
+  }
+
+
+  document.getElementById("stocks").innerHTML=
+
+    list.map(x=>{
+
+      const symbol=
+        x.symbol ||
+        x.stock ||
+        x.name ||
+        "--";
+
+
+      const direction=
+        String(
+          x.direction ||
+          x.signal ||
+          x.side ||
+          ""
+        ).toUpperCase();
+
+
+      const stage=
+        x.stage ||
+        x.type ||
+        "";
+
+
+      const pass=
+        x.pass_time ||
+        x.passTime ||
+        "--:--";
+
+
+      const rvol=
+        x.rvol20 ??
+        x.rvol ??
+        "--";
+
+
+      return `
+
+      <div class="stock"
+           onclick="detail('${symbol}')">
+
+        <div>
+
+          <b>${symbol}</b>
+
+          <div class="stage">
+
+            TRUE 20D RVOL •
+            ${formatTime(pass)} •
+            ${stage}
+
+            ${
+              rvol!=="--"
+                ? " • RVOL "+
+                  Number(rvol).toFixed(2)
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+        <span class="badge ${
+          direction==="BUY"
+            ? "buybg"
+            : "sellbg"
+        }">
+
+          ${direction || "--"}
+
+        </span>
+
+      </div>
+
+      `;
+
+    }).join("");
 
 }
 
 
-/* FLOW */
-
-let buyCount=0;
-let sellCount=0;
-
-list.forEach(x=>{
-
-const d=
-String(
-x.direction ||
-x.signal ||
-x.side ||
-""
-).toUpperCase();
-
-if(d==="BUY"){
-buyCount++;
-}
-
-if(d==="SELL"){
-sellCount++;
-}
-
-});
-
-const total=
-buyCount+sellCount;
-
-const buyPct=
-total
-?Math.round(buyCount/total*100)
-:0;
-
-const sellPct=
-total
-?100-buyPct
-:0;
-
-document.getElementById("buyPct").innerText=
-buyPct+"%";
-
-document.getElementById("sellPct").innerText=
-sellPct+"%";
-
-document.getElementById("buyBar").style.width=
-buyPct+"%";
-
-document.getElementById("sellBar").style.width=
-sellPct+"%";
-
-
-/* EARLY / FINAL */
-
-const early=
-list.filter(x=>
-String(
-x.stage ||
-x.type ||
-""
-).toUpperCase()==="EARLY"
-).length;
-
-const final=
-list.filter(x=>
-String(
-x.stage ||
-x.type ||
-""
-).toUpperCase()==="FINAL"
-).length;
-
-document.getElementById("early").innerText=
-early;
-
-document.getElementById("fin").innerText=
-final;
-
-
-/* PASS TIME */
-
-let firstPass="--:--";
-
-for(const x of list){
-
-if(x.pass_time){
-
-firstPass=
-formatTime(x.pass_time);
-
-break;
-
-}
-
-if(x.passTime){
-
-firstPass=
-formatTime(x.passTime);
-
-break;
-
-}
-
-}
-
-document.getElementById("passTime").innerText=
-firstPass;
-
-
-/* STOCK LIST */
-
-if(!list.length){
-
-document.getElementById("stocks").innerHTML=
-`<div class="muted" style="padding:18px 0">
-NO STOCK PASS
-</div>`;
-
-return;
-
-}
-
-
-document.getElementById("stocks").innerHTML=
-list.map(x=>{
-
-const symbol=
-x.symbol ||
-x.stock ||
-x.name ||
-"--";
-
-const direction=
-String(
-x.direction ||
-x.signal ||
-x.side ||
-""
-).toUpperCase();
-
-const stage=
-x.stage ||
-x.type ||
-"";
-
-const pass=
-x.pass_time ||
-x.passTime ||
-"--:--";
-
-const rvol=
-x.rvol20 ??
-x.rvol ??
-"--";
-
-return `
-<div class="stock"
-onclick="detail('${symbol}')">
-
-<div>
-
-<b>${symbol}</b>
-
-<div class="stage">
-
-TRUE 20D RVOL •
-${formatTime(pass)} •
-${stage}
-
-${
-rvol!=="--"
-?" • RVOL "+Number(rvol).toFixed(2)
-:""
-}
-
-</div>
-
-</div>
-
-<span class="badge ${
-direction==="BUY"
-?"buybg"
-:"sellbg"
-}">
-${direction || "--"}
-</span>
-
-</div>
-`;
-
-}).join("");
-
-}
-
-
-/* =========================
+/* =====================================================
    BIG PLAYER
-========================= */
+===================================================== */
 
 function renderBigPlayer(){
 
-const list=
-Array.isArray(liveData.big_player)
-? liveData.big_player
-:[];
+  const list=
+    Array.isArray(liveData.big_player)
+      ? liveData.big_player
+      : [];
 
 
-if(!list.length){
+  if(!list.length){
 
-document.getElementById("top6").innerHTML=
-`<div class="muted" style="padding:18px 0">
-NO STRONG FLOW
-</div>`;
+    document.getElementById("top6").innerHTML=
 
-document.getElementById("bigBuyPct").innerText=
-"--%";
+      `<div class="muted"
+            style="padding:18px 0">
+        NO STRONG FLOW
+      </div>`;
 
-document.getElementById("bigSellPct").innerText=
-"--%";
 
-return;
+    document.getElementById("bigBuyPct").innerText=
+      "--%";
+
+
+    document.getElementById("bigSellPct").innerText=
+      "--%";
+
+
+    return;
+
+  }
+
+
+  let buy=0;
+  let sell=0;
+
+
+  list.forEach(x=>{
+
+    const d=
+      String(
+        x.direction ||
+        x.signal ||
+        ""
+      ).toUpperCase();
+
+
+    if(d==="BUY"){
+      buy++;
+    }
+
+
+    if(d==="SELL"){
+      sell++;
+    }
+
+  });
+
+
+  const total=
+    buy+sell;
+
+
+  const buyPct=
+    total
+      ? Math.round(
+          buy/total*100
+        )
+      : 0;
+
+
+  const sellPct=
+    total
+      ? 100-buyPct
+      : 0;
+
+
+  document.getElementById("bigBuyPct").innerText=
+    buyPct+"%";
+
+
+  document.getElementById("bigSellPct").innerText=
+    sellPct+"%";
+
+
+  const top=
+    list.slice(0,6);
+
+
+  document.getElementById("top6").innerHTML=
+
+    top.map((x,i)=>{
+
+      const symbol=
+        x.symbol ||
+        x.stock ||
+        x.name ||
+        "--";
+
+
+      const direction=
+        String(
+          x.direction ||
+          x.signal ||
+          ""
+        ).toUpperCase();
+
+
+      const score=
+        x.score ??
+        "--";
+
+
+      const flow=
+        x.flow ??
+        x.money_flow ??
+        "--";
+
+
+      const reason=
+        x.reason ||
+        x.stage ||
+        "FLOW";
+
+
+      return `
+
+      <div class="player">
+
+        <div class="muted">
+          #${i+1}
+        </div>
+
+        <b>${symbol}</b>
+
+        <div class="score ${
+          direction==="BUY"
+            ? "buy"
+            : "sell"
+        }">
+
+          ${direction || "--"}
+          • ${score}
+
+        </div>
+
+        <div class="metric">
+          Money Flow ${flow}
+        </div>
+
+        <div class="metric">
+          ${reason}
+        </div>
+
+        <div class="metric">
+          Profit Booking: only on confirmed trend end
+        </div>
+
+      </div>
+
+      `;
+
+    }).join("");
 
 }
 
 
-let buy=0;
-let sell=0;
-
-list.forEach(x=>{
-
-const d=
-String(
-x.direction ||
-x.signal ||
-""
-).toUpperCase();
-
-if(d==="BUY"){
-buy++;
-}
-
-if(d==="SELL"){
-sell++;
-}
-
-});
-
-const total=
-buy+sell;
-
-const buyPct=
-total
-?Math.round(buy/total*100)
-:0;
-
-const sellPct=
-total
-?100-buyPct
-:0;
-
-document.getElementById("bigBuyPct").innerText=
-buyPct+"%";
-
-document.getElementById("bigSellPct").innerText=
-sellPct+"%";
-
-
-const top=
-list.slice(0,6);
-
-document.getElementById("top6").innerHTML=
-top.map((x,i)=>{
-
-const symbol=
-x.symbol ||
-x.stock ||
-x.name ||
-"--";
-
-const direction=
-String(
-x.direction ||
-x.signal ||
-""
-).toUpperCase();
-
-const score=
-x.score ??
-"--";
-
-const flow=
-x.flow ??
-x.money_flow ??
-"--";
-
-const reason=
-x.reason ||
-x.stage ||
-"FLOW";
-
-return `
-<div class="player">
-
-<div class="muted">
-#${i+1}
-</div>
-
-<b>${symbol}</b>
-
-<div class="score ${
-direction==="BUY"
-?"buy"
-:"sell"
-}">
-${direction || "--"} • ${score}
-</div>
-
-<div class="metric">
-Money Flow ${flow}
-</div>
-
-<div class="metric">
-${reason}
-</div>
-
-<div class="metric">
-Profit Booking: only on confirmed trend end
-</div>
-
-</div>
-`;
-
-}).join("");
-
-}
-
-
-/* =========================
-   FINAL DASHBOARD
-========================= */
+/* =====================================================
+   FINAL
+===================================================== */
 
 function renderFinal(){
 
-/*
-IMPORTANT:
-Python data.json uses:
-final_dashboard:[...]
-
-OLD HTML was expecting:
-final:{}
-
-FIXED HERE.
-*/
-
-const list=
-Array.isArray(liveData.final_dashboard)
-?liveData.final_dashboard
-:[];
+  const list=
+    Array.isArray(
+      liveData.final_dashboard
+    )
+      ? liveData.final_dashboard
+      : [];
 
 
-/* NO FINAL DATA */
+  if(!list.length){
 
-if(!list.length){
-
-document.getElementById("market").innerText=
-"NO CLEAR DIRECTION";
-
-document.getElementById("lead").innerText=
-"--";
-
-document.getElementById("qual").innerText=
-"--";
-
-setConfirm(
-"sectorConfirm",
-false
-);
-
-setConfirm(
-"stockConfirm",
-false
-);
-
-setConfirm(
-"flowConfirm",
-false
-);
-
-return;
-
-}
+    document.getElementById("market").innerText=
+      "NO CLEAR DIRECTION";
 
 
-/*
-Take first confirmed backend result.
-No signal is created here.
-*/
-
-const f=list[0] || {};
-
-const direction=
-String(
-f.direction ||
-f.signal ||
-"NO CLEAR DIRECTION"
-).toUpperCase();
-
-document.getElementById("market").innerText=
-direction;
-
-document.getElementById("lead").innerText=
-f.sector ||
-f.leading_sector ||
-f.lead_sector ||
-"--";
-
-document.getElementById("qual").innerText=
-f.symbol ||
-f.stock ||
-f.qualifying_stock ||
-"--";
+    document.getElementById("lead").innerText=
+      "--";
 
 
-/*
-Backend final_dashboard is already
-cross-confirmed by Python.
-*/
+    document.getElementById("qual").innerText=
+      "--";
 
-setConfirm(
-"sectorConfirm",
-f.sector_confirm ??
-true
-);
 
-setConfirm(
-"stockConfirm",
-f.stock_confirm ??
-true
-);
+    setConfirm(
+      "sectorConfirm",
+      false
+    );
 
-setConfirm(
-"flowConfirm",
-f.flow_confirm ??
-true
-);
+
+    setConfirm(
+      "stockConfirm",
+      false
+    );
+
+
+    setConfirm(
+      "flowConfirm",
+      false
+    );
+
+
+    return;
+
+  }
+
+
+  const f=
+    list[0] || {};
+
+
+  const direction=
+    String(
+      f.direction ||
+      f.signal ||
+      "NO CLEAR DIRECTION"
+    ).toUpperCase();
+
+
+  document.getElementById("market").innerText=
+    direction;
+
+
+  document.getElementById("lead").innerText=
+    f.sector ||
+    f.leading_sector ||
+    f.lead_sector ||
+    "--";
+
+
+  document.getElementById("qual").innerText=
+    f.symbol ||
+    f.stock ||
+    f.qualifying_stock ||
+    "--";
+
+
+  setConfirm(
+    "sectorConfirm",
+    f.sector_confirm ??
+    true
+  );
+
+
+  setConfirm(
+    "stockConfirm",
+    f.stock_confirm ??
+    true
+  );
+
+
+  setConfirm(
+    "flowConfirm",
+    f.flow_confirm ??
+    true
+  );
 
 }
 
+
+/* =====================================================
+   CONFIRM
+===================================================== */
 
 function setConfirm(id,value){
 
-const el=
-document.getElementById(id);
+  const el=
+    document.getElementById(id);
 
-const yes=
-value===true ||
-value==="true" ||
-value==="YES" ||
-value==="CONFIRM";
 
-if(yes){
+  const yes=
+    value===true ||
+    value==="true" ||
+    value==="YES" ||
+    value==="CONFIRM";
 
-el.innerText=
-"✓ CONFIRM";
 
-el.className=
-"yes";
+  if(yes){
+
+    el.innerText=
+      "✓ CONFIRM";
+
+    el.className=
+      "yes";
+
+  }
+  else{
+
+    el.innerText=
+      "✕ WAIT";
+
+    el.className=
+      "no";
+
+  }
 
 }
-else{
-
-el.innerText=
-"✕ WAIT";
-
-el.className=
-"no";
-
-}
-
-}
 
 
-/* =========================
+/* =====================================================
    NAVIGATION
-========================= */
+===================================================== */
 
 function show(id,btn){
 
-document
-.querySelectorAll("section")
-.forEach(x=>
-x.classList.add("hidden")
-);
+  document
+    .querySelectorAll("section")
+    .forEach(x=>
+      x.classList.add("hidden")
+    );
 
-document
-.getElementById(id)
-.classList.remove("hidden");
 
-document
-.querySelectorAll(".nav button")
-.forEach(b=>
-b.classList.remove("active")
-);
+  document
+    .getElementById(id)
+    .classList.remove("hidden");
 
-if(btn){
 
-btn.classList.add("active");
+  document
+    .querySelectorAll(".nav button")
+    .forEach(b=>
+      b.classList.remove("active")
+    );
+
+
+  if(btn){
+    btn.classList.add("active");
+  }
 
 }
 
-}
 
-
-/* =========================
-   SECTOR PICK
-========================= */
+/* =====================================================
+   PICK SECTOR
+===================================================== */
 
 function pick(sector){
 
-const select=
-document.getElementById("sector");
+  const select=
+    document.getElementById("sector");
 
-/*
-DEFENSE / DEFENCE compatibility
-*/
 
-let target=sector;
+  let target=sector;
 
-if(
-sector==="DEFENCE" &&
-!Array.from(select.options)
-.some(o=>o.value==="DEFENCE")
-){
 
-target="DEFENSE";
+  if(
+    sector==="DEFENCE" &&
+    !Array.from(select.options)
+      .some(o=>o.value==="DEFENCE")
+  ){
+
+    target="DEFENSE";
+
+  }
+
+
+  if(
+    sector==="DEFENSE" &&
+    !Array.from(select.options)
+      .some(o=>o.value==="DEFENSE")
+  ){
+
+    target="DEFENCE";
+
+  }
+
+
+  const exists=
+    Array.from(select.options)
+      .some(o=>o.value===target);
+
+
+  if(exists){
+    select.value=target;
+  }
+
+
+  show(
+    "scanner",
+    document.querySelectorAll(".nav button")[1]
+  );
+
+
+  renderScanner();
 
 }
 
-if(
-sector==="DEFENSE" &&
-!Array.from(select.options)
-.some(o=>o.value==="DEFENSE")
-){
 
-target="DEFENCE";
-
-}
-
-const exists=
-Array.from(select.options)
-.some(o=>o.value===target);
-
-if(exists){
-
-select.value=
-target;
-
-}
-
-show(
-"scanner",
-document.querySelectorAll(".nav button")[1]
-);
-
-renderScanner();
-
-}
-
-
-/* =========================
+/* =====================================================
    DETAIL
-========================= */
+===================================================== */
 
 function detail(symbol){
 
-document.getElementById("detailTitle").innerText=
-symbol+" • 5M Chart";
+  document.getElementById("detailTitle").innerText=
+    symbol+" • 5M Chart";
 
-show(
-"detail",
-null
-);
+
+  show(
+    "detail",
+    null
+  );
 
 }
 
 
-/* =========================
+/* =====================================================
    THEME
-========================= */
+===================================================== */
 
 function toggleTheme(){
 
-document.body.classList.toggle("light");
+  document.body.classList.toggle("light");
 
-if(
-document.body.classList.contains("light")
-){
 
-document.documentElement.style
-.setProperty(
-"--bg",
-"#f4f8fc"
-);
+  if(
+    document.body.classList.contains("light")
+  ){
 
-document.documentElement.style
-.setProperty(
-"--card",
-"#fff"
-);
+    document.documentElement.style
+      .setProperty(
+        "--bg",
+        "#f4f8fc"
+      );
 
-document.documentElement.style
-.setProperty(
-"--card2",
-"#fff"
-);
+    document.documentElement.style
+      .setProperty(
+        "--card",
+        "#ffffff"
+      );
 
-document.documentElement.style
-.setProperty(
-"--text",
-"#17324d"
-);
+    document.documentElement.style
+      .setProperty(
+        "--card2",
+        "#ffffff"
+      );
 
-document.documentElement.style
-.setProperty(
-"--muted",
-"#71869a"
-);
+    document.documentElement.style
+      .setProperty(
+        "--text",
+        "#17324d"
+      );
 
-document.documentElement.style
-.setProperty(
-"--line",
-"#dce7f0"
-);
+    document.documentElement.style
+      .setProperty(
+        "--muted",
+        "#71869a"
+      );
 
-document.body.style.background=
-"#f4f8fc";
+    document.documentElement.style
+      .setProperty(
+        "--line",
+        "#dce7f0"
+      );
+
+    document.body.style.background=
+      "#f4f8fc";
+
+  }
+  else{
+
+    document.documentElement.style
+      .setProperty(
+        "--bg",
+        "#07111f"
+      );
+
+    document.documentElement.style
+      .setProperty(
+        "--card",
+        "#0d1b2d"
+      );
+
+    document.documentElement.style
+      .setProperty(
+        "--card2",
+        "#11243a"
+      );
+
+    document.documentElement.style
+      .setProperty(
+        "--text",
+        "#edf5ff"
+      );
+
+    document.documentElement.style
+      .setProperty(
+        "--muted",
+        "#91a7bd"
+      );
+
+    document.documentElement.style
+      .setProperty(
+        "--line",
+        "#1c334b"
+      );
+
+    document.body.style.background=
+      "linear-gradient(180deg,#06101d,#0a1727)";
+
+  }
 
 }
-else{
-
-document.documentElement.style
-.setProperty(
-"--bg",
-"#07111f"
-);
-
-document.documentElement.style
-.setProperty(
-"--card",
-"#0d1b2d"
-);
-
-document.documentElement.style
-.setProperty(
-"--card2",
-"#11243a"
-);
-
-document.documentElement.style
-.setProperty(
-"--text",
-"#edf5ff"
-);
-
-document.documentElement.style
-.setProperty(
-"--muted",
-"#91a7bd"
-);
-
-document.documentElement.style
-.setProperty(
-"--line",
-"#1c334b"
-);
-
-document.body.style.background=
-"linear-gradient(180deg,#06101d,#0a1727)";
-
-}
-
-}
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 window.addEventListener(
-"load",
-init
+  "load",
+  init
 );
 
 
-/* =========================
+/* =====================================================
    AUTO REFRESH
-========================= */
+===================================================== */
 
 setInterval(
-loadSavedData,
-30000
+  loadSavedData,
+  30000
 );
 
 </script>
+
+</body>
+</html>
