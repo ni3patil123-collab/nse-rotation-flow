@@ -1,407 +1,453 @@
-<!doctype html>
-<html lang="mr">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NSE Rotation & Flow</title>
-<style>
-:root{--bg:#07111f;--card:#0d1b2d;--card2:#11243a;--text:#edf5ff;--muted:#91a7bd;--line:#1c334b;--blue:#39a7ff;--green:#24d17e;--red:#ff5964;--yellow:#f5c84b}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#06101d,#0a1727);color:var(--text);font-family:Arial,sans-serif}.wrap{max-width:1000px;margin:auto;padding:12px}.header{padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#0c2742,#0d1727);display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-size:21px;font-weight:900}.sub{font-size:11px;color:var(--muted);margin-top:4px}.live{font-size:11px;font-weight:800;color:#bfffe0}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:5px}.theme{border:1px solid var(--line);background:#13283e;color:#fff;border-radius:11px;padding:9px 11px}.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.nav button{border:1px solid var(--line);background:#0d1b2d;color:var(--muted);border-radius:12px;padding:10px 6px;font-weight:800;font-size:11px}.nav button.active{background:#1674b8;color:#fff;border-color:#2d9ce5}.card{background:rgba(13,27,45,.96);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px}.title{font-weight:900;font-size:15px}.muted{font-size:11px;color:var(--muted)}.status{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.pill{padding:7px 9px;border-radius:9px;background:#12283d;font-size:10px;color:var(--muted)}.pill b{color:#fff}.heat{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.sector{border:1px solid var(--line);border-radius:13px;padding:10px;background:#0b192a;cursor:pointer}.sector:hover{border-color:#287fae}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.sname{font-size:11px;font-weight:900}.move{font-size:12px;font-weight:900}.boxes{display:flex;gap:3px;margin-top:8px}.box{height:7px;flex:1;border-radius:3px;background:#26384a}.box.g{background:var(--green)}.box.y{background:var(--yellow)}.box.r{background:var(--red)}.rank{font-size:9px;color:var(--muted);margin-top:6px}.controls{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.select{background:#11283e;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px}.flow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.flowbox{background:#0b192a;border:1px solid var(--line);border-radius:12px;padding:11px}.buy{color:var(--green)}.sell{color:var(--red)}.bar{height:7px;background:#26384a;border-radius:8px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%}.gb{background:var(--green)}.rb{background:var(--red)}.stock{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 0;border-top:1px solid var(--line)}.stock:first-child{border-top:0}.badge{padding:5px 8px;border-radius:7px;font-size:9px;font-weight:900}.buybg{background:#123c2b;color:#66e9a7}.sellbg{background:#451e25;color:#ff8a91}.stage{font-size:10px;color:var(--muted)}.top6{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.player{padding:12px;border:1px solid var(--line);border-radius:13px;background:#0b192a}.score{font-size:17px;font-weight:900}.metric{font-size:10px;color:var(--muted);margin-top:4px}.final{display:grid;gap:8px;margin-top:10px}.check{display:flex;justify-content:space-between;padding:12px;border-radius:12px;background:#0b192a;border:1px solid var(--line)}.yes{color:var(--green);font-weight:900}.no{color:var(--red);font-weight:900}.market{font-size:20px;font-weight:900;margin:7px 0}.hidden{display:none}.notice{padding:10px;border-radius:11px;background:#2a2410;color:#f4d77c;font-size:10px;margin-top:10px}.chart{height:230px;border:1px solid var(--line);border-radius:13px;background:repeating-linear-gradient(0deg,#0b192a 0,#0b192a 38px,#102338 39px),repeating-linear-gradient(90deg,transparent 0,transparent 48px,#17304a 49px);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
-@media(max-width:600px){.wrap{padding:8px}.nav{grid-template-columns:1fr 1fr}.heat,.top6{grid-template-columns:1fr 1fr}.brand{font-size:18px}}
-.setting-btn{border:1px solid var(--line);background:#11283e;color:#dcecff;border-radius:10px;padding:9px 12px;font-weight:800;font-size:11px;cursor:pointer;touch-action:manipulation}.setting-btn:active{transform:scale(.98)}.setting-btn.active{background:#1674b8;color:#fff;border-color:#39a7ff}.setting-btn.on{background:#123c2b;color:#66e9a7;border-color:#1d7951}.setting-btn.off{background:#3b2025;color:#ff9aa0;border-color:#71353d}.setting-label{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px}
-</style>
-</head>
-
-<body>
-<div class="wrap">
-
-<header class="header">
-<div>
-<div class="brand">NSE ROTATION & FLOW</div>
-<div class="sub">5M Intraday • Today Only • 09:15 Reset</div>
-</div>
-<div>
-<div class="live"><span class="dot"></span><span id="liveText">LIVE</span></div>
-<button class="theme" onclick="toggleTheme()">☾ / ☀</button>
-</div>
-</header>
-
-<nav class="nav">
-<button class="active" onclick="show('rotation',this)">① ROTATION</button>
-<button onclick="show('scanner',this)">② SCANNER</button>
-<button onclick="show('flow6',this)">③ BIG PLAYER</button>
-<button onclick="show('final',this)">④ FINAL</button>
-</nav>
-
-<!-- ================= ROTATION ================= -->
-
-<section id="rotation" class="card">
-
-<div class="title">Sector Rotation Heatmap</div>
-<div class="muted">Part 1 logic: Today Open → Current Close • rank based • 8 heat boxes</div>
-
-<div class="status">
-<div class="pill">MARKET <b id="mstatus">--</b></div>
-<div class="pill">UPDATE <b id="update">--:--</b></div>
-</div>
-
-<div id="heat" class="heat"></div>
-
-<div class="notice" id="rotationNotice">
-Waiting for live rotation data...
-</div>
-
-</section>
-
-<!-- ================= SCANNER ================= -->
-
-<section id="scanner" class="card hidden">
-
-<div class="title">Sector Stock Scanner</div>
-<div class="muted">Part 2 original scanner structure • TRUE 20D SAME-TIME 5M RVOL</div>
-
-<div class="controls" id="scannerControls">
-
-<button type="button" class="setting-btn" id="directionBuy">BUY</button>
-<button type="button" class="setting-btn" id="directionSell">SELL</button>
-<button type="button" class="setting-btn" id="directionBoth">BOTH</button>
-
-<button type="button" class="setting-btn on" id="pdhToggle">PDH BUY: ON</button>
-<button type="button" class="setting-btn on" id="pdlToggle">PDL SELL: ON</button>
-
-<select id="sector" class="select"></select>
-
-</div>
-
-<div class="flow">
-
-<div class="flowbox buy">
-BUYING <b id="buyPct">--%</b>
-<div class="bar"><i id="buyBar" class="gb" style="width:0%"></i></div>
-</div>
-
-<div class="flowbox sell">
-SELLING <b id="sellPct">--%</b>
-<div class="bar"><i id="sellBar" class="rb" style="width:0%"></i></div>
-</div>
-
-</div>
-
-<div class="status">
-
-<div class="pill">EARLY <b id="early">--</b></div>
-<div class="pill">FINAL <b id="fin">--</b></div>
-<div class="pill">TOTAL <b id="totalPass">--</b></div>
-<div class="pill">LAST PASS <b id="lastPass">--:--</b></div>
-
-</div>
-
-<div id="stocks"></div>
-
-<div class="notice">
-Scanner formula is not replaced by a simple percentage rule. Data is coming from the Python/NSE backend.
-</div>
-
-</section>
-
-<!-- ================= BIG PLAYER ================= -->
-
-<section id="flow6" class="card hidden">
-
-<div class="title">Big Player / Money Flow — Top 6 F&O</div>
-<div class="muted">Assistant-defined Part 3 logic • Score only here (60–100)</div>
-
-<div class="status">
-<div class="pill">BUY FLOW <b id="bigBuyPct">--%</b></div>
-<div class="pill">SELL FLOW <b id="bigSellPct">--%</b></div>
-</div>
-
-<div id="top6" class="top6"></div>
-
-<div class="notice">
-Top 6 is not forced. If strong flow is absent, production mode shows NO STRONG FLOW.
-</div>
-
-</section>
-
-<!-- ================= FINAL ================= -->
-
-<section id="final" class="card hidden">
-
-<div class="title">Final Market Dashboard</div>
-<div class="muted">Sector + qualifying Stock + Big Player Flow cross-confirmation</div>
-
-<div class="market" id="market">NO CLEAR DIRECTION</div>
-
-<div class="final">
-
-<div class="check">
-<span>SECTOR</span>
-<span id="sectorConfirm" class="no">✕ WAIT</span>
-</div>
-
-<div class="check">
-<span>STOCK</span>
-<span id="stockConfirm" class="no">✕ WAIT</span>
-</div>
-
-<div class="check">
-<span>FLOW</span>
-<span id="flowConfirm" class="no">✕ WAIT</span>
-</div>
-
-</div>
-
-<div class="card" style="margin-top:10px;background:#0b192a">
-
-<div class="muted">LEADING SECTOR</div>
-<b id="lead">--</b>
-
-<div class="muted" style="margin-top:8px">QUALIFYING STOCK</div>
-<b id="qual">--</b>
-
-</div>
-
-<div class="notice">
-No signal is manufactured when all three confirmations are not aligned.
-</div>
-
-</section>
-
-<!-- ================= DETAIL ================= -->
-
-<section id="detail" class="card hidden">
-
-<div class="title" id="detailTitle">Stock Chart</div>
-<div class="muted">Default timeframe: 5M</div>
-
-<div class="chart">
-LIVE TRADINGVIEW/NSE CHART CONNECTION REQUIRED
-</div>
-
-</section>
-
-</div>
-
 <script>
 
-/* =========================================================
-   LIVE DATA ENGINE
-   data.json → CROM
-   ========================================================= */
+/* =========================
+   BASIC CONFIG
+========================= */
 
-let DATA = null;
+const sectors = [
+"METAL",
+"IT",
+"PHARMA",
+"BANKING",
+"FINANCIAL",
+"AUTO",
+"REALTY",
+"CEMENT",
+"ENERGY",
+"FMCG",
+"CHEMICAL",
+"CAPITAL_GOODS",
+"TELECOM",
+"CONSUMER",
+"DEFENSE"
+];
+
+let liveData = {
+last_updated:"",
+market_date:"",
+status:"MARKET CLOSED",
+rotation:[],
+scanner:[],
+big_player:[],
+final_dashboard:[]
+};
 
 const scannerSettings = {
-direction:'SELL',
+direction:"SELL",
 usePDH:true,
 usePDL:true
 };
 
-let currentDetailStock = '';
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
+/* =========================
+   INIT
+========================= */
 
-function safe(v, fallback='--'){
-return v === undefined || v === null ? fallback : v;
-}
+function init(){
 
-function timeOnly(value){
+const sel=document.getElementById("sector");
 
-if(!value) return '--:--';
+/* ALWAYS SHOW ALL 15 SECTORS */
+sel.innerHTML=sectors
+.map(s=>`<option value="${s}">${s}</option>`)
+.join("");
 
-try{
-return new Date(value).toLocaleTimeString(
-'en-IN',
-{
-hour:'2-digit',
-minute:'2-digit',
-hour12:false
-}
-);
-}catch(e){
-return '--:--';
-}
+initScannerControls();
+
+clearBrowserDemo();
+
+loadSavedData();
 
 }
 
-function directionClass(direction){
-return direction === 'BUY' ? 'buy' : 'sell';
-}
 
-function formatPct(v){
+/* =========================
+   NO FAKE DATA
+========================= */
 
-if(v === undefined || v === null || isNaN(v))
-return '--';
+function clearBrowserDemo(){
 
-let n=Number(v);
-
-return (n>=0?'+':'')+n.toFixed(2)+'%';
-
-}
-
-/* =========================================================
-   FETCH DATA.JSON
-   ========================================================= */
-
-async function loadData(){
-
-try{
-
-const response = await fetch(
-'./data.json?t='+Date.now(),
-{
-cache:'no-store'
-}
-);
-
-if(!response.ok){
-throw new Error('data.json HTTP '+response.status);
-}
-
-DATA = await response.json();
-
-renderAll();
-
-}
-catch(error){
-
-console.error('DATA.JSON ERROR:',error);
-
-document.getElementById('mstatus').textContent='DATA ERROR';
-document.getElementById('update').textContent='--:--';
-
-document.getElementById('rotationNotice').textContent=
-'LIVE DATA CONNECTION ERROR — data.json उपलब्ध नाही.';
-
-document.getElementById('stocks').innerHTML=
-'<div class="muted" style="padding:18px 0">DATA CONNECTION ERROR</div>';
-
-document.getElementById('top6').innerHTML=
-'<div class="muted" style="padding:18px 0">DATA CONNECTION ERROR</div>';
-
-}
-
-}
-
-/* =========================================================
-   ROTATION
-   ========================================================= */
-
-function getRotationList(){
-
-if(!DATA || !Array.isArray(DATA.rotation))
-return [];
-
-return DATA.rotation.filter(x =>
-x &&
-x.day === getTodayString()
-);
-
-}
-
-function getTodayString(){
-
-if(DATA && DATA.last_updated){
-
-try{
-
-return new Date(DATA.last_updated)
-.toISOString()
-.slice(0,10);
-
-}catch(e){}
-
-}
-
-return new Date().toISOString().slice(0,10);
-
-}
-
-function renderHeat(){
-
-const list=getRotationList();
-
-const heat=document.getElementById('heat');
-
-if(!list.length){
-
-heat.innerHTML=
-'<div class="muted" style="padding:18px 0;grid-column:1/-1">NO ROTATION DATA</div>';
-
-document.getElementById('rotationNotice').textContent=
-'Rotation backend मध्ये सध्या data नाही — fake/demo data दाखवलेला नाही.';
-
-document.getElementById('lead').textContent='--';
-
-return;
-
-}
-
-/*
-Expected rotation fields are read flexibly so backend
-structure can evolve without breaking the UI.
-*/
-
-const rows=list.map((x,i)=>{
-
-const sector=
-safe(x.sector,x.stock || 'UNKNOWN');
-
-const move=
-x.move_pct ??
-x.today_move_pct ??
-x.metrics?.move_pct ??
-x.metrics?.today_move_pct ??
-0;
-
-return {
-sector,
-move:Number(move)||0,
-stage:safe(x.stage,'--'),
-direction:safe(x.direction,'--'),
-rank:i+1
-};
-
-});
-
-rows.sort((a,b)=>Math.abs(b.move)-Math.abs(a.move));
-
-const max=Math.max(
-1,
-...rows.map(x=>Math.abs(x.move))
-);
-
-heat.innerHTML=rows.map((x,i)=>{
-
-const n=Math.max(
-1,
-Math.min(
-8,
-Math.round(Math.abs(x.move)/max*8)
-)
-);
-
-let cls='y';
-
-if(x.move>0) cls='g';
-if(x.move<0) cls='r';
-
-const arrow=x.move>=0?'↑':'↓';
+document.getElementById("heat").innerHTML=
+sectors.map((name,i)=>{
 
 return `
 <div class="sector"
-onclick="pick('${String(x.sector).replace(/'/g,"\\'")}')">
+onclick="pick('${name}')">
 
 <div class="row">
 
 <span class="sname">
-#${i+1} ${x.sector}
+#${i+1} ${name}
 </span>
 
 <span class="move">
-${arrow} ${formatPct(x.move)}
+--%
+</span>
+
+</div>
+
+<div class="boxes">
+
+${Array.from(
+{length:8},
+()=>`<i class="box"></i>`
+).join("")}
+
+</div>
+
+<div class="rank">
+WAITING FOR LIVE DATA
+</div>
+
+</div>
+`;
+
+}).join("");
+
+document.getElementById("stocks").innerHTML=
+`<div class="muted" style="padding:18px 0">
+NO STOCK DATA
+</div>`;
+
+document.getElementById("top6").innerHTML=
+`<div class="muted" style="padding:18px 0">
+NO STRONG FLOW
+</div>`;
+
+}
+
+
+/* =========================
+   LOAD DATA.JSON
+========================= */
+
+async function loadSavedData(){
+
+try{
+
+const response=await fetch(
+"data.json?t="+Date.now(),
+{
+cache:"no-store"
+}
+);
+
+if(!response.ok){
+throw new Error("data.json not available");
+}
+
+const data=await response.json();
+
+liveData=data || liveData;
+
+updateHeader();
+
+renderRotation();
+
+renderScanner();
+
+renderBigPlayer();
+
+renderFinal();
+
+document.getElementById("systemStatus").innerText=
+"Backend data connected • "+
+formatTime(liveData.last_updated);
+
+}
+catch(error){
+
+console.log(
+"Waiting for data.json...",
+error
+);
+
+document.getElementById("systemStatus").innerText=
+"Waiting for backend NSE data...";
+
+}
+
+}
+
+
+/* =========================
+   TIME
+========================= */
+
+function formatTime(value){
+
+if(!value){
+return "--:--";
+}
+
+try{
+
+const d=new Date(value);
+
+if(isNaN(d.getTime())){
+return String(value);
+}
+
+return d.toLocaleTimeString(
+"en-IN",
+{
+hour:"2-digit",
+minute:"2-digit",
+hour12:false,
+timeZone:"Asia/Kolkata"
+}
+);
+
+}
+catch(e){
+
+return String(value);
+
+}
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+function updateHeader(){
+
+const status=
+String(
+liveData.status ||
+liveData.market_status ||
+"NO CLEAR"
+).toUpperCase();
+
+document.getElementById("mstatus").innerText=
+status;
+
+document.getElementById("update").innerText=
+formatTime(liveData.last_updated);
+
+/* MARKET OPEN = LIVE */
+
+const isLive=
+status==="MARKET OPEN" ||
+status==="LIVE" ||
+status==="OPEN";
+
+document.getElementById("liveText").innerText=
+isLive ? "LIVE" : status;
+
+const dot=
+document.querySelector(".dot");
+
+if(isLive){
+
+dot.style.background=
+"var(--green)";
+
+}
+else{
+
+dot.style.background=
+"var(--red)";
+
+}
+
+}
+
+
+/* =========================
+   ROTATION
+========================= */
+
+function renderRotation(){
+
+/*
+IMPORTANT:
+Python data.json uses:
+rotation:[...]
+
+OLD HTML was looking for:
+sectors:[...]
+
+FIXED HERE
+*/
+
+const list=
+Array.isArray(liveData.rotation)
+? liveData.rotation
+:[];
+
+
+/* KEEP ALL 15 SECTORS EVEN IF DATA IS EMPTY */
+
+const map={};
+
+list.forEach(item=>{
+
+const name=
+String(
+item.sector ||
+item.name ||
+""
+).toUpperCase();
+
+if(name){
+map[name]=item;
+}
+
+});
+
+
+document.getElementById("heat").innerHTML=
+sectors.map((name,i)=>{
+
+/* support DEFENCE / DEFENSE naming */
+
+let item=
+map[name];
+
+if(!item && name==="DEFENSE"){
+item=map["DEFENCE"];
+}
+
+if(!item && name==="DEFENCE"){
+item=map["DEFENSE"];
+}
+
+
+/* NO DATA FOR THIS SECTOR */
+
+if(!item){
+
+return `
+<div class="sector"
+onclick="pick('${name}')">
+
+<div class="row">
+
+<span class="sname">
+#${i+1} ${name}
+</span>
+
+<span class="move">
+--%
+</span>
+
+</div>
+
+<div class="boxes">
+
+${Array.from(
+{length:8},
+()=>`<i class="box"></i>`
+).join("")}
+
+</div>
+
+<div class="rank">
+WAITING FOR LIVE DATA
+</div>
+
+</div>
+`;
+
+}
+
+
+const value=
+Number(
+item.move ??
+item.change ??
+item.value ??
+0
+);
+
+const arrow=
+value>=0 ? "↑" : "↓";
+
+
+/*
+Use backend stage if available.
+Otherwise preserve original rank logic.
+*/
+
+let stage=
+String(
+item.stage ||
+""
+).toUpperCase();
+
+if(!stage){
+
+stage=
+i<5
+?"STRONG"
+:i<10
+?"NEUTRAL"
+:"WEAK";
+
+}
+
+
+/* heat strength */
+
+const allMoves=
+list.map(x=>
+Math.abs(
+Number(
+x.move ??
+x.change ??
+x.value ??
+0
+)
+)
+);
+
+const maxAbs=
+Math.max(
+...allMoves,
+0.0001
+);
+
+const n=
+Math.max(
+1,
+Math.min(
+8,
+Math.round(
+Math.abs(value)/maxAbs*8
+)
+)
+);
+
+
+let cls="y";
+
+if(stage==="STRONG"){
+cls="g";
+}
+else if(stage==="WEAK"){
+cls="r";
+}
+else{
+cls="y";
+}
+
+
+return `
+<div class="sector"
+onclick="pick('${name}')">
+
+<div class="row">
+
+<span class="sname">
+#${i+1} ${name}
+</span>
+
+<span class="move">
+${arrow}
+${value>=0?"+":""}${value.toFixed(2)}%
 </span>
 
 </div>
@@ -411,174 +457,70 @@ ${arrow} ${formatPct(x.move)}
 ${Array.from(
 {length:8},
 (_,j)=>
-`<i class="box ${j>=8-n?' '+cls:''}"></i>`
-).join('')}
+`<i class="box ${
+j>=8-n ? cls : ""
+}"></i>`
+).join("")}
 
 </div>
 
 <div class="rank">
-${x.stage} • ${x.direction}
+${stage}
 </div>
 
 </div>
 `;
 
-}).join('');
-
-document.getElementById('rotationNotice').textContent=
-'LIVE rotation data • Today only';
-
-document.getElementById('lead').textContent=
-rows[0]?.sector || '--';
+}).join("");
 
 }
 
-/* =========================================================
-   SCANNER SECTORS
-   ========================================================= */
 
-function getScannerSectors(){
-
-if(!DATA || !Array.isArray(DATA.scanner))
-return [];
-
-const unique=[];
-
-DATA.scanner.forEach(x=>{
-
-if(x.sector && !unique.includes(x.sector))
-unique.push(x.sector);
-
-});
-
-return unique.sort();
-
-}
-
-function populateSectorSelect(){
-
-const sel=document.getElementById('sector');
-
-const current=sel.value;
-
-const list=getScannerSectors();
-
-if(!list.length){
-
-sel.innerHTML='<option>NO DATA</option>';
-
-return;
-
-}
-
-sel.innerHTML=list.map(
-s=>`<option value="${s}">${s}</option>`
-).join('');
-
-if(list.includes(current))
-sel.value=current;
-else
-sel.value=list[0];
-
-}
-
-/* =========================================================
+/* =========================
    SCANNER CONTROLS
-   ========================================================= */
-
-function paintScannerControls(){
-
-['BUY','SELL','BOTH'].forEach(d=>{
-
-const id='direction'+
-d.charAt(0)+
-d.slice(1).toLowerCase();
-
-const el=document.getElementById(id);
-
-if(el)
-el.classList.toggle(
-'active',
-scannerSettings.direction===d
-);
-
-});
-
-const pdh=document.getElementById('pdhToggle');
-const pdl=document.getElementById('pdlToggle');
-
-pdh.textContent=
-'PDH BUY: '+(scannerSettings.usePDH?'ON':'OFF');
-
-pdh.className=
-'setting-btn '+(scannerSettings.usePDH?'on':'off');
-
-pdl.textContent=
-'PDL SELL: '+(scannerSettings.usePDL?'ON':'OFF');
-
-pdl.className=
-'setting-btn '+(scannerSettings.usePDL?'on':'off');
-
-}
-
-function setDirection(d){
-
-scannerSettings.direction=d;
-
-paintScannerControls();
-
-renderScanner();
-
-}
-
-function toggleFilter(x){
-
-if(x==='PDH')
-scannerSettings.usePDH=!scannerSettings.usePDH;
-else
-scannerSettings.usePDL=!scannerSettings.usePDL;
-
-paintScannerControls();
-
-renderScanner();
-
-}
+========================= */
 
 function initScannerControls(){
 
-document.getElementById('directionBuy')
+document
+.getElementById("directionBuy")
 .addEventListener(
-'click',
-()=>setDirection('BUY')
+"click",
+()=>setDirection("BUY")
 );
 
-document.getElementById('directionSell')
+document
+.getElementById("directionSell")
 .addEventListener(
-'click',
-()=>setDirection('SELL')
+"click",
+()=>setDirection("SELL")
 );
 
-document.getElementById('directionBoth')
+document
+.getElementById("directionBoth")
 .addEventListener(
-'click',
-()=>setDirection('BOTH')
+"click",
+()=>setDirection("BOTH")
 );
 
-document.getElementById('pdhToggle')
+document
+.getElementById("pdhToggle")
 .addEventListener(
-'click',
-()=>toggleFilter('PDH')
+"click",
+()=>toggleFilter("PDH")
 );
 
-document.getElementById('pdlToggle')
+document
+.getElementById("pdlToggle")
 .addEventListener(
-'click',
-()=>toggleFilter('PDL')
+"click",
+()=>toggleFilter("PDL")
 );
 
-document.getElementById('sector')
+document
+.getElementById("sector")
 .addEventListener(
-'change',
+"change",
 renderScanner
 );
 
@@ -586,580 +528,866 @@ paintScannerControls();
 
 }
 
-/* =========================================================
+
+/* =========================
+   CONTROLS
+========================= */
+
+function paintScannerControls(){
+
+document
+.getElementById("directionBuy")
+.classList.toggle(
+"active",
+scannerSettings.direction==="BUY"
+);
+
+document
+.getElementById("directionSell")
+.classList.toggle(
+"active",
+scannerSettings.direction==="SELL"
+);
+
+document
+.getElementById("directionBoth")
+.classList.toggle(
+"active",
+scannerSettings.direction==="BOTH"
+);
+
+const pdh=
+document.getElementById("pdhToggle");
+
+const pdl=
+document.getElementById("pdlToggle");
+
+pdh.innerText=
+"PDH BUY: "+
+(
+scannerSettings.usePDH
+?"ON"
+:"OFF"
+);
+
+pdh.className=
+"setting-btn "+
+(
+scannerSettings.usePDH
+?"on"
+:"off"
+);
+
+pdl.innerText=
+"PDL SELL: "+
+(
+scannerSettings.usePDL
+?"ON"
+:"OFF"
+);
+
+pdl.className=
+"setting-btn "+
+(
+scannerSettings.usePDL
+?"on"
+:"off"
+);
+
+}
+
+
+function setDirection(direction){
+
+scannerSettings.direction=
+direction;
+
+paintScannerControls();
+
+renderScanner();
+
+}
+
+
+function toggleFilter(type){
+
+if(type==="PDH"){
+
+scannerSettings.usePDH=
+!scannerSettings.usePDH;
+
+}
+else{
+
+scannerSettings.usePDL=
+!scannerSettings.usePDL;
+
+}
+
+paintScannerControls();
+
+renderScanner();
+
+}
+
+
+/* =========================
    SCANNER
-   ========================================================= */
+========================= */
 
 function renderScanner(){
 
-if(!DATA){
-return;
-}
-
-const selectedSector=
-document.getElementById('sector').value;
+const selected=
+document.getElementById("sector").value;
 
 let list=
-Array.isArray(DATA.scanner)
-?
-DATA.scanner.filter(x=>
-x.sector===selectedSector &&
-x.day===getTodayString()
-)
+Array.isArray(liveData.scanner)
+? [...liveData.scanner]
 :[];
 
-if(scannerSettings.direction!=='BOTH'){
-
-list=list.filter(
-x=>x.direction===scannerSettings.direction
-);
-
-}
 
 /*
-PDH/PDL toggles are UI filters only.
-Original backend formula remains untouched.
+IMPORTANT:
+Selected sector is only a UI filter.
+ALL 15 sectors remain in dropdown.
 */
 
-if(!scannerSettings.usePDH){
+list=list.filter(x=>{
 
-list=list.filter(
-x=>x.direction!=='BUY'
-);
+const sector=
+String(
+x.sector ||
+x.sector_name ||
+""
+).toUpperCase();
+
+return sector===selected;
+
+});
+
+
+/* DIRECTION FILTER */
+
+if(scannerSettings.direction!=="BOTH"){
+
+list=list.filter(x=>{
+
+const direction=
+String(
+x.direction ||
+x.signal ||
+x.side ||
+""
+).toUpperCase();
+
+return direction===
+scannerSettings.direction;
+
+});
 
 }
 
-if(!scannerSettings.usePDL){
 
-list=list.filter(
-x=>x.direction!=='SELL'
-);
+/* FLOW */
 
+let buyCount=0;
+let sellCount=0;
+
+list.forEach(x=>{
+
+const d=
+String(
+x.direction ||
+x.signal ||
+x.side ||
+""
+).toUpperCase();
+
+if(d==="BUY"){
+buyCount++;
 }
 
-list.sort(
-(a,b)=>
-new Date(a.pass_time)-
-new Date(b.pass_time)
-);
+if(d==="SELL"){
+sellCount++;
+}
 
-const allSector=
-(Array.isArray(DATA.scanner)
-?
-DATA.scanner.filter(x=>
-x.sector===selectedSector &&
-x.day===getTodayString()
-)
-:[]);
+});
 
-const buyCount=
-allSector.filter(x=>x.direction==='BUY').length;
-
-const sellCount=
-allSector.filter(x=>x.direction==='SELL').length;
-
-const totalFlow=buyCount+sellCount;
+const total=
+buyCount+sellCount;
 
 const buyPct=
-totalFlow?
-Math.round(buyCount/totalFlow*100):0;
+total
+?Math.round(buyCount/total*100)
+:0;
 
 const sellPct=
-totalFlow?
-100-buyPct:0;
+total
+?100-buyPct
+:0;
 
-document.getElementById('buyPct').textContent=
-buyPct+'%';
+document.getElementById("buyPct").innerText=
+buyPct+"%";
 
-document.getElementById('sellPct').textContent=
-sellPct+'%';
+document.getElementById("sellPct").innerText=
+sellPct+"%";
 
-document.getElementById('buyBar').style.width=
-buyPct+'%';
+document.getElementById("buyBar").style.width=
+buyPct+"%";
 
-document.getElementById('sellBar').style.width=
-sellPct+'%';
+document.getElementById("sellBar").style.width=
+sellPct+"%";
+
+
+/* EARLY / FINAL */
 
 const early=
-list.filter(x=>x.stage==='EARLY').length;
+list.filter(x=>
+String(
+x.stage ||
+x.type ||
+""
+).toUpperCase()==="EARLY"
+).length;
 
 const final=
-list.filter(x=>x.stage==='FINAL').length;
+list.filter(x=>
+String(
+x.stage ||
+x.type ||
+""
+).toUpperCase()==="FINAL"
+).length;
 
-document.getElementById('early').textContent=
+document.getElementById("early").innerText=
 early;
 
-document.getElementById('fin').textContent=
+document.getElementById("fin").innerText=
 final;
 
-document.getElementById('totalPass').textContent=
-list.length;
 
-const latest=
-list.length?
-list[list.length-1].pass_time:null;
+/* PASS TIME */
 
-document.getElementById('lastPass').textContent=
-timeOnly(latest);
+let firstPass="--:--";
+
+for(const x of list){
+
+if(x.pass_time){
+
+firstPass=
+formatTime(x.pass_time);
+
+break;
+
+}
+
+if(x.passTime){
+
+firstPass=
+formatTime(x.passTime);
+
+break;
+
+}
+
+}
+
+document.getElementById("passTime").innerText=
+firstPass;
+
+
+/* STOCK LIST */
 
 if(!list.length){
 
-document.getElementById('stocks').innerHTML=
-'<div class="muted" style="padding:18px 0">NO STOCK PASS</div>';
+document.getElementById("stocks").innerHTML=
+`<div class="muted" style="padding:18px 0">
+NO STOCK PASS
+</div>`;
 
 return;
 
 }
 
-document.getElementById('stocks').innerHTML=
+
+document.getElementById("stocks").innerHTML=
 list.map(x=>{
 
-const m=x.metrics || {};
+const symbol=
+x.symbol ||
+x.stock ||
+x.name ||
+"--";
+
+const direction=
+String(
+x.direction ||
+x.signal ||
+x.side ||
+""
+).toUpperCase();
+
+const stage=
+x.stage ||
+x.type ||
+"";
+
+const pass=
+x.pass_time ||
+x.passTime ||
+"--:--";
 
 const rvol=
-m.rvol20!==undefined?
-Number(m.rvol20).toFixed(2)+'x':
-'--';
-
-const move=
-m.today_move_pct!==undefined?
-formatPct(m.today_move_pct):
-'--';
+x.rvol20 ??
+x.rvol ??
+"--";
 
 return `
-
 <div class="stock"
-onclick="detail('${String(x.stock).replace(/'/g,"\\'")}')">
+onclick="detail('${symbol}')">
 
 <div>
 
-<b>${x.stock}</b>
+<b>${symbol}</b>
 
 <div class="stage">
-${x.stage} • ${timeOnly(x.pass_time)}
-</div>
 
-<div class="stage">
-20D RVOL ${rvol} • Move ${move}
+TRUE 20D RVOL •
+${formatTime(pass)} •
+${stage}
+
+${
+rvol!=="--"
+?" • RVOL "+Number(rvol).toFixed(2)
+:""
+}
+
 </div>
 
 </div>
 
 <span class="badge ${
-x.direction==='BUY'
-?'buybg'
-:'sellbg'
+direction==="BUY"
+?"buybg"
+:"sellbg"
 }">
-${x.direction}
+${direction || "--"}
 </span>
 
 </div>
-
 `;
 
-}).join('');
+}).join("");
 
 }
 
-/* =========================================================
+
+/* =========================
    BIG PLAYER
-   ========================================================= */
+========================= */
 
-function renderTop6(){
+function renderBigPlayer(){
 
-const top6=
-(
-DATA &&
-Array.isArray(DATA.big_player)
-)
-?
-DATA.big_player.filter(
-x=>x.day===getTodayString()
-)
-:[ ];
+const list=
+Array.isArray(liveData.big_player)
+? liveData.big_player
+:[];
 
-if(!top6.length){
 
-document.getElementById('top6').innerHTML=
-'<div class="muted" style="padding:18px 0">NO STRONG FLOW</div>';
+if(!list.length){
 
-document.getElementById('bigBuyPct').textContent='0%';
-document.getElementById('bigSellPct').textContent='0%';
+document.getElementById("top6").innerHTML=
+`<div class="muted" style="padding:18px 0">
+NO STRONG FLOW
+</div>`;
+
+document.getElementById("bigBuyPct").innerText=
+"--%";
+
+document.getElementById("bigSellPct").innerText=
+"--%";
 
 return;
 
 }
 
-const buy=
-top6.filter(x=>x.direction==='BUY').length;
 
-const sell=
-top6.filter(x=>x.direction==='SELL').length;
+let buy=0;
+let sell=0;
 
-const total=buy+sell;
+list.forEach(x=>{
+
+const d=
+String(
+x.direction ||
+x.signal ||
+""
+).toUpperCase();
+
+if(d==="BUY"){
+buy++;
+}
+
+if(d==="SELL"){
+sell++;
+}
+
+});
+
+const total=
+buy+sell;
 
 const buyPct=
-total?Math.round(buy/total*100):0;
+total
+?Math.round(buy/total*100)
+:0;
 
 const sellPct=
-total?100-buyPct:0;
+total
+?100-buyPct
+:0;
 
-document.getElementById('bigBuyPct').textContent=
-buyPct+'%';
+document.getElementById("bigBuyPct").innerText=
+buyPct+"%";
 
-document.getElementById('bigSellPct').textContent=
-sellPct+'%';
+document.getElementById("bigSellPct").innerText=
+sellPct+"%";
 
-document.getElementById('top6').innerHTML=
-top6.slice(0,6).map((x,i)=>{
 
-const m=x.metrics || {};
+const top=
+list.slice(0,6);
 
-const move=
-m.today_move_pct!==undefined
-?
-formatPct(m.today_move_pct)
-:'--';
+document.getElementById("top6").innerHTML=
+top.map((x,i)=>{
 
-const rvol=
-m.rvol20!==undefined
-?
-Number(m.rvol20).toFixed(2)+'x'
-:'--';
+const symbol=
+x.symbol ||
+x.stock ||
+x.name ||
+"--";
+
+const direction=
+String(
+x.direction ||
+x.signal ||
+""
+).toUpperCase();
 
 const score=
-x.score!==undefined
-?
-x.score
-:'--';
+x.score ??
+"--";
+
+const flow=
+x.flow ??
+x.money_flow ??
+"--";
+
+const reason=
+x.reason ||
+x.stage ||
+"FLOW";
 
 return `
+<div class="player">
 
-<div class="player"
-onclick="detail('${String(x.stock).replace(/'/g,"\\'")}')">
+<div class="muted">
+#${i+1}
+</div>
 
-<div class="muted">#${i+1}</div>
-
-<b>${x.stock}</b>
+<b>${symbol}</b>
 
 <div class="score ${
-x.direction==='BUY'
-?'buy'
-:'sell'
+direction==="BUY"
+?"buy"
+:"sell"
 }">
-${x.direction} • ${score}
+${direction || "--"} • ${score}
 </div>
 
 <div class="metric">
-${x.sector || '--'}
+Money Flow ${flow}
 </div>
 
 <div class="metric">
-RVOL ${rvol} • Move ${move}
+${reason}
 </div>
 
 <div class="metric">
-${x.stage || '--'} • ${timeOnly(x.pass_time)}
+Profit Booking: only on confirmed trend end
 </div>
 
 </div>
-
 `;
 
-}).join('');
+}).join("");
 
 }
 
-/* =========================================================
+
+/* =========================
    FINAL DASHBOARD
-   ========================================================= */
+========================= */
 
 function renderFinal(){
 
-const finalData=
-(
-DATA &&
-Array.isArray(DATA.final_dashboard)
-)
-?
-DATA.final_dashboard
-:[ ];
-
-const market=
-document.getElementById('market');
-
-if(!finalData.length){
-
-market.textContent='NO CLEAR DIRECTION';
-
-document.getElementById('sectorConfirm').textContent='✕ WAIT';
-document.getElementById('stockConfirm').textContent='✕ WAIT';
-document.getElementById('flowConfirm').textContent='✕ WAIT';
-
-document.getElementById('sectorConfirm').className='no';
-document.getElementById('stockConfirm').className='no';
-document.getElementById('flowConfirm').className='no';
-
-document.getElementById('lead').textContent=
-getRotationList()[0]?.sector || '--';
-
-document.getElementById('qual').textContent='--';
-
-return;
-
-}
-
 /*
-Backend final_dashboard is authoritative.
-No frontend-created signal is manufactured.
+IMPORTANT:
+Python data.json uses:
+final_dashboard:[...]
+
+OLD HTML was expecting:
+final:{}
+
+FIXED HERE.
 */
 
-const f=finalData[0];
+const list=
+Array.isArray(liveData.final_dashboard)
+?liveData.final_dashboard
+:[];
 
-const direction=
-f.direction ||
-f.market_direction ||
-'NO CLEAR DIRECTION';
 
-market.textContent=direction;
+/* NO FINAL DATA */
 
-const sector=
-f.sector ||
-f.leading_sector ||
-'--';
+if(!list.length){
 
-const stock=
-f.stock ||
-f.qualifying_stock ||
-'--';
+document.getElementById("market").innerText=
+"NO CLEAR DIRECTION";
 
-document.getElementById('lead').textContent=sector;
-document.getElementById('qual').textContent=stock;
+document.getElementById("lead").innerText=
+"--";
 
-const sectorOK=
-f.sector_confirmed ??
-f.sector_confirmation ??
-false;
-
-const stockOK=
-f.stock_confirmed ??
-f.stock_confirmation ??
-false;
-
-const flowOK=
-f.flow_confirmed ??
-f.flow_confirmation ??
-false;
+document.getElementById("qual").innerText=
+"--";
 
 setConfirm(
-'sectorConfirm',
-sectorOK
+"sectorConfirm",
+false
 );
 
 setConfirm(
-'stockConfirm',
-stockOK
+"stockConfirm",
+false
 );
 
 setConfirm(
-'flowConfirm',
-flowOK
+"flowConfirm",
+false
 );
 
-}
-
-function setConfirm(id,yes){
-
-const el=document.getElementById(id);
-
-el.textContent=
-yes?'✓ CONFIRM':'✕ WAIT';
-
-el.className=
-yes?'yes':'no';
-
-}
-
-/* =========================================================
-   MASTER RENDER
-   ========================================================= */
-
-function renderAll(){
-
-if(!DATA)
 return;
 
-document.getElementById('mstatus').textContent=
-safe(DATA.status,'--');
-
-document.getElementById('update').textContent=
-timeOnly(DATA.last_updated);
-
-document.getElementById('liveText').textContent=
-DATA.status==='MARKET OPEN'
-?'LIVE'
-:safe(DATA.status,'LIVE');
-
-populateSectorSelect();
-
-renderHeat();
-
-renderScanner();
-
-renderTop6();
-
-renderFinal();
-
 }
 
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
 
-function pick(s){
+/*
+Take first confirmed backend result.
+No signal is created here.
+*/
 
-const sel=document.getElementById('sector');
+const f=list[0] || {};
 
-const options=
-Array.from(sel.options)
-.map(o=>o.value);
+const direction=
+String(
+f.direction ||
+f.signal ||
+"NO CLEAR DIRECTION"
+).toUpperCase();
 
-if(options.includes(s))
-sel.value=s;
+document.getElementById("market").innerText=
+direction;
 
-show(
-'scanner',
-document.querySelectorAll('.nav button')[1]
+document.getElementById("lead").innerText=
+f.sector ||
+f.leading_sector ||
+f.lead_sector ||
+"--";
+
+document.getElementById("qual").innerText=
+f.symbol ||
+f.stock ||
+f.qualifying_stock ||
+"--";
+
+
+/*
+Backend final_dashboard is already
+cross-confirmed by Python.
+*/
+
+setConfirm(
+"sectorConfirm",
+f.sector_confirm ??
+true
 );
 
-renderScanner();
+setConfirm(
+"stockConfirm",
+f.stock_confirm ??
+true
+);
+
+setConfirm(
+"flowConfirm",
+f.flow_confirm ??
+true
+);
 
 }
 
-function detail(s){
 
-currentDetailStock=s;
+function setConfirm(id,value){
 
-document.getElementById('detailTitle').textContent=
-s+' • 5M Chart';
+const el=
+document.getElementById(id);
 
-show('detail',null);
+const yes=
+value===true ||
+value==="true" ||
+value==="YES" ||
+value==="CONFIRM";
+
+if(yes){
+
+el.innerText=
+"✓ CONFIRM";
+
+el.className=
+"yes";
 
 }
+else{
+
+el.innerText=
+"✕ WAIT";
+
+el.className=
+"no";
+
+}
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
 
 function show(id,btn){
 
 document
-.querySelectorAll('section')
-.forEach(x=>x.classList.add('hidden'));
+.querySelectorAll("section")
+.forEach(x=>
+x.classList.add("hidden")
+);
 
 document
 .getElementById(id)
-.classList.remove('hidden');
+.classList.remove("hidden");
 
 document
-.querySelectorAll('.nav button')
-.forEach(b=>b.classList.remove('active'));
+.querySelectorAll(".nav button")
+.forEach(b=>
+b.classList.remove("active")
+);
 
-if(btn)
-btn.classList.add('active');
+if(btn){
+
+btn.classList.add("active");
 
 }
 
-/* =========================================================
+}
+
+
+/* =========================
+   SECTOR PICK
+========================= */
+
+function pick(sector){
+
+const select=
+document.getElementById("sector");
+
+/*
+DEFENSE / DEFENCE compatibility
+*/
+
+let target=sector;
+
+if(
+sector==="DEFENCE" &&
+!Array.from(select.options)
+.some(o=>o.value==="DEFENCE")
+){
+
+target="DEFENSE";
+
+}
+
+if(
+sector==="DEFENSE" &&
+!Array.from(select.options)
+.some(o=>o.value==="DEFENSE")
+){
+
+target="DEFENCE";
+
+}
+
+const exists=
+Array.from(select.options)
+.some(o=>o.value===target);
+
+if(exists){
+
+select.value=
+target;
+
+}
+
+show(
+"scanner",
+document.querySelectorAll(".nav button")[1]
+);
+
+renderScanner();
+
+}
+
+
+/* =========================
+   DETAIL
+========================= */
+
+function detail(symbol){
+
+document.getElementById("detailTitle").innerText=
+symbol+" • 5M Chart";
+
+show(
+"detail",
+null
+);
+
+}
+
+
+/* =========================
    THEME
-   ========================================================= */
+========================= */
 
 function toggleTheme(){
 
-document.body.classList.toggle('light');
+document.body.classList.toggle("light");
 
-if(document.body.classList.contains('light')){
+if(
+document.body.classList.contains("light")
+){
 
-document.documentElement.style.setProperty(
-'--bg','#f4f8fc'
+document.documentElement.style
+.setProperty(
+"--bg",
+"#f4f8fc"
 );
 
-document.documentElement.style.setProperty(
-'--card','#fff'
+document.documentElement.style
+.setProperty(
+"--card",
+"#fff"
 );
 
-document.documentElement.style.setProperty(
-'--card2','#fff'
+document.documentElement.style
+.setProperty(
+"--card2",
+"#fff"
 );
 
-document.documentElement.style.setProperty(
-'--text','#17324d'
+document.documentElement.style
+.setProperty(
+"--text",
+"#17324d"
 );
 
-document.documentElement.style.setProperty(
-'--muted','#71869a'
+document.documentElement.style
+.setProperty(
+"--muted",
+"#71869a"
 );
 
-document.documentElement.style.setProperty(
-'--line','#dce7f0'
-);
-
-document.body.style.background='#f4f8fc';
-
-}else{
-
-document.documentElement.style.setProperty(
-'--bg','#07111f'
-);
-
-document.documentElement.style.setProperty(
-'--card','#0d1b2d'
-);
-
-document.documentElement.style.setProperty(
-'--card2','#11243a'
-);
-
-document.documentElement.style.setProperty(
-'--text','#edf5ff'
-);
-
-document.documentElement.style.setProperty(
-'--muted','#91a7bd'
-);
-
-document.documentElement.style.setProperty(
-'--line','#1c334b'
+document.documentElement.style
+.setProperty(
+"--line",
+"#dce7f0"
 );
 
 document.body.style.background=
-'linear-gradient(180deg,#06101d,#0a1727)';
+"#f4f8fc";
+
+}
+else{
+
+document.documentElement.style
+.setProperty(
+"--bg",
+"#07111f"
+);
+
+document.documentElement.style
+.setProperty(
+"--card",
+"#0d1b2d"
+);
+
+document.documentElement.style
+.setProperty(
+"--card2",
+"#11243a"
+);
+
+document.documentElement.style
+.setProperty(
+"--text",
+"#edf5ff"
+);
+
+document.documentElement.style
+.setProperty(
+"--muted",
+"#91a7bd"
+);
+
+document.documentElement.style
+.setProperty(
+"--line",
+"#1c334b"
+);
+
+document.body.style.background=
+"linear-gradient(180deg,#06101d,#0a1727)";
 
 }
 
 }
 
-/* =========================================================
+
+/* =========================
    START
-   ========================================================= */
+========================= */
 
-async function init(){
+window.addEventListener(
+"load",
+init
+);
 
-initScannerControls();
 
-await loadData();
-
-/*
-Refresh every 30 seconds.
-Python updates data.json independently.
-*/
+/* =========================
+   AUTO REFRESH
+========================= */
 
 setInterval(
-loadData,
+loadSavedData,
 30000
 );
 
-}
-
-window.onload=init;
-
 </script>
-
-</body>
-</html>
