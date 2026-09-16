@@ -677,9 +677,38 @@ def get_sector_token(sector):
         []
     )
 
-    names = SECTOR_SEARCH_NAMES.get(
-        sector,
-        []
+    for exchange, symbol in candidates:
+
+        token = search_token(
+            symbol,
+            exchange
+        )
+
+        if token:
+
+            print(
+                "SECTOR TOKEN:",
+                sector,
+                exchange,
+                symbol,
+                token
+            )
+
+            return (
+                exchange,
+                symbol,
+                token
+            )
+
+    print(
+        "SECTOR TOKEN NOT FOUND:",
+        sector
+    )
+
+    return (
+        None,
+        None,
+        None
     )
 
     # -----------------------------------------------------
