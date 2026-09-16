@@ -1,6 +1,7 @@
 # =========================================================
 # NSE ROTATION & FLOW
-# LIVE MARKET DATA ENGINE
+# MASTER LIVE MARKET DATA ENGINE
+# TradingView Master Logic Matched
 # =========================================================
 
 import os
@@ -9,200 +10,486 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import pandas as pd
-from SmartApi import SmartConnect
 import pyotp
+from SmartApi import SmartConnect
 
+
+# =========================================================
+# BASIC SETTINGS
+# =========================================================
 
 IST = ZoneInfo("Asia/Kolkata")
-DATA_FILE = "data.json"
 
+DATA_FILE = "data.json"
+STATE_FILE = "signal_state.json"
 TOKEN_CACHE = {}
 
 
 # =========================================================
-# SECTOR INDEX SYMBOL CANDIDATES
-# Angel One symbol names can differ from TradingView names
+# MASTER SCANNER SETTINGS
 # =========================================================
 
-SECTORS = {
+DIRECTION = os.getenv("SCANNER_DIRECTION", "BOTH").upper()
 
-    "METAL": [
-        ("NSE", "NIFTY METAL"),
-        ("NSE", "NIFTY METAL INDEX"),
-        ("NSE", "CNXMETAL")
-    ],
+USE_PDH = True
+USE_PDL = True
 
-    "IT": [
-        ("NSE", "NIFTY IT"),
-        ("NSE", "CNXIT")
-    ],
+EARLY_RVOL_MIN = 1.20
+EARLY_VOL_ACCEL_MIN = 1.20
+EARLY_NEAR_PCT = 0.30
+EARLY_NEED = 7
 
-    "PHARMA": [
-        ("NSE", "NIFTY PHARMA"),
-        ("NSE", "CNXPHARMA")
-    ],
-
-    "BANKING": [
-        ("NSE", "NIFTY BANK"),
-        ("NSE", "BANKNIFTY")
-    ],
-
-    "FINANCIAL": [
-        ("NSE", "NIFTY FIN SERVICE"),
-        ("NSE", "NIFTY FINANCIAL SERVICES"),
-        ("NSE", "CNXFINANCE")
-    ],
-
-    "AUTO": [
-        ("NSE", "NIFTY AUTO"),
-        ("NSE", "CNXAUTO")
-    ],
-
-    "REALTY": [
-        ("NSE", "NIFTY REALTY"),
-        ("NSE", "CNXREALTY")
-    ],
-
-    "CEMENT": [
-        ("NSE", "NIFTY CEMENT"),
-        ("NSE", "NIFTY CEMENT INDEX")
-    ],
-
-    "ENERGY": [
-        ("NSE", "NIFTY ENERGY"),
-        ("NSE", "CNXENERGY")
-    ],
-
-    "FMCG": [
-        ("NSE", "NIFTY FMCG"),
-        ("NSE", "CNXFMCG")
-    ],
-
-    "CHEMICAL": [
-        ("NSE", "NIFTY CHEMICALS"),
-        ("NSE", "NIFTY CHEMICAL")
-    ],
-
-    "CAPITAL_GOODS": [
-        ("NSE", "NIFTY CAPITAL MARKET"),
-        ("NSE", "NIFTY INDIA MANUFACTURING"),
-        ("NSE", "NIFTY INDUSTRIAL MANUFACTURING")
-    ],
-
-    "TELECOM": [
-        ("NSE", "NIFTY TELECOM"),
-        ("NSE", "NIFTY INDIA DIGITAL"),
-        ("NSE", "NIFTY IND DIGITAL")
-    ],
-
-    "CONSUMER": [
-        ("NSE", "NIFTY CONSUMER DURABLES"),
-        ("NSE", "NIFTY CONSR DURBL"),
-        ("NSE", "NIFTY INDIA CONSUMPTION")
-    ],
-
-    "DEFENSE": [
-        ("NSE", "NIFTY INDIA DEFENCE"),
-        ("NSE", "NIFTY INDIA DEFENSE")
-    ]
-}
+FINAL_RVOL_MIN = 1.10
+FINAL_MOVE_MIN = 0.10
+FINAL_BODY_MIN = 0.40
 
 
 # =========================================================
-# SCANNER STOCK LISTS
+# SECTORS
+# =========================================================
+
+SECTORS = [
+    "METAL",
+    "IT",
+    "PHARMA",
+    "BANKING",
+    "FINANCIAL",
+    "AUTO",
+    "REALTY",
+    "CEMENT",
+    "ENERGY",
+    "FMCG",
+    "CHEMICAL",
+    "CAPITAL_GOODS",
+    "TELECOM",
+    "CONSUMER",
+    "DEFENSE",
+]
+
+
+# =========================================================
+# SECTOR STOCK LISTS
 # =========================================================
 
 STOCKS = {
 
-    "DEFENCE": """
-    HAL BEL BDL COCHINSHIP MAZDOCK SOLARINDS BHEL BHARATFORG
-    """,
+    "DEFENCE": [
+        "HAL", "BEL", "BDL", "COCHINSHIP", "MAZDOCK",
+        "SOLARINDS", "BHEL", "BHARATFORG"
+    ],
 
-    "IT": """
-    COFORGE HCLTECH INFY LTM MPHASIS OFSS PERSISTENT KPITTECH
-    TATAELXSI TCS TECHM WIPRO
-    """,
+    "IT": [
+        "COFORGE", "HCLTECH", "INFY", "LTM", "MPHASIS",
+        "OFSS", "PERSISTENT", "KPITTECH", "TATAELXSI",
+        "TCS", "TECHM", "WIPRO"
+    ],
 
-    "PHARMA": """
-    ALKEM APOLLOHOSP AUROPHARMA BIOCON CIPLA DIVISLAB DRREDDY
-    FORTIS GLENMARK LAURUSLABS LUPIN MANKIND MAXHEALTH SAGILITY
-    SUNPHARMA TORNTPHARM ZYDUSLIFE
-    """,
+    "PHARMA": [
+        "ALKEM", "APOLLOHOSP", "AUROPHARMA", "BIOCON",
+        "CIPLA", "DIVISLAB", "DRREDDY", "FORTIS",
+        "GLENMARK", "LAURUSLABS", "LUPIN", "MANKIND",
+        "MAXHEALTH", "SAGILITY", "SUNPHARMA",
+        "TORNTPHARM", "ZYDUSLIFE"
+    ],
 
-    "BANKING": """
-    AUBANK AXISBANK BANDHANBNK BANKBARODA BANKINDIA CANBK
-    FEDERALBNK HDFCBANK ICICIBANK IDFCFIRSTB INDIANB INDUSINDBK
-    KOTAKBANK MAHABANK PNB RBLBANK SBIN UNIONBANK YESBANK
-    """,
+    "BANKING": [
+        "AUBANK", "AXISBANK", "BANDHANBNK", "BANKBARODA",
+        "BANKINDIA", "CANBK", "FEDERALBNK", "HDFCBANK",
+        "ICICIBANK", "IDFCFIRSTB", "INDIANB", "INDUSINDBK",
+        "KOTAKBANK", "MAHABANK", "PNB", "RBLBANK",
+        "SBIN", "UNIONBANK", "YESBANK"
+    ],
 
-    "FINANCIAL 1": """
-    360ONE ABCAPITAL ANGELONE BAJFINANCE BAJAJFINSV BAJAJHLDNG
-    BSE CAMS CDSL CHOLAFIN HDFCAMC HDFCLIFE ICICIGI ICICIPRULI
-    IEX IRFC JIOFIN KFINTECH
-    """,
+    "FINANCIAL 1": [
+        "360ONE", "ABCAPITAL", "ANGELONE", "BAJFINANCE",
+        "BAJAJFINSV", "BAJAJHLDNG", "BSE", "CAMS",
+        "CDSL", "CHOLAFIN", "HDFCAMC", "HDFCLIFE",
+        "ICICIGI", "ICICIPRULI", "IEX", "IRFC",
+        "JIOFIN", "KFINTECH"
+    ],
 
-    "FINANCIAL 2": """
-    LICHSGFIN LICI LTF MANAPPURAM MCX MFSL MOTILALOFS MUTHOOTFIN
-    NAM-INDIA PFC PNBHOUSING POLICYBZR REC RECLTD SBICARD SBILIFE
-    SHRIRAMFIN
-    """,
+    "FINANCIAL 2": [
+        "LICHSGFIN", "LICI", "LTF", "MANAPPURAM", "MCX",
+        "MFSL", "MOTILALOFS", "MUTHOOTFIN", "NAM-INDIA",
+        "PFC", "PNBHOUSING", "POLICYBZR", "REC",
+        "RECLTD", "SBICARD", "SBILIFE", "SHRIRAMFIN"
+    ],
 
-    "AUTO": """
-    ASHOKLEY ATHERENERG BAJAJ-AUTO BHARATFORG BOSCHLTD EICHERMOT
-    FORCEMOT HEROMOTOCO HYUNDAI M&M MARUTI MOTHERSON SONACOMS
-    TIINDIA TVSMOTOR UNOMINDA
-    """,
+    "AUTO": [
+        "ASHOKLEY", "ATHERENERG", "BAJAJ-AUTO", "BHARATFORG",
+        "BOSCHLTD", "EICHERMOT", "FORCEMOT", "HEROMOTOCO",
+        "HYUNDAI", "M&M", "MARUTI", "MOTHERSON",
+        "SONACOMS", "TIINDIA", "TVSMOTOR", "UNOMINDA"
+    ],
 
-    "REALTY": """
-    DLF GODREJPROP LODHA NBCC OBEROIRLTY PHOENIXLTD PRESTIGE
-    """,
+    "REALTY": [
+        "DLF", "GODREJPROP", "LODHA", "NBCC",
+        "OBEROIRLTY", "PHOENIXLTD", "PRESTIGE"
+    ],
 
-    "CEMENT": """
-    AMBUJACEM GRASIM SHREECEM ULTRACEMCO
-    """,
+    "CEMENT": [
+        "AMBUJACEM", "GRASIM", "SHREECEM", "ULTRACEMCO"
+    ],
 
-    "ENERGY 1": """
-    ADANIENSOL ADANIGREEN ADANIPOWER BPCL COALINDIA GAIL
-    HINDPETRO IOC IREDA JSWENERGY NHPC
-    """,
+    "ENERGY 1": [
+        "ADANIENSOL", "ADANIGREEN", "ADANIPOWER",
+        "BPCL", "COALINDIA", "GAIL", "HINDPETRO",
+        "IOC", "IREDA", "JSWENERGY", "NHPC"
+    ],
 
-    "ENERGY 2": """
-    NTPC OIL ONGC PETRONET POWERGRID PREMIERENE RELIANCE
-    SUZLON TATAPOWER WAAREEENER
-    """,
+    "ENERGY 2": [
+        "NTPC", "OIL", "ONGC", "PETRONET", "POWERGRID",
+        "PREMIERENE", "RELIANCE", "SUZLON",
+        "TATAPOWER", "WAAREEENER"
+    ],
 
-    "FMCG": """
-    BRITANNIA COLPAL DABUR GODFRYPHL GODREJCP HINDUNILVR ITC
-    MARICO NESTLEIND PATANJALI RADICO TATACONSUM UNITDSPR VBL
-    """,
+    "FMCG": [
+        "BRITANNIA", "COLPAL", "DABUR", "GODFRYPHLP",
+        "GODREJCP", "HINDUNILVR", "ITC", "MARICO",
+        "NESTLEIND", "PATANJALI", "RADICO",
+        "TATACONSUM", "UNITDSPR", "VBL"
+    ],
 
-    "CHEMICAL": """
-    ASIANPAINT ASTRAL PIDILITIND PIIND SRF SUPREMEIND UPL
-    """,
+    "CHEMICAL": [
+        "ASIANPAINT", "ASTRAL", "PIDILITIND", "PIIND",
+        "SRF", "SUPREMEIND", "UPL"
+    ],
 
-    "CAPITAL_GOODS": """
-    ADANIENT ADANIPORTS AMBER CGPOWER CONCOR CROMPTON CUMMINSIND
-    DIXON GVT&D HAVELLS INOXWIND KAYNES KEI LT PGEL POLYCAB
-    POWERINDIA RVNL SIEMENS VOLTAS GMRAIRPORT APLAPOLLO
-    """,
+    "CAPITAL_GOODS": [
+        "ADANIENT", "ADANIPORTS", "AMBER", "CGPOWER",
+        "CONCOR", "CROMPTON", "CUMMINSIND", "DIXON",
+        "GVT&D", "HAVELLS", "INOXWIND", "KAYNES",
+        "KEI", "LT", "PGEL", "POLYCAB", "POWERINDIA",
+        "RVNL", "SIEMENS", "VOLTAS", "GMRAIRPORT",
+        "APLAPOLLO"
+    ],
 
-    "TELECOM": """
-    BHARTIARTL IDEA INDUSTOWER TATAFCOMM
-    """,
+    "TELECOM": [
+        "BHARTIARTL", "IDEA", "INDUSTOWER", "TATAFCOMM"
+    ],
 
-    "CONSUMER": """
-    TITAN TRENT ABFRL PAGEIND BATAINDIA CENTURYTEX INDIANHOTE
-    PVRINOX
-    """
+    "CONSUMER": [
+        "TITAN", "TRENT", "ABFRL", "PAGEIND",
+        "BATAINDIA", "CENTURYTEX", "INDIANHOTE",
+        "PVRINOX"
+    ],
 }
 
 
-for sector in STOCKS:
-    STOCKS[sector] = STOCKS[sector].split()
+# =========================================================
+# SMARTAPI LOGIN
+# =========================================================
+
+API_KEY = os.getenv("ANGEL_API_KEY")
+TOTP_KEY = os.getenv("ANGEL_TOTP_KEY")
+CLIENT_CODE = os.getenv("ANGEL_CLIENT_CODE")
+PASSWORD = os.getenv("ANGEL_PASSWORD")
+
+api = None
+
+
+def login():
+    global api
+
+    if not all([
+        API_KEY,
+        TOTP_KEY,
+        CLIENT_CODE,
+        PASSWORD
+    ]):
+        raise RuntimeError(
+            "Missing Angel One environment variables."
+        )
+
+    api = SmartConnect(api_key=API_KEY)
+
+    totp = pyotp.TOTP(TOTP_KEY).now()
+
+    result = api.generateSession(
+        CLIENT_CODE,
+        PASSWORD,
+        totp
+    )
+
+    if not result or not result.get("status"):
+        raise RuntimeError(
+            f"Angel One login failed: {result}"
+        )
+
+    return result
 
 
 # =========================================================
-# INDICATORS
+# HELPERS
+# =========================================================
+
+def safe_float(x, default=0.0):
+    try:
+        if pd.isna(x):
+            return default
+        return float(x)
+    except Exception:
+        return default
+
+
+def now_ist():
+    return datetime.now(IST)
+
+
+def today_key():
+    return now_ist().strftime("%Y-%m-%d")
+
+
+# =========================================================
+# SEARCH TOKEN
+# =========================================================
+
+def search_token(symbol, exchange="NSE"):
+
+    key = f"{exchange}:{symbol}"
+
+    if key in TOKEN_CACHE:
+        return TOKEN_CACHE[key]
+
+    try:
+        result = api.searchScrip(
+            exchange,
+            symbol
+        )
+
+        data = result.get("data", []) if result else []
+
+        if not data:
+            return None
+
+        # Exact match first
+        for item in data:
+            ts = str(item.get("tradingsymbol", ""))
+
+            if ts == symbol:
+                token = str(item.get("symboltoken"))
+                TOKEN_CACHE[key] = token
+                return token
+
+        # EQ fallback
+        for item in data:
+            ts = str(item.get("tradingsymbol", ""))
+
+            if ts == f"{symbol}-EQ":
+                token = str(item.get("symboltoken"))
+                TOKEN_CACHE[key] = token
+                return token
+
+    except Exception:
+        return None
+
+    return None
+
+
+# =========================================================
+# STOCK TOKEN
+# =========================================================
+
+def get_stock_token(symbol):
+
+    token = search_token(symbol, "NSE")
+
+    if token:
+        return token
+
+    return None
+
+
+# =========================================================
+# SECTOR INDEX CANDIDATES
+# =========================================================
+
+SECTOR_INDEX_CANDIDATES = {
+
+    "METAL": [
+        ("NSE", "CNXMETAL"),
+        ("NSE", "NIFTY_METAL")
+    ],
+
+    "IT": [
+        ("NSE", "CNXIT"),
+        ("NSE", "NIFTY_IT")
+    ],
+
+    "PHARMA": [
+        ("NSE", "CNXPHARMA"),
+        ("NSE", "NIFTY_PHARMA")
+    ],
+
+    "BANKING": [
+        ("NSE", "BANKNIFTY"),
+        ("NSE", "NIFTY_BANK")
+    ],
+
+    "FINANCIAL": [
+        ("NSE", "CNXFINANCE"),
+        ("NSE", "NIFTY_FIN_SERVICE")
+    ],
+
+    "AUTO": [
+        ("NSE", "CNXAUTO"),
+        ("NSE", "NIFTY_AUTO")
+    ],
+
+    "REALTY": [
+        ("NSE", "CNXREALTY"),
+        ("NSE", "NIFTY_REALTY")
+    ],
+
+    "CEMENT": [
+        ("NSE", "NIFTY_CEMENT")
+    ],
+
+    "ENERGY": [
+        ("NSE", "CNXENERGY"),
+        ("NSE", "NIFTY_ENERGY")
+    ],
+
+    "FMCG": [
+        ("NSE", "CNXFMCG"),
+        ("NSE", "NIFTY_FMCG")
+    ],
+
+    "CHEMICAL": [
+        ("NSE", "NIFTY_CHEMICALS")
+    ],
+
+    "CAPITAL_GOODS": [
+        ("BSE", "CG"),
+        ("NSE", "NIFTY_CAPITAL_MARKET"),
+        ("NSE", "NIFTY_INDIA_MANUFACTURING"),
+        ("NSE", "NIFTY_INDUSTRIAL_MANUFACTURING")
+    ],
+
+    "TELECOM": [
+        ("NSE", "NIFTY_TELECOM"),
+        ("NSE", "NIFTY_IND_DIGITAL"),
+        ("NSE", "NIFTY_IND_DIGITAL")
+    ],
+
+    "CONSUMER": [
+        ("NSE", "NIFTY_CONSR_DURBL")
+    ],
+
+    "DEFENSE": [
+        ("NSE", "NIFTY_IND_DEFENCE")
+    ],
+}
+
+
+def get_sector_token(sector):
+
+    candidates = SECTOR_INDEX_CANDIDATES.get(
+        sector,
+        []
+    )
+
+    for exchange, symbol in candidates:
+
+        token = search_token(
+            symbol,
+            exchange
+        )
+
+        if token:
+            return exchange, symbol, token
+
+    return None, None, None
+
+
+# =========================================================
+# FETCH 5 MIN CANDLES
+# =========================================================
+
+def get_candles(
+    exchange,
+    token,
+    from_date,
+    to_date
+):
+
+    try:
+
+        params = {
+            "exchange": exchange,
+            "symboltoken": token,
+            "interval": "FIVE_MINUTE",
+            "fromdate": from_date.strftime(
+                "%Y-%m-%d %H:%M"
+            ),
+            "todate": to_date.strftime(
+                "%Y-%m-%d %H:%M"
+            )
+        }
+
+        response = api.getCandleData(params)
+
+        if not response:
+            return pd.DataFrame()
+
+        rows = response.get("data", [])
+
+        if not rows:
+            return pd.DataFrame()
+
+        df = pd.DataFrame(
+            rows,
+            columns=[
+                "timestamp",
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume"
+            ]
+        )
+
+        df["timestamp"] = pd.to_datetime(
+            df["timestamp"]
+        )
+
+        if df["timestamp"].dt.tz is None:
+            df["timestamp"] = (
+                df["timestamp"]
+                .dt.tz_localize(IST)
+            )
+        else:
+            df["timestamp"] = (
+                df["timestamp"]
+                .dt.tz_convert(IST)
+            )
+
+        for col in [
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume"
+        ]:
+            df[col] = pd.to_numeric(
+                df[col],
+                errors="coerce"
+            )
+
+        df = df.dropna()
+
+        df = df.sort_values(
+            "timestamp"
+        ).reset_index(drop=True)
+
+        return df
+
+    except Exception:
+        return pd.DataFrame()
+
+
+# =========================================================
+# EMA
 # =========================================================
 
 def ema(series, length):
@@ -211,6 +498,10 @@ def ema(series, length):
         adjust=False
     ).mean()
 
+
+# =========================================================
+# RSI
+# =========================================================
 
 def rsi(series, length=14):
 
@@ -234,12 +525,14 @@ def rsi(series, length=14):
         float("nan")
     )
 
-    result = 100 - (
+    return 100 - (
         100 / (1 + rs)
     )
 
-    return result.fillna(50)
 
+# =========================================================
+# DMI / ADX
+# =========================================================
 
 def dmi(df, length=14):
 
@@ -250,22 +543,38 @@ def dmi(df, length=14):
     up = high.diff()
     down = -low.diff()
 
-    plus_dm = up.where(
-        (up > down) & (up > 0),
-        0
+    plus_dm = pd.Series(
+        0.0,
+        index=df.index
     )
 
-    minus_dm = down.where(
-        (down > up) & (down > 0),
-        0
+    minus_dm = pd.Series(
+        0.0,
+        index=df.index
     )
+
+    plus_dm[
+        (up > down) &
+        (up > 0)
+    ] = up[
+        (up > down) &
+        (up > 0)
+    ]
+
+    minus_dm[
+        (down > up) &
+        (down > 0)
+    ] = down[
+        (down > up) &
+        (down > 0)
+    ]
+
+    tr1 = high - low
+    tr2 = (high - close.shift()).abs()
+    tr3 = (low - close.shift()).abs()
 
     tr = pd.concat(
-        [
-            high - low,
-            (high - close.shift()).abs(),
-            (low - close.shift()).abs()
-        ],
+        [tr1, tr2, tr3],
         axis=1
     ).max(axis=1)
 
@@ -274,31 +583,28 @@ def dmi(df, length=14):
         adjust=False
     ).mean()
 
-    di_plus = (
+    plus_di = (
         100 *
         plus_dm.ewm(
             alpha=1 / length,
             adjust=False
         ).mean() /
-        atr.replace(0, float("nan"))
+        atr
     )
 
-    di_minus = (
+    minus_di = (
         100 *
         minus_dm.ewm(
             alpha=1 / length,
             adjust=False
         ).mean() /
-        atr.replace(0, float("nan"))
+        atr
     )
 
     dx = (
         100 *
-        (di_plus - di_minus).abs() /
-        (di_plus + di_minus).replace(
-            0,
-            float("nan")
-        )
+        (plus_di - minus_di).abs() /
+        (plus_di + minus_di)
     )
 
     adx = dx.ewm(
@@ -307,397 +613,161 @@ def dmi(df, length=14):
     ).mean()
 
     return (
-        di_plus.fillna(0),
-        di_minus.fillna(0),
-        adx.fillna(0)
+        plus_di,
+        minus_di,
+        adx
     )
 
 
 # =========================================================
-# ANGEL ONE LOGIN
+# VWAP
 # =========================================================
 
-def login():
+def vwap(df):
 
-    api = SmartConnect(
-        api_key=os.environ["ANGEL_API_KEY"]
-    )
+    tp = (
+        df["high"] +
+        df["low"] +
+        df["close"]
+    ) / 3.0
 
-    otp = pyotp.TOTP(
-        os.environ["ANGEL_TOTP_KEY"]
-    ).now()
+    day = df["timestamp"].dt.date
 
-    response = api.generateSession(
-        os.environ["ANGEL_CLIENT_CODE"],
-        os.environ["ANGEL_PASSWORD"],
-        otp
-    )
+    pv = tp * df["volume"]
 
-    if not response or not response.get("status"):
-        raise RuntimeError(
-            "Angel One login failed: " +
-            str(response)
-        )
+    cum_pv = pv.groupby(day).cumsum()
+    cum_vol = df["volume"].groupby(day).cumsum()
 
-    print("Angel One login SUCCESS")
-
-    return api
-
-
-# =========================================================
-# TOKEN SEARCH
-# IMPORTANT:
-# Angel One response uses tradingsymbol
-# =========================================================
-
-def search_token(api, exchange, search_symbol):
-
-    cache_key = exchange + ":" + search_symbol
-
-    if cache_key in TOKEN_CACHE:
-        return TOKEN_CACHE[cache_key]
-
-    try:
-
-        response = api.searchScrip(
-            exchange,
-            search_symbol
-        )
-
-        rows = (
-            (response or {}).get("data")
-            or []
-        )
-
-        if not rows:
-            print(
-                "NO SEARCH RESULT:",
-                exchange,
-                search_symbol
-            )
-            return None
-
-        wanted = search_symbol.upper()
-
-        # Exact match first
-        for row in rows:
-
-            actual = str(
-                row.get("tradingsymbol")
-                or row.get("symbol")
-                or ""
-            ).upper()
-
-            if actual == wanted:
-
-                token = str(
-                    row.get("symboltoken")
-                )
-
-                if token and token != "None":
-
-                    TOKEN_CACHE[
-                        cache_key
-                    ] = token
-
-                    return token
-
-        # If stock was searched without -EQ
-        if not wanted.endswith("-EQ"):
-
-            eq_wanted = wanted + "-EQ"
-
-            for row in rows:
-
-                actual = str(
-                    row.get("tradingsymbol")
-                    or row.get("symbol")
-                    or ""
-                ).upper()
-
-                if actual == eq_wanted:
-
-                    token = str(
-                        row.get("symboltoken")
-                    )
-
-                    if token and token != "None":
-
-                        TOKEN_CACHE[
-                            cache_key
-                        ] = token
-
-                        return token
-
-        print(
-            "TOKEN NOT FOUND:",
-            exchange,
-            search_symbol
-        )
-
-    except Exception as e:
-
-        print(
-            "SEARCH ERROR:",
-            exchange,
-            search_symbol,
-            str(e)
-        )
-
-    return None
-
-
-# =========================================================
-# STOCK TOKEN
-# =========================================================
-
-def get_stock_token(api, stock):
-
-    # First try exact EQ symbol
-    token = search_token(
-        api,
-        "NSE",
-        stock + "-EQ"
-    )
-
-    if token:
-        return token
-
-    # Then try without EQ
-    return search_token(
-        api,
-        "NSE",
-        stock
+    return cum_pv / cum_vol.replace(
+        0,
+        float("nan")
     )
 
 
 # =========================================================
-# SECTOR TOKEN
-# =========================================================
-
-def get_sector_token(api, sector):
-
-    candidates = SECTORS.get(
-        sector,
-        []
-    )
-
-    for exchange, symbol in candidates:
-
-        token = search_token(
-            api,
-            exchange,
-            symbol
-        )
-
-        if token:
-
-            print(
-                "SECTOR TOKEN:",
-                sector,
-                exchange,
-                symbol,
-                token
-            )
-
-            return (
-                exchange,
-                token,
-                symbol
-            )
-
-    print(
-        "SECTOR TOKEN NOT FOUND:",
-        sector
-    )
-
-    return None
-
-
-# =========================================================
-# CANDLE DATA
-# =========================================================
-
-def get_candles(
-    api,
-    exchange,
-    token,
-    from_date,
-    to_date
-):
-
-    try:
-
-        response = api.getCandleData(
-            {
-                "exchange": exchange,
-                "symboltoken": token,
-                "interval": "FIVE_MINUTE",
-                "fromdate": from_date,
-                "todate": to_date
-            }
-        )
-
-        if not response:
-
-            print(
-                "EMPTY CANDLE RESPONSE:",
-                exchange,
-                token
-            )
-
-            return pd.DataFrame()
-
-        if not response.get("status"):
-
-            print(
-                "CANDLE API ERROR:",
-                response
-            )
-
-            return pd.DataFrame()
-
-        rows = (
-            response.get("data")
-            or []
-        )
-
-        if not rows:
-
-            print(
-                "NO CANDLES:",
-                exchange,
-                token
-            )
-
-            return pd.DataFrame()
-
-        df = pd.DataFrame(
-            rows,
-            columns=[
-                "timestamp",
-                "open",
-                "high",
-                "low",
-                "close",
-                "volume"
-            ]
-        )
-
-        df["timestamp"] = pd.to_datetime(
-            df["timestamp"],
-            errors="coerce"
-        )
-
-        for column in [
-            "open",
-            "high",
-            "low",
-            "close",
-            "volume"
-        ]:
-
-            df[column] = pd.to_numeric(
-                df[column],
-                errors="coerce"
-            )
-
-        df = (
-            df
-            .dropna()
-            .sort_values("timestamp")
-            .reset_index(drop=True)
-        )
-
-        return df
-
-    except Exception as e:
-
-        print(
-            "CANDLE ERROR:",
-            exchange,
-            token,
-            str(e)
-        )
-
-        return pd.DataFrame()
-
-
-# =========================================================
-# TRUE 20D RVOL
-# SAME 5-MINUTE TIME
+# TRUE 20D SAME-TIME 5M RVOL
 # =========================================================
 
 def rvol20(df):
 
-    if len(df) < 30:
-        return float("nan")
+    if df.empty:
+        return 0.0, 0.0
 
-    x = df.copy()
+    temp = df.copy()
 
-    x["day"] = (
-        x["timestamp"]
+    temp["date"] = (
+        temp["timestamp"]
         .dt.date
     )
 
-    x["hm"] = (
-        x["timestamp"]
+    temp["hm"] = (
+        temp["timestamp"]
         .dt.strftime("%H:%M")
     )
 
-    today = x["day"].iloc[-1]
-    current_hm = x["hm"].iloc[-1]
-
-    today_data = x[
-        (x["day"] == today) &
-        (x["hm"] <= current_hm)
-    ]
-
-    current_cum = (
-        today_data["volume"].sum()
+    # Pine-style cumulative day volume
+    temp["cum_day_vol"] = (
+        temp.groupby("date")["volume"]
+        .cumsum()
     )
 
-    previous_days = []
+    current = temp.iloc[-1]
 
-    for day in sorted(
-        x["day"].unique(),
+    current_date = current["date"]
+    current_hm = current["hm"]
+    current_cum = safe_float(
+        current["cum_day_vol"]
+    )
+
+    historical = []
+
+    dates = sorted(
+        temp["date"].unique(),
         reverse=True
-    ):
+    )
 
-        if day == today:
+    for d in dates:
+
+        if d >= current_date:
             continue
 
-        old = x[
-            (x["day"] == day) &
-            (x["hm"] <= current_hm)
+        same = temp[
+            (temp["date"] == d) &
+            (temp["hm"] == current_hm)
         ]
 
-        if (
-            not old.empty and
-            current_hm in set(old["hm"])
-        ):
+        if same.empty:
+            continue
 
-            previous_days.append(
-                old["volume"].sum()
-            )
+        val = safe_float(
+            same.iloc[-1]["cum_day_vol"]
+        )
 
-        if len(previous_days) >= 20:
+        if val > 0:
+            historical.append(val)
+
+        if len(historical) >= 20:
             break
 
-    if not previous_days:
-        return float("nan")
+    if not historical:
+        return 0.0, 0.0
 
-    average_previous = (
-        sum(previous_days) /
-        len(previous_days)
-    )
+    avg20 = sum(
+        historical
+    ) / len(historical)
 
-    if average_previous <= 0:
-        return float("nan")
+    if avg20 <= 0:
+        return 0.0, avg20
 
     return (
-        current_cum /
-        average_previous
+        current_cum / avg20,
+        avg20
+    )
+
+
+# =========================================================
+# PREVIOUS DAY HIGH / LOW
+# =========================================================
+
+def previous_day_high_low(df):
+
+    if df.empty:
+        return 0.0, 0.0
+
+    temp = df.copy()
+
+    temp["date"] = (
+        temp["timestamp"]
+        .dt.date
+    )
+
+    current_date = (
+        temp.iloc[-1]["date"]
+    )
+
+    previous = temp[
+        temp["date"] < current_date
+    ]
+
+    if previous.empty:
+        return 0.0, 0.0
+
+    previous_day = (
+        previous["date"]
+        .max()
+    )
+
+    day_data = previous[
+        previous["date"] ==
+        previous_day
+    ]
+
+    if day_data.empty:
+        return 0.0, 0.0
+
+    return (
+        safe_float(day_data["high"].max()),
+        safe_float(day_data["low"].min())
     )
 
 
@@ -707,17 +777,17 @@ def rvol20(df):
 
 def get_metrics(df):
 
-    if len(df) < 55:
+    if df.empty or len(df) < 60:
         return None
 
     close = df["close"]
 
-    ema20 = ema(
+    e20 = ema(
         close,
         20
     )
 
-    ema50 = ema(
+    e50 = ema(
         close,
         50
     )
@@ -727,370 +797,587 @@ def get_metrics(df):
         14
     )
 
-    di_plus, di_minus, adx14 = dmi(
+    di_plus, di_minus, adx = dmi(
         df,
         14
     )
 
-    hlc3 = (
-        df["high"] +
-        df["low"] +
-        df["close"]
-    ) / 3
+    vw = vwap(df)
 
-    day = (
-        df["timestamp"]
-        .dt.date
-    )
+    rvol, avg_rvol = rvol20(df)
 
-    cumulative_volume = (
-        df["volume"]
-        .groupby(day)
-        .cumsum()
-    )
-
-    cumulative_pv = (
-        hlc3 * df["volume"]
-    ).groupby(day).cumsum()
-
-    vwap = (
-        cumulative_pv /
-        cumulative_volume.replace(
-            0,
-            float("nan")
+    # Previous-bar RVOL
+    if len(df) > 61:
+        prev_rvol, _ = rvol20(
+            df.iloc[:-1].copy()
         )
+    else:
+        prev_rvol = 0.0
+
+    # Current 5M candle
+    last = df.iloc[-1]
+
+    c = safe_float(
+        last["close"]
     )
 
-    candle_range = (
-        df["high"] -
-        df["low"]
-    ).replace(
-        0,
-        float("nan")
+    o = safe_float(
+        last["open"]
     )
+
+    h = safe_float(
+        last["high"]
+    )
+
+    l = safe_float(
+        last["low"]
+    )
+
+    vol = safe_float(
+        last["volume"]
+    )
+
+    candle_range = h - l
 
     body_ratio = (
-        (
-            df["close"] -
-            df["open"]
-        ).abs() /
-        candle_range
+        abs(c - o) / candle_range
+        if candle_range > 0
+        else 0.0
     )
 
-    volume_sma20 = (
+    # IMPORTANT:
+    # Pine f_data() uses CURRENT 5M candle move
+    candle_move_pct = (
+        ((c - o) / o) * 100.0
+        if o != 0
+        else 0.0
+    )
+
+    vol_sma = (
         df["volume"]
         .rolling(20)
         .mean()
+        .iloc[-1]
     )
 
-    volume_accel = (
-        df["volume"] /
-        volume_sma20.replace(
-            0,
-            float("nan")
-        )
+    vol_accel = (
+        vol / vol_sma
+        if safe_float(vol_sma) > 0
+        else 0.0
     )
 
-    current_rvol = rvol20(
+    pdh, pdl = previous_day_high_low(
         df
     )
 
-    previous_rvol = rvol20(
-        df.iloc[:-1]
-    )
-
-    values = {
-
-        "close":
-            float(close.iloc[-1]),
-
-        "ema20":
-            float(ema20.iloc[-1]),
-
-        "ema20_prev":
-            float(ema20.iloc[-2]),
-
-        "ema50":
-            float(ema50.iloc[-1]),
-
-        "vwap":
-            float(vwap.iloc[-1]),
-
-        "rsi":
-            float(rsi14.iloc[-1]),
-
-        "di_plus":
-            float(di_plus.iloc[-1]),
-
-        "di_minus":
-            float(di_minus.iloc[-1]),
-
-        "adx":
-            float(adx14.iloc[-1]),
-
-        "adx_prev":
-            float(adx14.iloc[-2]),
-
-        "rvol20":
-            float(current_rvol),
-
-        "rvol20_prev":
-            float(previous_rvol),
-
-        "volume_accel":
-            float(volume_accel.iloc[-1]),
-
-        "body_ratio":
-            float(body_ratio.iloc[-1])
-    }
-
-    return values
-
-
-# =========================================================
-# SCANNER
-# =========================================================
-
-def scanner_signal(df):
-
-    m = get_metrics(df)
-
-    if m is None:
-        return None
-
-    required = [
-        "close",
-        "ema20",
-        "ema20_prev",
-        "ema50",
-        "vwap",
-        "rsi",
-        "di_plus",
-        "di_minus",
-        "adx",
-        "adx_prev",
-        "rvol20",
-        "rvol20_prev",
-        "volume_accel",
-        "body_ratio"
+    # Today's open -> current close
+    today = df[
+        df["timestamp"].dt.date ==
+        df.iloc[-1]["timestamp"].date()
     ]
 
-    for key in required:
+    today_open = (
+        safe_float(today.iloc[0]["open"])
+        if not today.empty
+        else o
+    )
 
-        if pd.isna(m[key]):
-            return None
+    today_move_pct = (
+        ((c - today_open) /
+         today_open) * 100.0
+        if today_open != 0
+        else 0.0
+    )
 
-    # -----------------------------------------------------
+    return {
+        "close": c,
+
+        "ema20": safe_float(
+            e20.iloc[-1]
+        ),
+
+        "ema20_prev": safe_float(
+            e20.iloc[-2]
+        ),
+
+        "ema50": safe_float(
+            e50.iloc[-1]
+        ),
+
+        "rsi": safe_float(
+            rsi14.iloc[-1]
+        ),
+
+        "vwap": safe_float(
+            vw.iloc[-1]
+        ),
+
+        "di_plus": safe_float(
+            di_plus.iloc[-1]
+        ),
+
+        "di_minus": safe_float(
+            di_minus.iloc[-1]
+        ),
+
+        "adx": safe_float(
+            adx.iloc[-1]
+        ),
+
+        "adx_prev": safe_float(
+            adx.iloc[-2]
+        ),
+
+        "rvol20": safe_float(
+            rvol
+        ),
+
+        "rvol20_prev": safe_float(
+            prev_rvol
+        ),
+
+        "move_pct": candle_move_pct,
+
+        "today_move_pct": today_move_pct,
+
+        "body_ratio": body_ratio,
+
+        "vol_accel": safe_float(
+            vol_accel
+        ),
+
+        "pdh": pdh,
+
+        "pdl": pdl,
+
+        "timestamp": (
+            df.iloc[-1]["timestamp"]
+            .isoformat()
+        )
+    }
+
+
+# =========================================================
+# MASTER SCANNER SIGNAL
+# =========================================================
+
+def scanner_signal(m):
+
+    if not m:
+        return None
+
+    c = m["close"]
+    e20 = m["ema20"]
+    e50 = m["ema50"]
+    e20_prev = m["ema20_prev"]
+
+    rsi14 = m["rsi"]
+    vw = m["vwap"]
+
+    dip = m["di_plus"]
+    dim = m["di_minus"]
+
+    adx = m["adx"]
+    adx_prev = m["adx_prev"]
+
+    rvol = m["rvol20"]
+    rvol_prev = m["rvol20_prev"]
+
+    mv = m["move_pct"]
+    br = m["body_ratio"]
+    va = m["vol_accel"]
+
+    pdh = m["pdh"]
+    pdl = m["pdl"]
+
+
+    # =====================================================
     # FINAL BUY
-    # -----------------------------------------------------
+    # =====================================================
 
-    final_buy = (
-
-        m["close"] > m["ema20"] and
-        m["ema20"] > m["ema50"] and
-        m["close"] > m["vwap"] and
-        m["rsi"] > 55 and
-        m["adx"] > 18 and
-        m["di_plus"] > m["di_minus"] and
-        m["rvol20"] >= 1.10 and
-        m["body_ratio"] >= 0.40
+    buy_base = (
+        c > e20 and
+        e20 > e50 and
+        c > vw and
+        rsi14 > 55 and
+        adx > 18 and
+        dip > dim and
+        rvol >= FINAL_RVOL_MIN and
+        mv >= FINAL_MOVE_MIN and
+        br >= FINAL_BODY_MIN
     )
 
-    # -----------------------------------------------------
+    buy_pdh = (
+        (not USE_PDH) or
+        (pdh <= 0) or
+        (c > pdh)
+    )
+
+    buy_final = (
+        buy_base and
+        buy_pdh
+    )
+
+
+    # =====================================================
     # FINAL SELL
-    # -----------------------------------------------------
+    # =====================================================
 
-    final_sell = (
-
-        m["close"] < m["ema20"] and
-        m["ema20"] < m["ema50"] and
-        m["close"] < m["vwap"] and
-        m["rsi"] < 45 and
-        m["adx"] > 18 and
-        m["di_minus"] > m["di_plus"] and
-        m["rvol20"] >= 1.10 and
-        m["body_ratio"] >= 0.40
+    sell_base = (
+        c < e20 and
+        e20 < e50 and
+        c < vw and
+        rsi14 < 45 and
+        adx > 18 and
+        dim > dip and
+        rvol >= FINAL_RVOL_MIN and
+        mv <= -FINAL_MOVE_MIN and
+        br >= FINAL_BODY_MIN
     )
 
-    # -----------------------------------------------------
+    sell_pdl = (
+        (not USE_PDL) or
+        (pdl <= 0) or
+        (c < pdl)
+    )
+
+    sell_final = (
+        sell_base and
+        sell_pdl
+    )
+
+
+    # =====================================================
     # EARLY BUY
-    # -----------------------------------------------------
+    # =====================================================
 
-    early_buy_count = sum([
+    buy_conditions = [
 
-        m["close"] >= m["ema20"],
+        c >= e20,
 
-        m["ema20"] > m["ema20_prev"],
+        e20 > e20_prev,
 
-        m["close"] >= m["vwap"],
+        c >= vw,
 
-        m["rsi"] >= 53,
+        rsi14 >= 53,
 
-        m["di_plus"] > m["di_minus"],
+        dip > dim,
 
-        (
-            m["adx"] >= 20 and
-            m["adx"] > m["adx_prev"]
-        ),
+        adx >= 20 and
+        adx > adx_prev,
 
-        (
-            m["rvol20"] >= 1.20 and
-            m["rvol20"] > m["rvol20_prev"]
-        ),
+        rvol >= EARLY_RVOL_MIN and
+        rvol > rvol_prev,
 
-        m["volume_accel"] >= 1.20
-    ])
+        va >= EARLY_VOL_ACCEL_MIN
+    ]
 
-    # -----------------------------------------------------
+    buy_count = sum(
+        1 for x in buy_conditions
+        if x
+    )
+
+    buy_early = (
+        buy_count >= EARLY_NEED
+    )
+
+    if USE_PDH and pdh > 0:
+
+        buy_near_pdh = (
+            c >= pdh *
+            (1 - EARLY_NEAR_PCT / 100.0)
+        )
+
+        buy_early = (
+            buy_early and
+            buy_near_pdh
+        )
+
+
+    # =====================================================
     # EARLY SELL
-    # -----------------------------------------------------
+    # =====================================================
 
-    early_sell_count = sum([
+    sell_conditions = [
 
-        m["close"] <= m["ema20"],
+        c <= e20,
 
-        m["ema20"] < m["ema20_prev"],
+        e20 < e20_prev,
 
-        m["close"] <= m["vwap"],
+        c <= vw,
 
-        m["rsi"] <= 47,
+        rsi14 <= 47,
 
-        m["di_minus"] > m["di_plus"],
+        dim > dip,
 
-        (
-            m["adx"] >= 20 and
-            m["adx"] > m["adx_prev"]
-        ),
+        adx >= 20 and
+        adx > adx_prev,
 
-        (
-            m["rvol20"] >= 1.20 and
-            m["rvol20"] > m["rvol20_prev"]
-        ),
+        rvol >= EARLY_RVOL_MIN and
+        rvol > rvol_prev,
 
-        m["volume_accel"] >= 1.20
-    ])
+        va >= EARLY_VOL_ACCEL_MIN
+    ]
 
-    # FINAL PRIORITY
+    sell_count = sum(
+        1 for x in sell_conditions
+        if x
+    )
 
-    if final_buy:
+    sell_early = (
+        sell_count >= EARLY_NEED
+    )
 
-        return {
-            "metrics": m,
-            "stage": "FINAL BUY",
-            "direction": "BUY",
-            "early_count": early_buy_count
-        }
+    if USE_PDL and pdl > 0:
 
-    if final_sell:
+        sell_near_pdl = (
+            c <= pdl *
+            (1 + EARLY_NEAR_PCT / 100.0)
+        )
 
-        return {
-            "metrics": m,
-            "stage": "FINAL SELL",
-            "direction": "SELL",
-            "early_count": early_sell_count
-        }
+        sell_early = (
+            sell_early and
+            sell_near_pdl
+        )
 
-    # EARLY 7/8
 
-    if early_buy_count >= 7:
+    # =====================================================
+    # DIRECTION
+    # =====================================================
 
-        return {
-            "metrics": m,
-            "stage": "EARLY BUY",
-            "direction": "BUY",
-            "early_count": early_buy_count
-        }
-
-    if early_sell_count >= 7:
+    if DIRECTION == "BUY":
 
         return {
-            "metrics": m,
-            "stage": "EARLY SELL",
-            "direction": "SELL",
-            "early_count": early_sell_count
+            "final_buy": buy_final,
+            "final_sell": False,
+            "early_buy": buy_early,
+            "early_sell": False
         }
 
-    return None
+    if DIRECTION == "SELL":
+
+        return {
+            "final_buy": False,
+            "final_sell": sell_final,
+            "early_buy": False,
+            "early_sell": sell_early
+        }
+
+    return {
+        "final_buy": buy_final,
+        "final_sell": sell_final,
+        "early_buy": buy_early,
+        "early_sell": sell_early
+    }
 
 
 # =========================================================
-# ROTATION
-# TODAY OPEN -> CURRENT CLOSE
+# STATE LOAD / SAVE
 # =========================================================
 
-def build_rotation(
-    api,
-    from_date,
-    to_date
+def load_state():
+
+    if not os.path.exists(
+        STATE_FILE
+    ):
+        return {}
+
+    try:
+
+        with open(
+            STATE_FILE,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            data = json.load(f)
+
+        return data if isinstance(
+            data,
+            dict
+        ) else {}
+
+    except Exception:
+
+        return {}
+
+
+def save_state(state):
+
+    with open(
+        STATE_FILE,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            state,
+            f,
+            indent=2,
+            ensure_ascii=False
+        )
+
+
+# =========================================================
+# UPDATE ONE-SIGNAL-PER-DAY STATE
+# =========================================================
+
+def update_signal_state(
+    state,
+    stock,
+    sector,
+    metrics,
+    signal
 ):
 
-    result = []
+    if not signal:
+        return
 
-    today = (
-        datetime.now(IST)
-        .date()
+    day = today_key()
+
+    key = stock
+
+    old = state.get(key)
+
+    if old and old.get("day") != day:
+        old = None
+
+    # -----------------------------------------------------
+    # FINAL HAS PRIORITY
+    # -----------------------------------------------------
+
+    if signal["final_buy"]:
+
+        state[key] = {
+            "day": day,
+            "stock": stock,
+            "sector": sector,
+            "direction": "BUY",
+            "stage": "FINAL",
+            "pass_time": metrics["timestamp"],
+            "metrics": metrics
+        }
+
+        return
+
+    if signal["final_sell"]:
+
+        state[key] = {
+            "day": day,
+            "stock": stock,
+            "sector": sector,
+            "direction": "SELL",
+            "stage": "FINAL",
+            "pass_time": metrics["timestamp"],
+            "metrics": metrics
+        }
+
+        return
+
+    # -----------------------------------------------------
+    # EARLY ONLY IF NO EXISTING SIGNAL
+    # -----------------------------------------------------
+
+    if old is not None:
+        return
+
+    if signal["early_buy"]:
+
+        state[key] = {
+            "day": day,
+            "stock": stock,
+            "sector": sector,
+            "direction": "BUY",
+            "stage": "EARLY",
+            "pass_time": metrics["timestamp"],
+            "metrics": metrics
+        }
+
+        return
+
+    if signal["early_sell"]:
+
+        state[key] = {
+            "day": day,
+            "stock": stock,
+            "sector": sector,
+            "direction": "SELL",
+            "stage": "EARLY",
+            "pass_time": metrics["timestamp"],
+            "metrics": metrics
+        }
+
+
+# =========================================================
+# ROTATION HEATMAP
+# =========================================================
+
+def build_rotation():
+
+    output = []
+
+    start = now_ist().replace(
+        hour=9,
+        minute=15,
+        second=0,
+        microsecond=0
     )
+
+    end = now_ist()
 
     for sector in SECTORS:
 
-        sector_info = get_sector_token(
-            api,
-            sector
+        exchange, symbol, token = (
+            get_sector_token(sector)
         )
 
-        if not sector_info:
+        if not token:
             continue
 
-        exchange, token, symbol = (
-            sector_info
-        )
-
         df = get_candles(
-            api,
             exchange,
             token,
-            from_date,
-            to_date
+            start - timedelta(days=35),
+            end
         )
 
         if df.empty:
             continue
 
-        today_df = df[
-            df["timestamp"].dt.date == today
+        today = df[
+            df["timestamp"].dt.date ==
+            end.date()
         ]
 
-        if today_df.empty:
+        if today.empty:
             continue
 
-        today_open = float(
-            today_df["open"].iloc[0]
+        o = safe_float(
+            today.iloc[0]["open"]
         )
 
-        current_close = float(
-            today_df["close"].iloc[-1]
+        c = safe_float(
+            today.iloc[-1]["close"]
         )
 
-        if today_open <= 0:
-            continue
+        if o == 0:
+            move = 0.0
+        else:
+            move = (
+                (c / o) - 1.0
+            ) * 100.0
 
-        move = (
-            (current_close / today_open) - 1
-        ) * 100
-
-        result.append({
-
-            "sector":
-                sector,
-
-            "move":
-                round(
-                    float(move),
-                    3
-                )
+        output.append({
+            "sector": sector,
+            "move": move
         })
 
-    result.sort(
+
+    # -----------------------------------------------------
+    # DESCENDING SORT
+    # -----------------------------------------------------
+
+    output.sort(
         key=lambda x: x["move"],
         reverse=True
     )
@@ -1098,77 +1385,195 @@ def build_rotation(
     max_abs = max(
         [
             abs(x["move"])
-            for x in result
-        ],
-        default=0.0001
+            for x in output
+        ] or [0.0001]
     )
 
-    for i, item in enumerate(result):
+    max_abs = max(
+        max_abs,
+        0.0001
+    )
 
-        rank = i + 1
 
-        if rank <= 5:
+    # -----------------------------------------------------
+    # MASTER 15-SECTOR STAGE
+    # -----------------------------------------------------
+
+    for rank, item in enumerate(
+        output
+    ):
+
+        if rank < 5:
             stage = "STRONG"
-
-        elif rank <= 10:
+        elif rank < 10:
             stage = "NEUTRAL"
-
         else:
             stage = "WEAK"
 
-        fill = round(
-            abs(item["move"]) /
-            max_abs * 8
-        )
-
-        fill = max(
-            1,
-            min(
-                8,
-                fill
+        fill_count = int(
+            round(
+                abs(item["move"]) /
+                max_abs * 8
             )
         )
 
-        item["rank"] = rank
-        item["stage"] = stage
-        item["fill"] = fill
+        fill_count = max(
+            1,
+            min(
+                8,
+                fill_count
+            )
+        )
 
-    print(
-        "ROTATION COUNT:",
-        len(result)
+        item["rank"] = rank + 1
+        item["stage"] = stage
+        item["boxes"] = fill_count
+
+    return output
+
+
+# =========================================================
+# NORMALIZE SCANNER SECTOR
+# =========================================================
+
+def rotation_sector_for_scanner(
+    sector
+):
+
+    if sector == "DEFENCE":
+        return "DEFENSE"
+
+    if sector in [
+        "FINANCIAL 1",
+        "FINANCIAL 2"
+    ]:
+        return "FINANCIAL"
+
+    if sector in [
+        "ENERGY 1",
+        "ENERGY 2"
+    ]:
+        return "ENERGY"
+
+    return sector
+
+
+# =========================================================
+# SCANNER
+# =========================================================
+
+def build_scanner():
+
+    state = load_state()
+
+    start = now_ist().replace(
+        hour=9,
+        minute=15,
+        second=0,
+        microsecond=0
     )
 
-    return result
+    end = now_ist()
+
+    for sector, stocks in STOCKS.items():
+
+        for stock in stocks:
+
+            token = get_stock_token(
+                stock
+            )
+
+            if not token:
+                continue
+
+            df = get_candles(
+                "NSE",
+                token,
+                start - timedelta(days=35),
+                end
+            )
+
+            if df.empty:
+                continue
+
+            metrics = get_metrics(
+                df
+            )
+
+            if not metrics:
+                continue
+
+            signal = scanner_signal(
+                metrics
+            )
+
+            update_signal_state(
+                state,
+                stock,
+                sector,
+                metrics,
+                signal
+            )
+
+    save_state(state)
+
+    # -----------------------------------------------------
+    # ONLY TODAY'S STATE
+    # -----------------------------------------------------
+
+    today = today_key()
+
+    scanner = []
+
+    for stock, item in state.items():
+
+        if item.get("day") != today:
+            continue
+
+        scanner.append(
+            item
+        )
+
+    # Sort FINAL first, then EARLY
+    scanner.sort(
+        key=lambda x: (
+            0 if x["stage"] == "FINAL"
+            else 1,
+            x["sector"],
+            x["stock"]
+        )
+    )
+
+    return scanner
 
 
 # =========================================================
-# BIG PLAYER
+# BIG PLAYER / MONEY FLOW TOP 6
 # =========================================================
 
-def build_big_player(scanner):
+def build_big_player(
+    scanner
+):
 
     result = []
 
     for item in scanner:
 
+        m = item.get(
+            "metrics",
+            {}
+        )
+
         score = 60
 
-        rvol = item.get(
-            "rvol20",
-            0
+        rvol = safe_float(
+            m.get("rvol20")
         )
 
-        early = item.get(
-            "early_count",
-            0
-        )
+        if rvol >= 3:
+            score += 20
 
-        stage = item.get(
-            "stage",
-            ""
-        )
-
-        if rvol >= 2.0:
+        elif rvol >= 2:
             score += 15
 
         elif rvol >= 1.5:
@@ -1177,45 +1582,30 @@ def build_big_player(scanner):
         elif rvol >= 1.2:
             score += 5
 
-        if early >= 8:
-            score += 10
 
-        elif early >= 7:
+        if item.get("stage") == "EARLY":
             score += 5
 
-        if stage.startswith("FINAL"):
+        if item.get("stage") == "FINAL":
             score += 10
 
-        score = min(
-            100,
-            score
-        )
+        item2 = dict(item)
+
+        item2["score"] = score
 
         if score >= 70:
-
-            result.append({
-
-                "stock":
-                    item["stock"],
-
-                "sector":
-                    item["sector"],
-
-                "direction":
-                    item["direction"],
-
-                "stage":
-                    stage,
-
-                "score":
-                    score,
-
-                "rvol20":
-                    item["rvol20"]
-            })
+            result.append(
+                item2
+            )
 
     result.sort(
-        key=lambda x: x["score"],
+        key=lambda x: (
+            x["score"],
+            safe_float(
+                x.get("metrics", {})
+                 .get("rvol20", 0)
+            )
+        ),
         reverse=True
     )
 
@@ -1223,347 +1613,298 @@ def build_big_player(scanner):
 
 
 # =========================================================
-# FINAL
+# FINAL MARKET DASHBOARD
 # =========================================================
 
 def build_final(
     rotation,
-    scanner,
     big_player
 ):
 
-    result = []
-
     rotation_map = {
-        item["sector"]: item
-        for item in rotation
+        x["sector"]: x
+        for x in rotation
     }
 
-    bp_map = {
-        item["stock"]: item
-        for item in big_player
-    }
+    final = []
 
-    for item in scanner:
+    for item in big_player:
 
-        stock = item["stock"]
-        sector = item["sector"]
+        scanner_sector = item[
+            "sector"
+        ]
 
-        if stock not in bp_map:
+        rotation_sector = (
+            rotation_sector_for_scanner(
+                scanner_sector
+            )
+        )
+
+        rot = rotation_map.get(
+            rotation_sector
+        )
+
+        if not rot:
             continue
 
-        if sector not in rotation_map:
+        direction = item[
+            "direction"
+        ]
+
+        stage = rot[
+            "stage"
+        ]
+
+        # -------------------------------------------------
+        # Existing market alignment logic
+        # -------------------------------------------------
+
+        if (
+            direction == "BUY" and
+            stage == "WEAK"
+        ):
             continue
 
-        rot = rotation_map[sector]
+        if (
+            direction == "SELL" and
+            stage == "STRONG"
+        ):
+            continue
 
-        direction = item["direction"]
-
-        if direction == "BUY":
-
-            if rot["stage"] == "WEAK":
-                continue
-
-        if direction == "SELL":
-
-            if rot["stage"] == "STRONG":
-                continue
-
-        bp = bp_map[stock]
-
-        result.append({
-
-            "stock":
-                stock,
-
-            "sector":
-                sector,
-
-            "direction":
-                direction,
-
-            "score":
-                bp["score"],
-
-            "stage":
-                "FINAL CONFIRMED"
+        final.append({
+            "stock": item["stock"],
+            "sector": scanner_sector,
+            "rotation_sector": rotation_sector,
+            "direction": direction,
+            "signal_stage": item["stage"],
+            "sector_stage": stage,
+            "score": item["score"],
+            "rvol20": safe_float(
+                item["metrics"].get(
+                    "rvol20"
+                )
+            ),
+            "move_pct": safe_float(
+                item["metrics"].get(
+                    "move_pct"
+                )
+            ),
+            "pass_time": item[
+                "pass_time"
+            ]
         })
 
-    result.sort(
-        key=lambda x: x["score"],
-        reverse=True
-    )
-
-    return result
+    return final
 
 
 # =========================================================
-# MAIN
+# MARKET STATUS
+# =========================================================
+
+def market_status():
+
+    now = now_ist()
+
+    if now.weekday() >= 5:
+        return "MARKET CLOSED"
+
+    t = now.time()
+
+    if t < datetime.strptime(
+        "09:15",
+        "%H:%M"
+    ).time():
+
+        return "PRE-MARKET"
+
+    if t <= datetime.strptime(
+        "15:30",
+        "%H:%M"
+    ).time():
+
+        return "MARKET OPEN"
+
+    return "MARKET CLOSED"
+
+
+# =========================================================
+# MAIN ENGINE
 # =========================================================
 
 def main():
 
-    now = datetime.now(IST)
+    now = now_ist()
 
-    minutes = (
-        now.hour * 60 +
-        now.minute
-    )
+    # -----------------------------------------------------
+    # Weekend
+    # -----------------------------------------------------
 
-    output = {
+    if now.weekday() >= 5:
 
-        "last_updated":
-            now.strftime("%I:%M %p"),
-
-        "market_date":
-            now.strftime("%Y-%m-%d"),
-
-        "market_status":
-            "LIVE",
-
-        "sectors":
-            [],
-
-        "scanner":
-            [],
-
-        "big_player":
-            [],
-
-        "final":
-            {}
-    }
-
-    # =====================================================
-    # MARKET WINDOW
-    # 09:15 - 15:30 IST
-    # =====================================================
-
-    if (
-        now.weekday() >= 5 or
-        minutes < 555 or
-        minutes > 930
-    ):
-
-        output["market_status"] = "CLOSED"
+        data = {
+            "status": "MARKET CLOSED",
+            "last_updated": now.isoformat(),
+            "rotation": [],
+            "scanner": [],
+            "big_player": [],
+            "final_dashboard": []
+        }
 
         with open(
             DATA_FILE,
             "w",
             encoding="utf-8"
-        ) as file:
+        ) as f:
 
             json.dump(
-                output,
-                file,
-                ensure_ascii=False,
-                indent=2
+                data,
+                f,
+                indent=2,
+                ensure_ascii=False
             )
-
-        print(
-            "MARKET CLOSED:",
-            output["last_updated"]
-        )
 
         return
 
-    # =====================================================
-    # LOGIN
-    # =====================================================
 
-    print(
-        "MARKET OPEN:",
-        now.strftime("%I:%M %p")
-    )
+    # -----------------------------------------------------
+    # Before market
+    # -----------------------------------------------------
 
-    api = login()
+    if now.hour < 9 or (
+        now.hour == 9 and
+        now.minute < 15
+    ):
 
-    # 35 calendar days gives enough previous trading days
-    # for TRUE 20D RVOL.
-    from_date = (
-        now -
-        timedelta(days=35)
-    ).strftime(
-        "%Y-%m-%d %H:%M"
-    )
+        data = {
+            "status": "PRE-MARKET",
+            "last_updated": now.isoformat(),
+            "rotation": [],
+            "scanner": [],
+            "big_player": [],
+            "final_dashboard": []
+        }
 
-    to_date = now.strftime(
-        "%Y-%m-%d %H:%M"
-    )
+        with open(
+            DATA_FILE,
+            "w",
+            encoding="utf-8"
+        ) as f:
 
-    print(
-        "DATA RANGE:",
-        from_date,
-        "TO",
-        to_date
-    )
-
-    # =====================================================
-    # ROTATION
-    # =====================================================
-
-    rotation = build_rotation(
-        api,
-        from_date,
-        to_date
-    )
-
-    output["sectors"] = rotation
-
-    # =====================================================
-    # SCANNER
-    # =====================================================
-
-    scanner = []
-
-    for sector, stocks in STOCKS.items():
-
-        print(
-            "SCANNING SECTOR:",
-            sector,
-            "COUNT:",
-            len(stocks)
-        )
-
-        for stock in stocks:
-
-            token = get_stock_token(
-                api,
-                stock
+            json.dump(
+                data,
+                f,
+                indent=2,
+                ensure_ascii=False
             )
 
-            if not token:
-                continue
+        return
 
-            df = get_candles(
-                api,
-                "NSE",
-                token,
-                from_date,
-                to_date
-            )
 
-            if df.empty:
-                continue
+    # -----------------------------------------------------
+    # Login
+    # -----------------------------------------------------
 
-            signal = scanner_signal(
-                df
-            )
+    login()
 
-            if signal is None:
-                continue
 
-            metrics = signal[
-                "metrics"
-            ]
+    # -----------------------------------------------------
+    # Master engines
+    # -----------------------------------------------------
 
-            scanner.append({
+    rotation = build_rotation()
 
-                "stock":
-                    stock,
-
-                "sector":
-                    sector,
-
-                "direction":
-                    signal["direction"],
-
-                "stage":
-                    signal["stage"],
-
-                "early_count":
-                    signal["early_count"],
-
-                "rvol20":
-                    round(
-                        metrics["rvol20"],
-                        2
-                    ),
-
-                "pass_time":
-                    now.strftime(
-                        "%I:%M %p"
-                    )
-            })
-
-    print(
-        "SCANNER COUNT:",
-        len(scanner)
-    )
-
-    output["scanner"] = scanner
-
-    # =====================================================
-    # BIG PLAYER
-    # =====================================================
+    scanner = build_scanner()
 
     big_player = build_big_player(
         scanner
     )
 
-    print(
-        "BIG PLAYER COUNT:",
-        len(big_player)
-    )
-
-    output["big_player"] = (
-        big_player
-    )
-
-    # =====================================================
-    # FINAL
-    # =====================================================
-
-    final_signals = build_final(
+    final_dashboard = build_final(
         rotation,
-        scanner,
         big_player
     )
 
-    print(
-        "FINAL COUNT:",
-        len(final_signals)
-    )
 
-    output["final"] = {
+    # -----------------------------------------------------
+    # Output
+    # -----------------------------------------------------
 
-        "sector_count":
-            len(rotation),
+    data = {
 
-        "scanner_count":
-            len(scanner),
+        "status": market_status(),
 
-        "big_player_count":
-            len(big_player),
+        "last_updated":
+            now.isoformat(),
 
-        "signals":
-            final_signals
+        "engine":
+            "NSE ROTATION & FLOW",
+
+        "master_logic":
+            "TRADINGVIEW MASTER MATCHED",
+
+        "settings": {
+
+            "direction":
+                DIRECTION,
+
+            "use_pdh":
+                USE_PDH,
+
+            "use_pdl":
+                USE_PDL,
+
+            "early_rvol_min":
+                EARLY_RVOL_MIN,
+
+            "early_vol_accel_min":
+                EARLY_VOL_ACCEL_MIN,
+
+            "early_near_pct":
+                EARLY_NEAR_PCT,
+
+            "early_conditions_required":
+                EARLY_NEED,
+
+            "final_rvol_min":
+                FINAL_RVOL_MIN,
+
+            "final_move_min":
+                FINAL_MOVE_MIN,
+
+            "final_body_min":
+                FINAL_BODY_MIN
+        },
+
+        "rotation":
+            rotation,
+
+        "scanner":
+            scanner,
+
+        "big_player":
+            big_player,
+
+        "final_dashboard":
+            final_dashboard
     }
 
-    # =====================================================
-    # SAVE
-    # =====================================================
 
     with open(
         DATA_FILE,
         "w",
         encoding="utf-8"
-    ) as file:
+    ) as f:
 
         json.dump(
-            output,
-            file,
-            ensure_ascii=False,
-            indent=2
+            data,
+            f,
+            indent=2,
+            ensure_ascii=False
         )
-
-    print(
-        "DATA.JSON UPDATED SUCCESSFULLY"
-    )
 
 
 # =========================================================
-# START
+# RUN
 # =========================================================
 
 if __name__ == "__main__":
