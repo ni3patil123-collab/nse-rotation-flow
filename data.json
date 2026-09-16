@@ -1,270 +1,171 @@
 {
-  "last_updated": "11:02 AM",
+  "last_updated": "11:16 AM",
   "market_date": "2026-09-16",
   "market_status": "LIVE",
   "sectors": [],
   "scanner": [
     {
-      "stock": "BEL",
-      "sector": "DEFENCE",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 8,
-      "rvol20": 1.21,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "COFORGE",
-      "sector": "IT",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.13,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "TORNTPHARM",
-      "sector": "PHARMA",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.77,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "AUBANK",
-      "sector": "BANKING",
+      "stock": "ABCAPITAL",
+      "sector": "FINANCIAL 1",
       "direction": "BUY",
       "stage": "EARLY BUY",
       "early_count": 7,
-      "rvol20": 0.45,
-      "pass_time": "11:02 AM"
+      "rvol20": 0.65,
+      "pass_time": "11:16 AM"
     },
     {
-      "stock": "CANBK",
-      "sector": "BANKING",
-      "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 6,
-      "rvol20": 1.15,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "PNB",
-      "sector": "BANKING",
-      "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 6,
-      "rvol20": 1.85,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "SBIN",
-      "sector": "BANKING",
-      "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 6,
-      "rvol20": 1.47,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "LICHSGFIN",
-      "sector": "FINANCIAL 2",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 1.21,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "PFC",
-      "sector": "FINANCIAL 2",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 1.01,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "PNBHOUSING",
-      "sector": "FINANCIAL 2",
-      "direction": "SELL",
-      "stage": "EARLY SELL",
-      "early_count": 7,
-      "rvol20": 1.25,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "RECLTD",
-      "sector": "FINANCIAL 2",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 1.1,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "FORCEMOT",
+      "stock": "BAJAJ-AUTO",
       "sector": "AUTO",
       "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 6,
-      "rvol20": 1.18,
-      "pass_time": "11:02 AM"
+      "stage": "EARLY BUY",
+      "early_count": 7,
+      "rvol20": 1.68,
+      "pass_time": "11:16 AM"
     },
     {
-      "stock": "M&M",
+      "stock": "TIINDIA",
       "sector": "AUTO",
       "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 5,
-      "rvol20": 1.87,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "NBCC",
-      "sector": "REALTY",
-      "direction": "BUY",
       "stage": "EARLY BUY",
       "early_count": 7,
-      "rvol20": 1.62,
-      "pass_time": "11:02 AM"
+      "rvol20": 0.58,
+      "pass_time": "11:16 AM"
     },
     {
-      "stock": "PHOENIXLTD",
-      "sector": "REALTY",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 1.66,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "BPCL",
-      "sector": "ENERGY 1",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 0.9,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "TATAPOWER",
-      "sector": "ENERGY 2",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 0.54,
-      "pass_time": "11:02 AM"
-    },
-    {
-      "stock": "BRITANNIA",
+      "stock": "COLPAL",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "FINAL BUY",
-      "early_count": 5,
-      "rvol20": 1.2,
-      "pass_time": "11:02 AM"
+      "early_count": 6,
+      "rvol20": 5.02,
+      "pass_time": "11:16 AM"
+    },
+    {
+      "stock": "GODREJCP",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "EARLY BUY",
+      "early_count": 7,
+      "rvol20": 0.82,
+      "pass_time": "11:16 AM"
     },
     {
       "stock": "HINDUNILVR",
       "sector": "FMCG",
       "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 1.34,
-      "pass_time": "11:02 AM"
+      "stage": "FINAL BUY",
+      "early_count": 8,
+      "rvol20": 1.39,
+      "pass_time": "11:16 AM"
     },
     {
-      "stock": "ITC",
+      "stock": "NESTLEIND",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "FINAL BUY",
-      "early_count": 7,
-      "rvol20": 1.73,
-      "pass_time": "11:02 AM"
+      "early_count": 8,
+      "rvol20": 2.12,
+      "pass_time": "11:16 AM"
     },
     {
       "stock": "PATANJALI",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "EARLY BUY",
-      "early_count": 7,
-      "rvol20": 13.91,
-      "pass_time": "11:02 AM"
+      "early_count": 8,
+      "rvol20": 13.95,
+      "pass_time": "11:16 AM"
     },
     {
-      "stock": "CUMMINSIND",
-      "sector": "CAPITAL_GOODS",
+      "stock": "TATACONSUM",
+      "sector": "FMCG",
       "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 6,
-      "rvol20": 1.3,
-      "pass_time": "11:02 AM"
+      "stage": "EARLY BUY",
+      "early_count": 8,
+      "rvol20": 1.65,
+      "pass_time": "11:16 AM"
     },
     {
-      "stock": "VOLTAS",
+      "stock": "SRF",
+      "sector": "CHEMICAL",
+      "direction": "BUY",
+      "stage": "EARLY BUY",
+      "early_count": 7,
+      "rvol20": 0.68,
+      "pass_time": "11:16 AM"
+    },
+    {
+      "stock": "LT",
       "sector": "CAPITAL_GOODS",
       "direction": "BUY",
       "stage": "EARLY BUY",
       "early_count": 7,
-      "rvol20": 0.53,
-      "pass_time": "11:02 AM"
+      "rvol20": 1.63,
+      "pass_time": "11:16 AM"
+    },
+    {
+      "stock": "PVRINOX",
+      "sector": "CONSUMER",
+      "direction": "BUY",
+      "stage": "EARLY BUY",
+      "early_count": 7,
+      "rvol20": 0.4,
+      "pass_time": "11:16 AM"
     }
   ],
   "big_player": [
     {
-      "stock": "ITC",
+      "stock": "NESTLEIND",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "FINAL BUY",
+      "score": 95,
+      "rvol20": 2.12
+    },
+    {
+      "stock": "COLPAL",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "FINAL BUY",
       "score": 85,
-      "rvol20": 1.73
+      "rvol20": 5.02
     },
     {
-      "stock": "TORNTPHARM",
-      "sector": "PHARMA",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "score": 80,
-      "rvol20": 1.77
-    },
-    {
-      "stock": "PNB",
-      "sector": "BANKING",
+      "stock": "HINDUNILVR",
+      "sector": "FMCG",
       "direction": "BUY",
       "stage": "FINAL BUY",
-      "score": 80,
-      "rvol20": 1.85
-    },
-    {
-      "stock": "M&M",
-      "sector": "AUTO",
-      "direction": "BUY",
-      "stage": "FINAL BUY",
-      "score": 80,
-      "rvol20": 1.87
+      "score": 85,
+      "rvol20": 1.39
     },
     {
       "stock": "PATANJALI",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "EARLY BUY",
-      "score": 80,
-      "rvol20": 13.91
+      "score": 85,
+      "rvol20": 13.95
     },
     {
-      "stock": "BEL",
-      "sector": "DEFENCE",
+      "stock": "TATACONSUM",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "EARLY BUY",
+      "score": 80,
+      "rvol20": 1.65
+    },
+    {
+      "stock": "BAJAJ-AUTO",
+      "sector": "AUTO",
       "direction": "BUY",
       "stage": "EARLY BUY",
       "score": 75,
-      "rvol20": 1.21
+      "rvol20": 1.68
     }
   ],
   "final": {
     "sector_count": 0,
-    "scanner_count": 23,
+    "scanner_count": 12,
     "big_player_count": 6,
     "signals": []
   }
