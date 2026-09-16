@@ -1,53 +1,80 @@
 {
-  "last_updated": "09:26 AM",
+  "last_updated": "09:44 AM",
   "market_date": "2026-09-16",
   "market_status": "LIVE",
   "sectors": [],
   "scanner": [
     {
-      "stock": "DIVISLAB",
+      "stock": "BDL",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 8,
+      "rvol20": 1.98,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "COCHINSHIP",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 8,
+      "rvol20": 1.96,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "BHEL",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 5,
+      "rvol20": 1.17,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "GLENMARK",
       "sector": "PHARMA",
       "direction": "SELL",
       "stage": "EARLY SELL",
       "early_count": 7,
-      "rvol20": 1.04,
-      "pass_time": "09:26 AM"
+      "rvol20": 0.86,
+      "pass_time": "09:44 AM"
     },
     {
-      "stock": "FORTIS",
-      "sector": "PHARMA",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 1.14,
-      "pass_time": "09:26 AM"
-    },
-    {
-      "stock": "YESBANK",
-      "sector": "BANKING",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 8,
-      "rvol20": 9.63,
-      "pass_time": "09:26 AM"
-    },
-    {
-      "stock": "BAJAJHLDNG",
+      "stock": "BAJAJFINSV",
       "sector": "FINANCIAL 1",
       "direction": "SELL",
       "stage": "FINAL SELL",
       "early_count": 5,
-      "rvol20": 1.53,
-      "pass_time": "09:26 AM"
+      "rvol20": 1.32,
+      "pass_time": "09:44 AM"
     },
     {
-      "stock": "MCX",
+      "stock": "CDSL",
+      "sector": "FINANCIAL 1",
+      "direction": "SELL",
+      "stage": "EARLY SELL",
+      "early_count": 7,
+      "rvol20": 1.05,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "IEX",
+      "sector": "FINANCIAL 1",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 7,
+      "rvol20": 1.57,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "LICHSGFIN",
       "sector": "FINANCIAL 2",
       "direction": "SELL",
       "stage": "EARLY SELL",
       "early_count": 7,
-      "rvol20": 0.67,
-      "pass_time": "09:26 AM"
+      "rvol20": 0.64,
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "ATHERENERG",
@@ -56,43 +83,43 @@
       "stage": "EARLY SELL",
       "early_count": 7,
       "rvol20": 0.7,
-      "pass_time": "09:26 AM"
-    },
-    {
-      "stock": "HYUNDAI",
-      "sector": "AUTO",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 8,
-      "rvol20": 1.56,
-      "pass_time": "09:26 AM"
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "MOTHERSON",
       "sector": "AUTO",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 1.37,
-      "pass_time": "09:26 AM"
+      "early_count": 5,
+      "rvol20": 1.28,
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "SONACOMS",
       "sector": "AUTO",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 2.52,
-      "pass_time": "09:26 AM"
+      "early_count": 7,
+      "rvol20": 2.24,
+      "pass_time": "09:44 AM"
     },
     {
-      "stock": "NBCC",
+      "stock": "UNOMINDA",
+      "sector": "AUTO",
+      "direction": "SELL",
+      "stage": "EARLY SELL",
+      "early_count": 7,
+      "rvol20": 1.32,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "DLF",
       "sector": "REALTY",
       "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 1.8,
-      "pass_time": "09:26 AM"
+      "stage": "EARLY SELL",
+      "early_count": 7,
+      "rvol20": 0.99,
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "PHOENIXLTD",
@@ -100,17 +127,17 @@
       "direction": "SELL",
       "stage": "FINAL SELL",
       "early_count": 6,
-      "rvol20": 4.9,
-      "pass_time": "09:26 AM"
+      "rvol20": 3.51,
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "PREMIERENE",
       "sector": "ENERGY 2",
       "direction": "SELL",
-      "stage": "EARLY SELL",
-      "early_count": 7,
-      "rvol20": 0.87,
-      "pass_time": "09:26 AM"
+      "stage": "FINAL SELL",
+      "early_count": 8,
+      "rvol20": 1.35,
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "SUZLON",
@@ -118,53 +145,53 @@
       "direction": "SELL",
       "stage": "FINAL SELL",
       "early_count": 8,
-      "rvol20": 1.57,
-      "pass_time": "09:26 AM"
+      "rvol20": 2.31,
+      "pass_time": "09:44 AM"
     },
     {
-      "stock": "NESTLEIND",
+      "stock": "WAAREEENER",
+      "sector": "ENERGY 2",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 8,
+      "rvol20": 1.65,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "COLPAL",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "EARLY BUY",
       "early_count": 7,
-      "rvol20": 3.26,
-      "pass_time": "09:26 AM"
+      "rvol20": 1.81,
+      "pass_time": "09:44 AM"
     },
     {
-      "stock": "RADICO",
-      "sector": "FMCG",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 6,
-      "rvol20": 1.16,
-      "pass_time": "09:26 AM"
-    },
-    {
-      "stock": "TATACONSUM",
-      "sector": "FMCG",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "early_count": 8,
-      "rvol20": 1.54,
-      "pass_time": "09:26 AM"
-    },
-    {
-      "stock": "KAYNES",
-      "sector": "CAPITAL_GOODS",
+      "stock": "UPL",
+      "sector": "CHEMICAL",
       "direction": "SELL",
       "stage": "EARLY SELL",
       "early_count": 7,
-      "rvol20": 0.76,
-      "pass_time": "09:26 AM"
+      "rvol20": 0.85,
+      "pass_time": "09:44 AM"
     },
     {
-      "stock": "POWERINDIA",
+      "stock": "CROMPTON",
       "sector": "CAPITAL_GOODS",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "early_count": 8,
-      "rvol20": 1.28,
-      "pass_time": "09:26 AM"
+      "early_count": 6,
+      "rvol20": 1.17,
+      "pass_time": "09:44 AM"
+    },
+    {
+      "stock": "CUMMINSIND",
+      "sector": "CAPITAL_GOODS",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 5,
+      "rvol20": 1.66,
+      "pass_time": "09:44 AM"
     },
     {
       "stock": "BATAINDIA",
@@ -172,8 +199,8 @@
       "direction": "SELL",
       "stage": "EARLY SELL",
       "early_count": 7,
-      "rvol20": 0.47,
-      "pass_time": "09:26 AM"
+      "rvol20": 0.84,
+      "pass_time": "09:44 AM"
     }
   ],
   "big_player": [
@@ -182,53 +209,53 @@
       "sector": "ENERGY 2",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "score": 90,
-      "rvol20": 1.57
+      "score": 95,
+      "rvol20": 2.31
     },
     {
-      "stock": "YESBANK",
-      "sector": "BANKING",
-      "direction": "BUY",
-      "stage": "EARLY BUY",
-      "score": 85,
-      "rvol20": 9.63
+      "stock": "BDL",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "score": 90,
+      "rvol20": 1.98
+    },
+    {
+      "stock": "COCHINSHIP",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "score": 90,
+      "rvol20": 1.96
     },
     {
       "stock": "SONACOMS",
       "sector": "AUTO",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "score": 85,
-      "rvol20": 2.52
+      "score": 90,
+      "rvol20": 2.24
     },
     {
-      "stock": "PHOENIXLTD",
-      "sector": "REALTY",
+      "stock": "WAAREEENER",
+      "sector": "ENERGY 2",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "score": 85,
-      "rvol20": 4.9
+      "score": 90,
+      "rvol20": 1.65
     },
     {
-      "stock": "POWERINDIA",
-      "sector": "CAPITAL_GOODS",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "score": 85,
-      "rvol20": 1.28
-    },
-    {
-      "stock": "BAJAJHLDNG",
+      "stock": "IEX",
       "sector": "FINANCIAL 1",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "score": 80,
-      "rvol20": 1.53
+      "score": 85,
+      "rvol20": 1.57
     }
   ],
   "final": {
     "sector_count": 0,
-    "scanner_count": 19,
+    "scanner_count": 22,
     "big_player_count": 6,
     "signals": []
   }
