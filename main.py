@@ -22,30 +22,32 @@ IST = ZoneInfo("Asia/Kolkata")
 
 DATA_FILE = "data.json"
 STATE_FILE = "signal_state.json"
+
 TOKEN_CACHE = {}
 
-
-# =========================================================
-# MASTER SCANNER SETTINGS
-# =========================================================
-
-DIRECTION = os.getenv("SCANNER_DIRECTION", "BOTH").upper()
+DIRECTION = os.getenv(
+    "SCANNER_DIRECTION",
+    "BOTH"
+).upper()
 
 USE_PDH = True
 USE_PDL = True
 
+# TradingView Indicator 2
 EARLY_RVOL_MIN = 1.20
 EARLY_VOL_ACCEL_MIN = 1.20
 EARLY_NEAR_PCT = 0.30
 EARLY_NEED = 7
 
+# FINAL
 FINAL_RVOL_MIN = 1.10
 FINAL_MOVE_MIN = 0.10
 FINAL_BODY_MIN = 0.40
 
 
 # =========================================================
-# SECTORS
+# TRADINGVIEW INDICATOR 1
+# EXACT 15 SECTORS
 # =========================================================
 
 SECTORS = [
@@ -63,121 +65,263 @@ SECTORS = [
     "CAPITAL_GOODS",
     "TELECOM",
     "CONSUMER",
-    "DEFENSE",
+    "DEFENSE"
 ]
 
 
 # =========================================================
-# SECTOR STOCK LISTS
+# TRADINGVIEW INDICATOR 2
+# STOCK LISTS
 # =========================================================
 
 STOCKS = {
 
     "DEFENCE": [
-        "HAL", "BEL", "BDL", "COCHINSHIP", "MAZDOCK",
-        "SOLARINDS", "BHEL", "BHARATFORG"
+        "HAL",
+        "BEL",
+        "BDL",
+        "COCHINSHIP",
+        "MAZDOCK",
+        "SOLARINDS",
+        "BHEL",
+        "BHARATFORG"
     ],
 
     "IT": [
-        "COFORGE", "HCLTECH", "INFY", "LTM", "MPHASIS",
-        "OFSS", "PERSISTENT", "KPITTECH", "TATAELXSI",
-        "TCS", "TECHM", "WIPRO"
+        "COFORGE",
+        "HCLTECH",
+        "INFY",
+        "LTM",
+        "MPHASIS",
+        "OFSS",
+        "PERSISTENT",
+        "KPITTECH",
+        "TATAELXSI",
+        "TCS",
+        "TECHM",
+        "WIPRO"
     ],
 
     "PHARMA": [
-        "ALKEM", "APOLLOHOSP", "AUROPHARMA", "BIOCON",
-        "CIPLA", "DIVISLAB", "DRREDDY", "FORTIS",
-        "GLENMARK", "LAURUSLABS", "LUPIN", "MANKIND",
-        "MAXHEALTH", "SAGILITY", "SUNPHARMA",
-        "TORNTPHARM", "ZYDUSLIFE"
+        "ALKEM",
+        "APOLLOHOSP",
+        "AUROPHARMA",
+        "BIOCON",
+        "CIPLA",
+        "DIVISLAB",
+        "DRREDDY",
+        "FORTIS",
+        "GLENMARK",
+        "LAURUSLABS",
+        "LUPIN",
+        "MANKIND",
+        "MAXHEALTH",
+        "SAGILITY",
+        "SUNPHARMA",
+        "TORNTPHARM",
+        "ZYDUSLIFE"
     ],
 
     "BANKING": [
-        "AUBANK", "AXISBANK", "BANDHANBNK", "BANKBARODA",
-        "BANKINDIA", "CANBK", "FEDERALBNK", "HDFCBANK",
-        "ICICIBANK", "IDFCFIRSTB", "INDIANB", "INDUSINDBK",
-        "KOTAKBANK", "MAHABANK", "PNB", "RBLBANK",
-        "SBIN", "UNIONBANK", "YESBANK"
+        "AUBANK",
+        "AXISBANK",
+        "BANDHANBNK",
+        "BANKBARODA",
+        "BANKINDIA",
+        "CANBK",
+        "FEDERALBNK",
+        "HDFCBANK",
+        "ICICIBANK",
+        "IDFCFIRSTB",
+        "INDIANB",
+        "INDUSINDBK",
+        "KOTAKBANK",
+        "MAHABANK",
+        "PNB",
+        "RBLBANK",
+        "SBIN",
+        "UNIONBANK",
+        "YESBANK"
     ],
 
     "FINANCIAL 1": [
-        "360ONE", "ABCAPITAL", "ANGELONE", "BAJFINANCE",
-        "BAJAJFINSV", "BAJAJHLDNG", "BSE", "CAMS",
-        "CDSL", "CHOLAFIN", "HDFCAMC", "HDFCLIFE",
-        "ICICIGI", "ICICIPRULI", "IEX", "IRFC",
-        "JIOFIN", "KFINTECH"
+        "360ONE",
+        "ABCAPITAL",
+        "ANGELONE",
+        "BAJFINANCE",
+        "BAJAJFINSV",
+        "BAJAJHLDNG",
+        "BSE",
+        "CAMS",
+        "CDSL",
+        "CHOLAFIN",
+        "HDFCAMC",
+        "HDFCLIFE",
+        "ICICIGI",
+        "ICICIPRULI",
+        "IEX",
+        "IRFC",
+        "JIOFIN",
+        "KFINTECH"
     ],
 
     "FINANCIAL 2": [
-        "LICHSGFIN", "LICI", "LTF", "MANAPPURAM", "MCX",
-        "MFSL", "MOTILALOFS", "MUTHOOTFIN", "NAM-INDIA",
-        "PFC", "PNBHOUSING", "POLICYBZR", "REC",
-        "RECLTD", "SBICARD", "SBILIFE", "SHRIRAMFIN"
+        "LICHSGFIN",
+        "LICI",
+        "LTF",
+        "MANAPPURAM",
+        "MCX",
+        "MFSL",
+        "MOTILALOFS",
+        "MUTHOOTFIN",
+        "NAM-INDIA",
+        "PFC",
+        "PNBHOUSING",
+        "POLICYBZR",
+        "REC",
+        "RECLTD",
+        "SBICARD",
+        "SBILIFE",
+        "SHRIRAMFIN"
     ],
 
     "AUTO": [
-        "ASHOKLEY", "ATHERENERG", "BAJAJ-AUTO", "BHARATFORG",
-        "BOSCHLTD", "EICHERMOT", "FORCEMOT", "HEROMOTOCO",
-        "HYUNDAI", "M&M", "MARUTI", "MOTHERSON",
-        "SONACOMS", "TIINDIA", "TVSMOTOR", "UNOMINDA"
+        "ASHOKLEY",
+        "ATHERENERG",
+        "BAJAJ-AUTO",
+        "BHARATFORG",
+        "BOSCHLTD",
+        "EICHERMOT",
+        "FORCEMOT",
+        "HEROMOTOCO",
+        "HYUNDAI",
+        "M&M",
+        "MARUTI",
+        "MOTHERSON",
+        "SONACOMS",
+        "TIINDIA",
+        "TVSMOTOR",
+        "UNOMINDA"
     ],
 
     "REALTY": [
-        "DLF", "GODREJPROP", "LODHA", "NBCC",
-        "OBEROIRLTY", "PHOENIXLTD", "PRESTIGE"
+        "DLF",
+        "GODREJPROP",
+        "LODHA",
+        "NBCC",
+        "OBEROIRLTY",
+        "PHOENIXLTD",
+        "PRESTIGE"
     ],
 
     "CEMENT": [
-        "AMBUJACEM", "GRASIM", "SHREECEM", "ULTRACEMCO"
+        "AMBUJACEM",
+        "GRASIM",
+        "SHREECEM",
+        "ULTRACEMCO"
     ],
 
     "ENERGY 1": [
-        "ADANIENSOL", "ADANIGREEN", "ADANIPOWER",
-        "BPCL", "COALINDIA", "GAIL", "HINDPETRO",
-        "IOC", "IREDA", "JSWENERGY", "NHPC"
+        "ADANIENSOL",
+        "ADANIGREEN",
+        "ADANIPOWER",
+        "BPCL",
+        "COALINDIA",
+        "GAIL",
+        "HINDPETRO",
+        "IOC",
+        "IREDA",
+        "JSWENERGY",
+        "NHPC"
     ],
 
     "ENERGY 2": [
-        "NTPC", "OIL", "ONGC", "PETRONET", "POWERGRID",
-        "PREMIERENE", "RELIANCE", "SUZLON",
-        "TATAPOWER", "WAAREEENER"
+        "NTPC",
+        "OIL",
+        "ONGC",
+        "PETRONET",
+        "POWERGRID",
+        "PREMIERENE",
+        "RELIANCE",
+        "SUZLON",
+        "TATAPOWER",
+        "WAAREEENER"
     ],
 
     "FMCG": [
-        "BRITANNIA", "COLPAL", "DABUR", "GODFRYPHLP",
-        "GODREJCP", "HINDUNILVR", "ITC", "MARICO",
-        "NESTLEIND", "PATANJALI", "RADICO",
-        "TATACONSUM", "UNITDSPR", "VBL"
+        "BRITANNIA",
+        "COLPAL",
+        "DABUR",
+        "GODFRYPHLP",
+        "GODREJCP",
+        "HINDUNILVR",
+        "ITC",
+        "MARICO",
+        "NESTLEIND",
+        "PATANJALI",
+        "RADICO",
+        "TATACONSUM",
+        "UNITDSPR",
+        "VBL"
     ],
 
     "CHEMICAL": [
-        "ASIANPAINT", "ASTRAL", "PIDILITIND", "PIIND",
-        "SRF", "SUPREMEIND", "UPL"
+        "ASIANPAINT",
+        "ASTRAL",
+        "PIDILITIND",
+        "PIIND",
+        "SRF",
+        "SUPREMEIND",
+        "UPL"
     ],
 
     "CAPITAL_GOODS": [
-        "ADANIENT", "ADANIPORTS", "AMBER", "CGPOWER",
-        "CONCOR", "CROMPTON", "CUMMINSIND", "DIXON",
-        "GVT&D", "HAVELLS", "INOXWIND", "KAYNES",
-        "KEI", "LT", "PGEL", "POLYCAB", "POWERINDIA",
-        "RVNL", "SIEMENS", "VOLTAS", "GMRAIRPORT",
+        "ADANIENT",
+        "ADANIPORTS",
+        "AMBER",
+        "CGPOWER",
+        "CONCOR",
+        "CROMPTON",
+        "CUMMINSIND",
+        "DIXON",
+        "GVT&D",
+        "HAVELLS",
+        "INOXWIND",
+        "KAYNES",
+        "KEI",
+        "LT",
+        "PGEL",
+        "POLYCAB",
+        "POWERINDIA",
+        "RVNL",
+        "SIEMENS",
+        "VOLTAS",
+        "GMRAIRPORT",
         "APLAPOLLO"
     ],
 
     "TELECOM": [
-        "BHARTIARTL", "IDEA", "INDUSTOWER", "TATAFCOMM"
+        "BHARTIARTL",
+        "IDEA",
+        "INDUSTOWER",
+        "TATAFCOMM"
     ],
 
     "CONSUMER": [
-        "TITAN", "TRENT", "ABFRL", "PAGEIND",
-        "BATAINDIA", "CENTURYTEX", "INDIANHOTE",
+        "TITAN",
+        "TRENT",
+        "ABFRL",
+        "PAGEIND",
+        "BATAINDIA",
+        "CENTURYTEX",
+        "INDIANHOTE",
         "PVRINOX"
-    ],
+    ]
 }
 
 
 # =========================================================
-# SMARTAPI LOGIN
+# ANGEL ONE
 # =========================================================
 
 API_KEY = os.getenv("ANGEL_API_KEY")
@@ -189,6 +333,7 @@ api = None
 
 
 def login():
+
     global api
 
     if not all([
@@ -201,9 +346,13 @@ def login():
             "Missing Angel One environment variables."
         )
 
-    api = SmartConnect(api_key=API_KEY)
+    api = SmartConnect(
+        api_key=API_KEY
+    )
 
-    totp = pyotp.TOTP(TOTP_KEY).now()
+    totp = pyotp.TOTP(
+        TOTP_KEY
+    ).now()
 
     result = api.generateSession(
         CLIENT_CODE,
@@ -212,6 +361,7 @@ def login():
     )
 
     if not result or not result.get("status"):
+
         raise RuntimeError(
             f"Angel One login failed: {result}"
         )
@@ -224,27 +374,39 @@ def login():
 # =========================================================
 
 def safe_float(x, default=0.0):
+
     try:
+
         if pd.isna(x):
             return default
+
         return float(x)
+
     except Exception:
+
         return default
 
 
 def now_ist():
+
     return datetime.now(IST)
 
 
 def today_key():
-    return now_ist().strftime("%Y-%m-%d")
+
+    return now_ist().strftime(
+        "%Y-%m-%d"
+    )
 
 
 # =========================================================
-# SEARCH TOKEN
+# STOCK TOKEN
 # =========================================================
 
-def search_token(symbol, exchange="NSE"):
+def search_token(
+    symbol,
+    exchange="NSE"
+):
 
     key = f"{exchange}:{symbol}"
 
@@ -252,33 +414,70 @@ def search_token(symbol, exchange="NSE"):
         return TOKEN_CACHE[key]
 
     try:
+
         result = api.searchScrip(
             exchange,
             symbol
         )
 
-        data = result.get("data", []) if result else []
+        data = (
+            result.get("data", [])
+            if result
+            else []
+        )
 
         if not data:
             return None
 
         # Exact match first
         for item in data:
-            ts = str(item.get("tradingsymbol", ""))
 
-            if ts == symbol:
-                token = str(item.get("symboltoken"))
-                TOKEN_CACHE[key] = token
-                return token
+            ts = str(
+                item.get(
+                    "tradingsymbol",
+                    ""
+                )
+            )
+
+            if ts.upper() == symbol.upper():
+
+                token = item.get(
+                    "symboltoken"
+                )
+
+                if token:
+
+                    TOKEN_CACHE[key] = str(
+                        token
+                    )
+
+                    return str(token)
 
         # EQ fallback
         for item in data:
-            ts = str(item.get("tradingsymbol", ""))
 
-            if ts == f"{symbol}-EQ":
-                token = str(item.get("symboltoken"))
-                TOKEN_CACHE[key] = token
-                return token
+            ts = str(
+                item.get(
+                    "tradingsymbol",
+                    ""
+                )
+            )
+
+            if ts.upper() == (
+                symbol.upper() + "-EQ"
+            ):
+
+                token = item.get(
+                    "symboltoken"
+                )
+
+                if token:
+
+                    TOKEN_CACHE[key] = str(
+                        token
+                    )
+
+                    return str(token)
 
     except Exception:
         return None
@@ -286,22 +485,17 @@ def search_token(symbol, exchange="NSE"):
     return None
 
 
-# =========================================================
-# STOCK TOKEN
-# =========================================================
-
 def get_stock_token(symbol):
 
-    token = search_token(symbol, "NSE")
-
-    if token:
-        return token
-
-    return None
+    return search_token(
+        symbol,
+        "NSE"
+    )
 
 
 # =========================================================
-# SECTOR INDEX CANDIDATES
+# TRADINGVIEW INDICATOR 1
+# EXACT SECTOR SYMBOL MAP
 # =========================================================
 
 SECTOR_INDEX_CANDIDATES = {
@@ -361,15 +555,14 @@ SECTOR_INDEX_CANDIDATES = {
 
     "CAPITAL_GOODS": [
         ("BSE", "CG"),
-        ("NSE", "NIFTY_CAPITAL_MARKET"),
         ("NSE", "NIFTY_INDIA_MANUFACTURING"),
-        ("NSE", "NIFTY_INDUSTRIAL_MANUFACTURING")
+        ("NSE", "NIFTY_INDUSTRIAL_MANUFACTURING"),
+        ("NSE", "NIFTY_CAPITAL_MARKET")
     ],
 
     "TELECOM": [
-        ("NSE", "NIFTY_TELECOM"),
         ("NSE", "NIFTY_IND_DIGITAL"),
-        ("NSE", "NIFTY_IND_DIGITAL")
+        ("NSE", "NIFTY_TELECOM")
     ],
 
     "CONSUMER": [
@@ -377,157 +570,300 @@ SECTOR_INDEX_CANDIDATES = {
     ],
 
     "DEFENSE": [
-        ("NSE", "NIFTY_IND_DEFENCE")
-    ],
+        ("NSE", "NIFTY_IND_DEFENCE"),
+        ("NSE", "NIFTY_IND_DEFENSE")
+    ]
 }
 
 
+SECTOR_SEARCH_NAMES = {
+
+    "METAL": [
+        "CNXMETAL",
+        "Nifty Metal",
+        "NIFTY METAL"
+    ],
+
+    "IT": [
+        "CNXIT",
+        "Nifty IT",
+        "NIFTY IT"
+    ],
+
+    "PHARMA": [
+        "CNXPHARMA",
+        "Nifty Pharma",
+        "NIFTY PHARMA"
+    ],
+
+    "BANKING": [
+        "BANKNIFTY",
+        "Nifty Bank",
+        "NIFTY BANK"
+    ],
+
+    "FINANCIAL": [
+        "CNXFINANCE",
+        "Nifty Financial Services",
+        "Nifty Fin Service"
+    ],
+
+    "AUTO": [
+        "CNXAUTO",
+        "Nifty Auto"
+    ],
+
+    "REALTY": [
+        "CNXREALTY",
+        "Nifty Realty"
+    ],
+
+    "CEMENT": [
+        "NIFTY_CEMENT",
+        "Nifty Cement"
+    ],
+
+    "ENERGY": [
+        "CNXENERGY",
+        "Nifty Energy"
+    ],
+
+    "FMCG": [
+        "CNXFMCG",
+        "Nifty FMCG"
+    ],
+
+    "CHEMICAL": [
+        "NIFTY_CHEMICALS",
+        "Nifty Chemicals"
+    ],
+
+    "CAPITAL_GOODS": [
+        "CG",
+        "NIFTY_INDIA_MANUFACTURING",
+        "NIFTY_INDUSTRIAL_MANUFACTURING",
+        "NIFTY_CAPITAL_MARKET"
+    ],
+
+    "TELECOM": [
+        "NIFTY_IND_DIGITAL",
+        "NIFTY_TELECOM",
+        "Nifty India Digital",
+        "Nifty Telecom"
+    ],
+
+    "CONSUMER": [
+        "NIFTY_CONSR_DURBL",
+        "Nifty Consumer Durables"
+    ],
+
+    "DEFENSE": [
+        "NIFTY_IND_DEFENCE",
+        "NIFTY_IND_DEFENSE",
+        "Nifty India Defence",
+        "Nifty India Defense"
+    ]
+}
+
+
+# =========================================================
+# SECTOR TOKEN
+# =========================================================
+
 def get_sector_token(sector):
 
-    SECTOR_SEARCH_NAMES = {
-        "METAL": [
-            "Nifty Metal", "CNXMETAL", "NIFTY METAL"
-        ],
-        "IT": [
-            "Nifty IT", "CNXIT", "NIFTY IT"
-        ],
-        "PHARMA": [
-            "Nifty Pharma", "CNXPHARMA", "NIFTY PHARMA"
-        ],
-        "BANKING": [
-            "Nifty Bank", "BANKNIFTY", "NIFTY BANK"
-        ],
-        "FINANCIAL": [
-            "Nifty Financial Services",
-            "Nifty Fin Service",
-            "CNXFINANCE",
-            "NIFTY FIN SERVICE"
-        ],
-        "AUTO": [
-            "Nifty Auto", "CNXAUTO", "NIFTY AUTO"
-        ],
-        "REALTY": [
-            "Nifty Realty", "CNXREALTY", "NIFTY REALTY"
-        ],
-        "CEMENT": [
-            "Nifty Cement", "NIFTY CEMENT"
-        ],
-        "ENERGY": [
-            "Nifty Energy", "CNXENERGY", "NIFTY ENERGY"
-        ],
-        "FMCG": [
-            "Nifty FMCG", "CNXFMCG", "NIFTY FMCG"
-        ],
-        "CHEMICAL": [
-            "Nifty Chemicals", "NIFTY CHEMICALS"
-        ],
-        "CAPITAL_GOODS": [
-            "Nifty India Manufacturing",
-            "Nifty Industrial Manufacturing",
-            "Nifty Capital Market",
-            "CG"
-        ],
-        "TELECOM": [
-            "Nifty India Digital",
-            "Nifty Digital",
-            "Nifty Telecom",
-            "NIFTY IND DIGITAL"
-        ],
-        "CONSUMER": [
-            "Nifty Consumer Durables",
-            "Nifty Consumer Durable",
-            "NIFTY CONSR DURBL"
-        ],
-        "DEFENSE": [
-            "Nifty India Defence",
-            "Nifty India Defense",
-            "NIFTY IND DEFENCE",
-            "NIFTY IND DEFENSE"
-        ]
-    }
+    candidates = SECTOR_INDEX_CANDIDATES.get(
+        sector,
+        []
+    )
 
-    names = SECTOR_SEARCH_NAMES.get(sector, [])
+    names = SECTOR_SEARCH_NAMES.get(
+        sector,
+        []
+    )
 
-    # 1) Try existing candidate names
-    candidates = SECTOR_INDEX_CANDIDATES.get(sector, [])
+    # -----------------------------------------------------
+    # 1. Exact TradingView candidate
+    # -----------------------------------------------------
 
     for exchange, symbol in candidates:
 
         try:
-            result = api.searchScrip(exchange, symbol)
 
-            data = result.get("data") or []
+            result = api.searchScrip(
+                exchange,
+                symbol
+            )
 
-            # Prefer AMXIDX index instrument
+            data = (
+                result.get("data") or []
+                if result
+                else []
+            )
+
+            # Exact tradingsymbol + AMXIDX
             for item in data:
-                if str(item.get("instrumenttype", "")).upper() == "AMXIDX":
-                    token = item.get("symboltoken")
-                    tradingsymbol = item.get("tradingsymbol")
 
-                    if token:
-                        return (
-                            exchange,
-                            tradingsymbol or symbol,
-                            str(token)
-                        )
+                ts = str(
+                    item.get(
+                        "tradingsymbol",
+                        ""
+                    )
+                )
 
-            # Fallback: first valid result
-            for item in data:
-                token = item.get("symboltoken")
+                token = item.get(
+                    "symboltoken"
+                )
 
-                if token:
+                instrument = str(
+                    item.get(
+                        "instrumenttype",
+                        ""
+                    )
+                ).upper()
+
+                if (
+                    token
+                    and ts.upper() == symbol.upper()
+                    and instrument == "AMXIDX"
+                ):
+
                     return (
                         exchange,
-                        item.get("tradingsymbol") or symbol,
+                        ts,
+                        str(token)
+                    )
+
+            # Exact tradingsymbol even if
+            # Angel metadata doesn't return AMXIDX
+            for item in data:
+
+                ts = str(
+                    item.get(
+                        "tradingsymbol",
+                        ""
+                    )
+                )
+
+                token = item.get(
+                    "symboltoken"
+                )
+
+                if (
+                    token
+                    and ts.upper() == symbol.upper()
+                ):
+
+                    return (
+                        exchange,
+                        ts,
+                        str(token)
+                    )
+
+            # Closest candidate
+            for item in data:
+
+                ts = str(
+                    item.get(
+                        "tradingsymbol",
+                        ""
+                    )
+                )
+
+                token = item.get(
+                    "symboltoken"
+                )
+
+                if (
+                    token
+                    and symbol.upper()
+                    in ts.upper()
+                ):
+
+                    return (
+                        exchange,
+                        ts,
                         str(token)
                     )
 
         except Exception:
             continue
 
-    # 2) Search current SmartAPI index names
-    for exchange in ["NSE", "BSE"]:
+    # -----------------------------------------------------
+    # 2. Search readable index name
+    # -----------------------------------------------------
+
+    for exchange in [
+        "NSE",
+        "BSE"
+    ]:
 
         for name in names:
 
             try:
-                result = api.searchScrip(exchange, name)
 
-                data = result.get("data") or []
+                result = api.searchScrip(
+                    exchange,
+                    name
+                )
 
-                # First preference = AMXIDX
+                data = (
+                    result.get("data") or []
+                    if result
+                    else []
+                )
+
+                # AMXIDX first
                 for item in data:
 
-                    if str(
-                        item.get("instrumenttype", "")
-                    ).upper() != "AMXIDX":
+                    token = item.get(
+                        "symboltoken"
+                    )
+
+                    if not token:
                         continue
 
-                    token = item.get("symboltoken")
+                    instrument = str(
+                        item.get(
+                            "instrumenttype",
+                            ""
+                        )
+                    ).upper()
 
-                    if token:
+                    if instrument == "AMXIDX":
+
                         return (
                             exchange,
-                            item.get("tradingsymbol") or name,
+                            item.get(
+                                "tradingsymbol"
+                            ) or name,
                             str(token)
                         )
 
             except Exception:
                 continue
 
-    # 3) Known Bank Nifty fallback
+    # -----------------------------------------------------
+    # 3. BANKNIFTY known fallback
+    # -----------------------------------------------------
+
     if sector == "BANKING":
+
         return (
             "NSE",
             "BANKNIFTY",
             "99926009"
         )
 
-    return None, None, None
+    return (
+        None,
+        None,
+        None
+    )
 
 
 # =========================================================
-# FETCH 5 MIN CANDLES
+# CANDLE DATA
 # =========================================================
 
 def get_candles(
@@ -540,23 +876,35 @@ def get_candles(
     try:
 
         params = {
+
             "exchange": exchange,
+
             "symboltoken": token,
+
             "interval": "FIVE_MINUTE",
-            "fromdate": from_date.strftime(
-                "%Y-%m-%d %H:%M"
-            ),
-            "todate": to_date.strftime(
-                "%Y-%m-%d %H:%M"
-            )
+
+            "fromdate":
+                from_date.strftime(
+                    "%Y-%m-%d %H:%M"
+                ),
+
+            "todate":
+                to_date.strftime(
+                    "%Y-%m-%d %H:%M"
+                )
         }
 
-        response = api.getCandleData(params)
+        response = api.getCandleData(
+            params
+        )
 
         if not response:
             return pd.DataFrame()
 
-        rows = response.get("data", [])
+        rows = response.get(
+            "data",
+            []
+        )
 
         if not rows:
             return pd.DataFrame()
@@ -578,11 +926,14 @@ def get_candles(
         )
 
         if df["timestamp"].dt.tz is None:
+
             df["timestamp"] = (
                 df["timestamp"]
                 .dt.tz_localize(IST)
             )
+
         else:
+
             df["timestamp"] = (
                 df["timestamp"]
                 .dt.tz_convert(IST)
@@ -595,6 +946,7 @@ def get_candles(
             "close",
             "volume"
         ]:
+
             df[col] = pd.to_numeric(
                 df[col],
                 errors="coerce"
@@ -604,35 +956,48 @@ def get_candles(
 
         df = df.sort_values(
             "timestamp"
-        ).reset_index(drop=True)
+        )
+
+        df = df.reset_index(
+            drop=True
+        )
 
         return df
 
     except Exception:
+
         return pd.DataFrame()
 
 
 # =========================================================
-# EMA
+# INDICATOR FUNCTIONS
 # =========================================================
 
-def ema(series, length):
+def ema(
+    series,
+    length
+):
+
     return series.ewm(
         span=length,
         adjust=False
     ).mean()
 
 
-# =========================================================
-# RSI
-# =========================================================
-
-def rsi(series, length=14):
+def rsi(
+    series,
+    length=14
+):
 
     delta = series.diff()
 
-    gain = delta.clip(lower=0)
-    loss = -delta.clip(upper=0)
+    gain = delta.clip(
+        lower=0
+    )
+
+    loss = -delta.clip(
+        upper=0
+    )
 
     avg_gain = gain.ewm(
         alpha=1 / length,
@@ -644,9 +1009,13 @@ def rsi(series, length=14):
         adjust=False
     ).mean()
 
-    rs = avg_gain / avg_loss.replace(
-        0,
-        float("nan")
+    rs = (
+        avg_gain
+        /
+        avg_loss.replace(
+            0,
+            float("nan")
+        )
     )
 
     return 100 - (
@@ -654,17 +1023,17 @@ def rsi(series, length=14):
     )
 
 
-# =========================================================
-# DMI / ADX
-# =========================================================
-
-def dmi(df, length=14):
+def dmi(
+    df,
+    length=14
+):
 
     high = df["high"]
     low = df["low"]
     close = df["close"]
 
     up = high.diff()
+
     down = -low.diff()
 
     plus_dm = pd.Series(
@@ -677,28 +1046,50 @@ def dmi(df, length=14):
         index=df.index
     )
 
+    plus_mask = (
+        (up > down)
+        &
+        (up > 0)
+    )
+
+    minus_mask = (
+        (down > up)
+        &
+        (down > 0)
+    )
+
     plus_dm[
-        (up > down) &
-        (up > 0)
+        plus_mask
     ] = up[
-        (up > down) &
-        (up > 0)
+        plus_mask
     ]
 
     minus_dm[
-        (down > up) &
-        (down > 0)
+        minus_mask
     ] = down[
-        (down > up) &
-        (down > 0)
+        minus_mask
     ]
 
     tr1 = high - low
-    tr2 = (high - close.shift()).abs()
-    tr3 = (low - close.shift()).abs()
+
+    tr2 = (
+        high
+        -
+        close.shift()
+    ).abs()
+
+    tr3 = (
+        low
+        -
+        close.shift()
+    ).abs()
 
     tr = pd.concat(
-        [tr1, tr2, tr3],
+        [
+            tr1,
+            tr2,
+            tr3
+        ],
         axis=1
     ).max(axis=1)
 
@@ -708,27 +1099,41 @@ def dmi(df, length=14):
     ).mean()
 
     plus_di = (
-        100 *
+        100
+        *
         plus_dm.ewm(
             alpha=1 / length,
             adjust=False
-        ).mean() /
+        ).mean()
+        /
         atr
     )
 
     minus_di = (
-        100 *
+        100
+        *
         minus_dm.ewm(
             alpha=1 / length,
             adjust=False
-        ).mean() /
+        ).mean()
+        /
         atr
     )
 
     dx = (
-        100 *
-        (plus_di - minus_di).abs() /
-        (plus_di + minus_di)
+        100
+        *
+        (
+            plus_di
+            -
+            minus_di
+        ).abs()
+        /
+        (
+            plus_di
+            +
+            minus_di
+        )
     )
 
     adx = dx.ewm(
@@ -743,33 +1148,50 @@ def dmi(df, length=14):
     )
 
 
-# =========================================================
-# VWAP
-# =========================================================
-
 def vwap(df):
 
     tp = (
-        df["high"] +
-        df["low"] +
+        df["high"]
+        +
+        df["low"]
+        +
         df["close"]
     ) / 3.0
 
-    day = df["timestamp"].dt.date
+    day = df[
+        "timestamp"
+    ].dt.date
 
-    pv = tp * df["volume"]
+    pv = (
+        tp
+        *
+        df["volume"]
+    )
 
-    cum_pv = pv.groupby(day).cumsum()
-    cum_vol = df["volume"].groupby(day).cumsum()
+    cum_pv = (
+        pv.groupby(day)
+        .cumsum()
+    )
 
-    return cum_pv / cum_vol.replace(
-        0,
-        float("nan")
+    cum_vol = (
+        df["volume"]
+        .groupby(day)
+        .cumsum()
+    )
+
+    return (
+        cum_pv
+        /
+        cum_vol.replace(
+            0,
+            float("nan")
+        )
     )
 
 
 # =========================================================
 # TRUE 20D SAME-TIME 5M RVOL
+# MATCHES TRADINGVIEW MASTER CONCEPT
 # =========================================================
 
 def rvol20(df):
@@ -789,18 +1211,27 @@ def rvol20(df):
         .dt.strftime("%H:%M")
     )
 
-    # Pine-style cumulative day volume
+    # Same as Pine cumulative day volume
     temp["cum_day_vol"] = (
-        temp.groupby("date")["volume"]
+        temp
+        .groupby("date")["volume"]
         .cumsum()
     )
 
     current = temp.iloc[-1]
 
-    current_date = current["date"]
-    current_hm = current["hm"]
+    current_date = current[
+        "date"
+    ]
+
+    current_hm = current[
+        "hm"
+    ]
+
     current_cum = safe_float(
-        current["cum_day_vol"]
+        current[
+            "cum_day_vol"
+        ]
     )
 
     historical = []
@@ -810,38 +1241,55 @@ def rvol20(df):
         reverse=True
     )
 
+    # Previous 20 valid trading days
     for d in dates:
 
         if d >= current_date:
             continue
 
         same = temp[
-            (temp["date"] == d) &
+            (temp["date"] == d)
+            &
             (temp["hm"] == current_hm)
         ]
 
         if same.empty:
             continue
 
-        val = safe_float(
-            same.iloc[-1]["cum_day_vol"]
+        old_cum = safe_float(
+            same.iloc[-1][
+                "cum_day_vol"
+            ]
         )
 
-        if val > 0:
-            historical.append(val)
+        if old_cum > 0:
+
+            historical.append(
+                old_cum
+            )
 
         if len(historical) >= 20:
             break
 
     if not historical:
-        return 0.0, 0.0
 
-    avg20 = sum(
-        historical
-    ) / len(historical)
+        return (
+            0.0,
+            0.0
+        )
+
+    avg20 = (
+        sum(historical)
+        /
+        len(historical)
+    )
 
     if avg20 <= 0:
-        return 0.0, avg20
+
+        return (
+            0.0,
+            avg20
+        )
 
     return (
         current_cum / avg20,
@@ -856,7 +1304,11 @@ def rvol20(df):
 def previous_day_high_low(df):
 
     if df.empty:
-        return 0.0, 0.0
+
+        return (
+            0.0,
+            0.0
+        )
 
     temp = df.copy()
 
@@ -874,34 +1326,51 @@ def previous_day_high_low(df):
     ]
 
     if previous.empty:
-        return 0.0, 0.0
+
+        return (
+            0.0,
+            0.0
+        )
 
     previous_day = (
-        previous["date"]
-        .max()
+        previous["date"].max()
     )
 
     day_data = previous[
-        previous["date"] ==
+        previous["date"]
+        ==
         previous_day
     ]
 
     if day_data.empty:
-        return 0.0, 0.0
+
+        return (
+            0.0,
+            0.0
+        )
 
     return (
-        safe_float(day_data["high"].max()),
-        safe_float(day_data["low"].min())
+        safe_float(
+            day_data["high"].max()
+        ),
+        safe_float(
+            day_data["low"].min()
+        )
     )
 
 
 # =========================================================
-# METRICS
+# STOCK METRICS
 # =========================================================
 
 def get_metrics(df):
 
-    if df.empty or len(df) < 60:
+    if (
+        df.empty
+        or
+        len(df) < 60
+    ):
+
         return None
 
     close = df["close"]
@@ -921,24 +1390,34 @@ def get_metrics(df):
         14
     )
 
-    di_plus, di_minus, adx = dmi(
+    (
+        di_plus,
+        di_minus,
+        adx
+    ) = dmi(
         df,
         14
     )
 
-    vw = vwap(df)
+    vw = vwap(
+        df
+    )
 
-    rvol, avg_rvol = rvol20(df)
+    rvol, avg_rvol = rvol20(
+        df
+    )
 
-    # Previous-bar RVOL
+    # Exact previous current-day candle RVOL
     if len(df) > 61:
+
         prev_rvol, _ = rvol20(
             df.iloc[:-1].copy()
         )
+
     else:
+
         prev_rvol = 0.0
 
-    # Current 5M candle
     last = df.iloc[-1]
 
     c = safe_float(
@@ -964,15 +1443,17 @@ def get_metrics(df):
     candle_range = h - l
 
     body_ratio = (
-        abs(c - o) / candle_range
+        abs(c - o)
+        /
+        candle_range
         if candle_range > 0
         else 0.0
     )
 
-    # IMPORTANT:
-    # Pine f_data() uses CURRENT 5M candle move
     candle_move_pct = (
-        ((c - o) / o) * 100.0
+        ((c - o) / o)
+        *
+        100.0
         if o != 0
         else 0.0
     )
@@ -994,95 +1475,117 @@ def get_metrics(df):
         df
     )
 
-    # Today's open -> current close
     today = df[
-        df["timestamp"].dt.date ==
+        df["timestamp"].dt.date
+        ==
         df.iloc[-1]["timestamp"].date()
     ]
 
     today_open = (
-        safe_float(today.iloc[0]["open"])
+        safe_float(
+            today.iloc[0]["open"]
+        )
         if not today.empty
         else o
     )
 
     today_move_pct = (
-        ((c - today_open) /
-         today_open) * 100.0
+        ((c - today_open) / today_open)
+        *
+        100.0
         if today_open != 0
         else 0.0
     )
 
     return {
+
         "close": c,
 
-        "ema20": safe_float(
-            e20.iloc[-1]
-        ),
+        "ema20":
+            safe_float(
+                e20.iloc[-1]
+            ),
 
-        "ema20_prev": safe_float(
-            e20.iloc[-2]
-        ),
+        "ema20_prev":
+            safe_float(
+                e20.iloc[-2]
+            ),
 
-        "ema50": safe_float(
-            e50.iloc[-1]
-        ),
+        "ema50":
+            safe_float(
+                e50.iloc[-1]
+            ),
 
-        "rsi": safe_float(
-            rsi14.iloc[-1]
-        ),
+        "rsi":
+            safe_float(
+                rsi14.iloc[-1]
+            ),
 
-        "vwap": safe_float(
-            vw.iloc[-1]
-        ),
+        "vwap":
+            safe_float(
+                vw.iloc[-1]
+            ),
 
-        "di_plus": safe_float(
-            di_plus.iloc[-1]
-        ),
+        "di_plus":
+            safe_float(
+                di_plus.iloc[-1]
+            ),
 
-        "di_minus": safe_float(
-            di_minus.iloc[-1]
-        ),
+        "di_minus":
+            safe_float(
+                di_minus.iloc[-1]
+            ),
 
-        "adx": safe_float(
-            adx.iloc[-1]
-        ),
+        "adx":
+            safe_float(
+                adx.iloc[-1]
+            ),
 
-        "adx_prev": safe_float(
-            adx.iloc[-2]
-        ),
+        "adx_prev":
+            safe_float(
+                adx.iloc[-2]
+            ),
 
-        "rvol20": safe_float(
-            rvol
-        ),
+        "rvol20":
+            safe_float(
+                rvol
+            ),
 
-        "rvol20_prev": safe_float(
-            prev_rvol
-        ),
+        "rvol20_prev":
+            safe_float(
+                prev_rvol
+            ),
 
-        "move_pct": candle_move_pct,
+        "move_pct":
+            candle_move_pct,
 
-        "today_move_pct": today_move_pct,
+        "today_move_pct":
+            today_move_pct,
 
-        "body_ratio": body_ratio,
+        "body_ratio":
+            body_ratio,
 
-        "vol_accel": safe_float(
-            vol_accel
-        ),
+        "vol_accel":
+            safe_float(
+                vol_accel
+            ),
 
-        "pdh": pdh,
+        "pdh":
+            pdh,
 
-        "pdl": pdl,
+        "pdl":
+            pdl,
 
-        "timestamp": (
-            df.iloc[-1]["timestamp"]
-            .isoformat()
-        )
+        "timestamp":
+            df.iloc[-1][
+                "timestamp"
+            ].isoformat()
     }
 
 
 # =========================================================
-# MASTER SCANNER SIGNAL
+# TRADINGVIEW INDICATOR 2
+# EXACT FINAL + EARLY LOGIC
 # =========================================================
 
 def scanner_signal(m):
@@ -1096,6 +1599,7 @@ def scanner_signal(m):
     e20_prev = m["ema20_prev"]
 
     rsi14 = m["rsi"]
+
     vw = m["vwap"]
 
     dip = m["di_plus"]
@@ -1120,25 +1624,37 @@ def scanner_signal(m):
     # =====================================================
 
     buy_base = (
-        c > e20 and
-        e20 > e50 and
-        c > vw and
-        rsi14 > 55 and
-        adx > 18 and
-        dip > dim and
-        rvol >= FINAL_RVOL_MIN and
-        mv >= FINAL_MOVE_MIN and
-        br >= FINAL_BODY_MIN
+
+        c > e20
+
+        and e20 > e50
+
+        and c > vw
+
+        and rsi14 > 55
+
+        and adx > 18
+
+        and dip > dim
+
+        and rvol >= FINAL_RVOL_MIN
+
+        and mv >= FINAL_MOVE_MIN
+
+        and br >= FINAL_BODY_MIN
     )
 
     buy_pdh = (
-        (not USE_PDH) or
-        (pdh <= 0) or
+        (not USE_PDH)
+        or
+        (pdh <= 0)
+        or
         (c > pdh)
     )
 
     buy_final = (
-        buy_base and
+        buy_base
+        and
         buy_pdh
     )
 
@@ -1148,31 +1664,43 @@ def scanner_signal(m):
     # =====================================================
 
     sell_base = (
-        c < e20 and
-        e20 < e50 and
-        c < vw and
-        rsi14 < 45 and
-        adx > 18 and
-        dim > dip and
-        rvol >= FINAL_RVOL_MIN and
-        mv <= -FINAL_MOVE_MIN and
-        br >= FINAL_BODY_MIN
+
+        c < e20
+
+        and e20 < e50
+
+        and c < vw
+
+        and rsi14 < 45
+
+        and adx > 18
+
+        and dim > dip
+
+        and rvol >= FINAL_RVOL_MIN
+
+        and mv <= -FINAL_MOVE_MIN
+
+        and br >= FINAL_BODY_MIN
     )
 
     sell_pdl = (
-        (not USE_PDL) or
-        (pdl <= 0) or
+        (not USE_PDL)
+        or
+        (pdl <= 0)
+        or
         (c < pdl)
     )
 
     sell_final = (
-        sell_base and
+        sell_base
+        and
         sell_pdl
     )
 
 
     # =====================================================
-    # EARLY BUY
+    # EARLY BUY — 8 CONDITIONS
     # =====================================================
 
     buy_conditions = [
@@ -1187,17 +1715,18 @@ def scanner_signal(m):
 
         dip > dim,
 
-        adx >= 20 and
-        adx > adx_prev,
+        adx >= 20
+        and adx > adx_prev,
 
-        rvol >= EARLY_RVOL_MIN and
-        rvol > rvol_prev,
+        rvol >= EARLY_RVOL_MIN
+        and rvol > rvol_prev,
 
         va >= EARLY_VOL_ACCEL_MIN
     ]
 
     buy_count = sum(
-        1 for x in buy_conditions
+        1
+        for x in buy_conditions
         if x
     )
 
@@ -1208,18 +1737,28 @@ def scanner_signal(m):
     if USE_PDH and pdh > 0:
 
         buy_near_pdh = (
-            c >= pdh *
-            (1 - EARLY_NEAR_PCT / 100.0)
+            c
+            >=
+            pdh
+            *
+            (
+                1
+                -
+                EARLY_NEAR_PCT
+                /
+                100.0
+            )
         )
 
         buy_early = (
-            buy_early and
+            buy_early
+            and
             buy_near_pdh
         )
 
 
     # =====================================================
-    # EARLY SELL
+    # EARLY SELL — 8 CONDITIONS
     # =====================================================
 
     sell_conditions = [
@@ -1234,17 +1773,18 @@ def scanner_signal(m):
 
         dim > dip,
 
-        adx >= 20 and
-        adx > adx_prev,
+        adx >= 20
+        and adx > adx_prev,
 
-        rvol >= EARLY_RVOL_MIN and
-        rvol > rvol_prev,
+        rvol >= EARLY_RVOL_MIN
+        and rvol > rvol_prev,
 
         va >= EARLY_VOL_ACCEL_MIN
     ]
 
     sell_count = sum(
-        1 for x in sell_conditions
+        1
+        for x in sell_conditions
         if x
     )
 
@@ -1255,12 +1795,22 @@ def scanner_signal(m):
     if USE_PDL and pdl > 0:
 
         sell_near_pdl = (
-            c <= pdl *
-            (1 + EARLY_NEAR_PCT / 100.0)
+            c
+            <=
+            pdl
+            *
+            (
+                1
+                +
+                EARLY_NEAR_PCT
+                /
+                100.0
+            )
         )
 
         sell_early = (
-            sell_early and
+            sell_early
+            and
             sell_near_pdl
         )
 
@@ -1272,31 +1822,55 @@ def scanner_signal(m):
     if DIRECTION == "BUY":
 
         return {
-            "final_buy": buy_final,
-            "final_sell": False,
-            "early_buy": buy_early,
-            "early_sell": False
+
+            "final_buy":
+                buy_final,
+
+            "final_sell":
+                False,
+
+            "early_buy":
+                buy_early,
+
+            "early_sell":
+                False
         }
 
     if DIRECTION == "SELL":
 
         return {
-            "final_buy": False,
-            "final_sell": sell_final,
-            "early_buy": False,
-            "early_sell": sell_early
+
+            "final_buy":
+                False,
+
+            "final_sell":
+                sell_final,
+
+            "early_buy":
+                False,
+
+            "early_sell":
+                sell_early
         }
 
     return {
-        "final_buy": buy_final,
-        "final_sell": sell_final,
-        "early_buy": buy_early,
-        "early_sell": sell_early
+
+        "final_buy":
+            buy_final,
+
+        "final_sell":
+            sell_final,
+
+        "early_buy":
+            buy_early,
+
+        "early_sell":
+            sell_early
     }
 
 
 # =========================================================
-# STATE LOAD / SAVE
+# STATE
 # =========================================================
 
 def load_state():
@@ -1304,6 +1878,7 @@ def load_state():
     if not os.path.exists(
         STATE_FILE
     ):
+
         return {}
 
     try:
@@ -1316,10 +1891,14 @@ def load_state():
 
             data = json.load(f)
 
-        return data if isinstance(
-            data,
-            dict
-        ) else {}
+        return (
+            data
+            if isinstance(
+                data,
+                dict
+            )
+            else {}
+        )
 
     except Exception:
 
@@ -1343,7 +1922,7 @@ def save_state(state):
 
 
 # =========================================================
-# UPDATE ONE-SIGNAL-PER-DAY STATE
+# UPDATE SIGNAL STATE
 # =========================================================
 
 def update_signal_state(
@@ -1361,103 +1940,157 @@ def update_signal_state(
 
     key = stock
 
-    old = state.get(key)
+    old = state.get(
+        key
+    )
 
-    if old and old.get("day") != day:
+    if (
+        old
+        and
+        old.get("day") != day
+    ):
+
         old = None
 
-    # -----------------------------------------------------
-    # FINAL HAS PRIORITY
-    # -----------------------------------------------------
 
+    # FINAL BUY
     if signal["final_buy"]:
 
         state[key] = {
+
             "day": day,
+
             "stock": stock,
+
             "sector": sector,
+
             "direction": "BUY",
+
             "stage": "FINAL",
-            "pass_time": metrics["timestamp"],
+
+            "pass_time":
+                metrics["timestamp"],
+
             "metrics": metrics
         }
 
         return
 
+
+    # FINAL SELL
     if signal["final_sell"]:
 
         state[key] = {
+
             "day": day,
+
             "stock": stock,
+
             "sector": sector,
+
             "direction": "SELL",
+
             "stage": "FINAL",
-            "pass_time": metrics["timestamp"],
+
+            "pass_time":
+                metrics["timestamp"],
+
             "metrics": metrics
         }
 
         return
 
-    # -----------------------------------------------------
-    # EARLY ONLY IF NO EXISTING SIGNAL
-    # -----------------------------------------------------
 
+    # Existing signal -> don't replace
     if old is not None:
         return
 
+
+    # EARLY BUY
     if signal["early_buy"]:
 
         state[key] = {
+
             "day": day,
+
             "stock": stock,
+
             "sector": sector,
+
             "direction": "BUY",
+
             "stage": "EARLY",
-            "pass_time": metrics["timestamp"],
+
+            "pass_time":
+                metrics["timestamp"],
+
             "metrics": metrics
         }
 
         return
 
+
+    # EARLY SELL
     if signal["early_sell"]:
 
         state[key] = {
+
             "day": day,
+
             "stock": stock,
+
             "sector": sector,
+
             "direction": "SELL",
+
             "stage": "EARLY",
-            "pass_time": metrics["timestamp"],
+
+            "pass_time":
+                metrics["timestamp"],
+
             "metrics": metrics
         }
 
 
 # =========================================================
-# ROTATION HEATMAP
+# TRADINGVIEW INDICATOR 1
+# SECTOR ROTATION
+#
+# TODAY OPEN -> CURRENT CLOSE
+# NO PREVIOUS DAY CLOSE
 # =========================================================
 
 def build_rotation():
 
     output = []
 
-    start = now_ist().replace(
+    now = now_ist()
+
+    start = now.replace(
         hour=9,
         minute=15,
         second=0,
         microsecond=0
     )
 
-    end = now_ist()
+    end = now
+
 
     for sector in SECTORS:
 
         exchange, symbol, token = (
-            get_sector_token(sector)
+            get_sector_token(
+                sector
+            )
         )
 
         if not token:
             continue
 
+
+        # Enough history for Angel One,
+        # although Rotation itself only uses
+        # today's first open and current close.
         df = get_candles(
             exchange,
             token,
@@ -1468,49 +2101,78 @@ def build_rotation():
         if df.empty:
             continue
 
+
         today = df[
-            df["timestamp"].dt.date ==
+            df["timestamp"].dt.date
+            ==
             end.date()
         ]
 
         if today.empty:
             continue
 
+
+        # EXACT TradingView concept:
+        # today's first open
         o = safe_float(
             today.iloc[0]["open"]
         )
 
+        # current close
         c = safe_float(
             today.iloc[-1]["close"]
         )
 
+
         if o == 0:
+
             move = 0.0
+
         else:
+
             move = (
-                (c / o) - 1.0
+                (c / o)
+                -
+                1.0
             ) * 100.0
 
+
         output.append({
-            "sector": sector,
-            "move": move
+
+            "sector":
+                sector,
+
+            "move":
+                move
         })
 
 
-    # -----------------------------------------------------
-    # DESCENDING SORT
-    # -----------------------------------------------------
+    # =====================================================
+    # SORT STRONG -> WEAK
+    # =====================================================
 
     output.sort(
         key=lambda x: x["move"],
         reverse=True
     )
 
+
+    # =====================================================
+    # MAX ABS MOVE
+    # =====================================================
+
     max_abs = max(
+
         [
-            abs(x["move"])
+            abs(
+                x["move"]
+            )
             for x in output
-        ] or [0.0001]
+        ]
+
+        or
+
+        [0.0001]
     )
 
     max_abs = max(
@@ -1519,25 +2181,36 @@ def build_rotation():
     )
 
 
-    # -----------------------------------------------------
-    # MASTER 15-SECTOR STAGE
-    # -----------------------------------------------------
+    # =====================================================
+    # RANK / STAGE / 8 BOXES
+    # =====================================================
 
     for rank, item in enumerate(
         output
     ):
 
         if rank < 5:
+
             stage = "STRONG"
+
         elif rank < 10:
+
             stage = "NEUTRAL"
+
         else:
+
             stage = "WEAK"
+
 
         fill_count = int(
             round(
-                abs(item["move"]) /
-                max_abs * 8
+                abs(
+                    item["move"]
+                )
+                /
+                max_abs
+                *
+                8
             )
         )
 
@@ -1549,15 +2222,25 @@ def build_rotation():
             )
         )
 
-        item["rank"] = rank + 1
-        item["stage"] = stage
-        item["boxes"] = fill_count
+
+        item["rank"] = (
+            rank + 1
+        )
+
+        item["stage"] = (
+            stage
+        )
+
+        item["boxes"] = (
+            fill_count
+        )
+
 
     return output
 
 
 # =========================================================
-# NORMALIZE SCANNER SECTOR
+# SCANNER SECTOR MAPPING
 # =========================================================
 
 def rotation_sector_for_scanner(
@@ -1565,39 +2248,49 @@ def rotation_sector_for_scanner(
 ):
 
     if sector == "DEFENCE":
+
         return "DEFENSE"
 
     if sector in [
         "FINANCIAL 1",
         "FINANCIAL 2"
     ]:
+
         return "FINANCIAL"
 
     if sector in [
         "ENERGY 1",
         "ENERGY 2"
     ]:
+
         return "ENERGY"
 
     return sector
 
 
 # =========================================================
-# SCANNER
+# BUILD SCANNER
 # =========================================================
 
 def build_scanner():
 
     state = load_state()
 
-    start = now_ist().replace(
+    now = now_ist()
+
+    start = now.replace(
         hour=9,
         minute=15,
         second=0,
         microsecond=0
     )
 
-    end = now_ist()
+    end = now
+
+
+    # =====================================================
+    # SCAN ALL MASTER SECTOR LISTS
+    # =====================================================
 
     for sector, stocks in STOCKS.items():
 
@@ -1610,6 +2303,7 @@ def build_scanner():
             if not token:
                 continue
 
+
             df = get_candles(
                 "NSE",
                 token,
@@ -1620,6 +2314,7 @@ def build_scanner():
             if df.empty:
                 continue
 
+
             metrics = get_metrics(
                 df
             )
@@ -1627,9 +2322,11 @@ def build_scanner():
             if not metrics:
                 continue
 
+
             signal = scanner_signal(
                 metrics
             )
+
 
             update_signal_state(
                 state,
@@ -1639,11 +2336,15 @@ def build_scanner():
                 signal
             )
 
-    save_state(state)
 
-    # -----------------------------------------------------
-    # ONLY TODAY'S STATE
-    # -----------------------------------------------------
+    save_state(
+        state
+    )
+
+
+    # =====================================================
+    # TODAY ONLY
+    # =====================================================
 
     today = today_key()
 
@@ -1658,21 +2359,27 @@ def build_scanner():
             item
         )
 
-    # Sort FINAL first, then EARLY
+
+    # FINAL first
     scanner.sort(
         key=lambda x: (
-            0 if x["stage"] == "FINAL"
+            0
+            if x["stage"] == "FINAL"
             else 1,
+
             x["sector"],
+
             x["stock"]
         )
     )
+
 
     return scanner
 
 
 # =========================================================
-# BIG PLAYER / MONEY FLOW TOP 6
+# BIG PLAYER
+# EXISTING LOGIC PRESERVED
 # =========================================================
 
 def build_big_player(
@@ -1680,6 +2387,7 @@ def build_big_player(
 ):
 
     result = []
+
 
     for item in scanner:
 
@@ -1690,54 +2398,87 @@ def build_big_player(
 
         score = 60
 
+
         rvol = safe_float(
-            m.get("rvol20")
+            m.get(
+                "rvol20"
+            )
         )
 
+
         if rvol >= 3:
+
             score += 20
 
         elif rvol >= 2:
+
             score += 15
 
         elif rvol >= 1.5:
+
             score += 10
 
         elif rvol >= 1.2:
+
             score += 5
 
 
-        if item.get("stage") == "EARLY":
+        if item.get(
+            "stage"
+        ) == "EARLY":
+
             score += 5
 
-        if item.get("stage") == "FINAL":
+
+        if item.get(
+            "stage"
+        ) == "FINAL":
+
             score += 10
 
-        item2 = dict(item)
 
-        item2["score"] = score
+        item2 = dict(
+            item
+        )
+
+        item2["score"] = (
+            score
+        )
+
 
         if score >= 70:
+
             result.append(
                 item2
             )
 
+
     result.sort(
+
         key=lambda x: (
+
             x["score"],
+
             safe_float(
-                x.get("metrics", {})
-                 .get("rvol20", 0)
+                x.get(
+                    "metrics",
+                    {}
+                ).get(
+                    "rvol20",
+                    0
+                )
             )
         ),
+
         reverse=True
     )
+
 
     return result[:6]
 
 
 # =========================================================
-# FINAL MARKET DASHBOARD
+# FINAL DASHBOARD
 # =========================================================
 
 def build_final(
@@ -1746,17 +2487,22 @@ def build_final(
 ):
 
     rotation_map = {
-        x["sector"]: x
+
+        x["sector"]:
+            x
+
         for x in rotation
     }
 
+
     final = []
+
 
     for item in big_player:
 
-        scanner_sector = item[
-            "sector"
-        ]
+        scanner_sector = (
+            item["sector"]
+        )
 
         rotation_sector = (
             rotation_sector_for_scanner(
@@ -1764,59 +2510,90 @@ def build_final(
             )
         )
 
+
         rot = rotation_map.get(
             rotation_sector
         )
 
+
         if not rot:
             continue
 
-        direction = item[
-            "direction"
-        ]
 
-        stage = rot[
-            "stage"
-        ]
+        direction = (
+            item["direction"]
+        )
 
-        # -------------------------------------------------
-        # Existing market alignment logic
-        # -------------------------------------------------
+        stage = (
+            rot["stage"]
+        )
 
+
+        # BUY + WEAK sector blocked
         if (
-            direction == "BUY" and
+            direction == "BUY"
+            and
             stage == "WEAK"
         ):
+
             continue
 
+
+        # SELL + STRONG sector blocked
         if (
-            direction == "SELL" and
+            direction == "SELL"
+            and
             stage == "STRONG"
         ):
+
             continue
 
+
         final.append({
-            "stock": item["stock"],
-            "sector": scanner_sector,
-            "rotation_sector": rotation_sector,
-            "direction": direction,
-            "signal_stage": item["stage"],
-            "sector_stage": stage,
-            "score": item["score"],
-            "rvol20": safe_float(
-                item["metrics"].get(
-                    "rvol20"
-                )
-            ),
-            "move_pct": safe_float(
-                item["metrics"].get(
-                    "move_pct"
-                )
-            ),
-            "pass_time": item[
-                "pass_time"
-            ]
+
+            "stock":
+                item["stock"],
+
+            "sector":
+                scanner_sector,
+
+            "rotation_sector":
+                rotation_sector,
+
+            "direction":
+                direction,
+
+            "signal_stage":
+                item["stage"],
+
+            "sector_stage":
+                stage,
+
+            "score":
+                item["score"],
+
+            "rvol20":
+                safe_float(
+                    item[
+                        "metrics"
+                    ].get(
+                        "rvol20"
+                    )
+                ),
+
+            "move_pct":
+                safe_float(
+                    item[
+                        "metrics"
+                    ].get(
+                        "move_pct"
+                    )
+                ),
+
+            "pass_time":
+                item["pass_time"]
         })
+
 
     return final
 
@@ -1829,10 +2606,14 @@ def market_status():
 
     now = now_ist()
 
+
     if now.weekday() >= 5:
+
         return "MARKET CLOSED"
 
+
     t = now.time()
+
 
     if t < datetime.strptime(
         "09:15",
@@ -1841,6 +2622,7 @@ def market_status():
 
         return "PRE-MARKET"
 
+
     if t <= datetime.strptime(
         "15:30",
         "%H:%M"
@@ -1848,92 +2630,155 @@ def market_status():
 
         return "MARKET OPEN"
 
+
     return "MARKET CLOSED"
 
 
 # =========================================================
-# MAIN ENGINE
+# WRITE DATA
+# =========================================================
+
+def write_data(data):
+
+    with open(
+        DATA_FILE,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            data,
+            f,
+            indent=2,
+            ensure_ascii=False
+        )
+
+
+# =========================================================
+# EMPTY DATA
+# =========================================================
+
+def empty_data(
+    status,
+    now
+):
+
+    return {
+
+        "status":
+            status,
+
+        "last_updated":
+            now.isoformat(),
+
+        "engine":
+            "NSE ROTATION & FLOW",
+
+        "master_logic":
+            "TRADINGVIEW MASTER MATCHED",
+
+        "settings": {
+
+            "direction":
+                DIRECTION,
+
+            "use_pdh":
+                USE_PDH,
+
+            "use_pdl":
+                USE_PDL,
+
+            "early_rvol_min":
+                EARLY_RVOL_MIN,
+
+            "early_vol_accel_min":
+                EARLY_VOL_ACCEL_MIN,
+
+            "early_near_pct":
+                EARLY_NEAR_PCT,
+
+            "early_conditions_required":
+                EARLY_NEED,
+
+            "final_rvol_min":
+                FINAL_RVOL_MIN,
+
+            "final_move_min":
+                FINAL_MOVE_MIN,
+
+            "final_body_min":
+                FINAL_BODY_MIN
+        },
+
+        "rotation": [],
+
+        "scanner": [],
+
+        "big_player": [],
+
+        "final_dashboard": []
+    }
+
+
+# =========================================================
+# MAIN
 # =========================================================
 
 def main():
 
     now = now_ist()
 
-    # -----------------------------------------------------
-    # Weekend
-    # -----------------------------------------------------
+
+    # =====================================================
+    # WEEKEND
+    # =====================================================
 
     if now.weekday() >= 5:
 
-        data = {
-            "status": "MARKET CLOSED",
-            "last_updated": now.isoformat(),
-            "rotation": [],
-            "scanner": [],
-            "big_player": [],
-            "final_dashboard": []
-        }
-
-        with open(
-            DATA_FILE,
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            json.dump(
-                data,
-                f,
-                indent=2,
-                ensure_ascii=False
+        write_data(
+            empty_data(
+                "MARKET CLOSED",
+                now
             )
+        )
 
         return
 
 
-    # -----------------------------------------------------
-    # Before market
-    # -----------------------------------------------------
+    # =====================================================
+    # PRE-MARKET
+    # =====================================================
 
-    if now.hour < 9 or (
-        now.hour == 9 and
-        now.minute < 15
+    if (
+        now.hour < 9
+        or
+        (
+            now.hour == 9
+            and
+            now.minute < 15
+        )
     ):
 
-        data = {
-            "status": "PRE-MARKET",
-            "last_updated": now.isoformat(),
-            "rotation": [],
-            "scanner": [],
-            "big_player": [],
-            "final_dashboard": []
-        }
-
-        with open(
-            DATA_FILE,
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            json.dump(
-                data,
-                f,
-                indent=2,
-                ensure_ascii=False
+        write_data(
+            empty_data(
+                "PRE-MARKET",
+                now
             )
+        )
 
         return
 
 
-    # -----------------------------------------------------
-    # Login
-    # -----------------------------------------------------
+    # =====================================================
+    # LOGIN
+    # =====================================================
 
     login()
 
 
-    # -----------------------------------------------------
-    # Master engines
-    # -----------------------------------------------------
+    # =====================================================
+    # MASTER ENGINES
+    # =====================================================
 
     rotation = build_rotation()
 
@@ -1949,13 +2794,14 @@ def main():
     )
 
 
-    # -----------------------------------------------------
-    # Output
-    # -----------------------------------------------------
+    # =====================================================
+    # FINAL JSON
+    # =====================================================
 
     data = {
 
-        "status": market_status(),
+        "status":
+            market_status(),
 
         "last_updated":
             now.isoformat(),
@@ -2013,18 +2859,9 @@ def main():
     }
 
 
-    with open(
-        DATA_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        json.dump(
-            data,
-            f,
-            indent=2,
-            ensure_ascii=False
-        )
+    write_data(
+        data
+    )
 
 
 # =========================================================
@@ -2032,4 +2869,5 @@ def main():
 # =========================================================
 
 if __name__ == "__main__":
+
     main()
