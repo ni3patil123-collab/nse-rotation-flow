@@ -1,118 +1,93 @@
 {
-  "last_updated": "10:16 AM",
+  "last_updated": "10:28 AM",
   "market_date": "2026-09-16",
   "market_status": "LIVE",
   "sectors": [],
   "scanner": [
     {
-      "stock": "COCHINSHIP",
-      "sector": "DEFENCE",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.74,
-      "pass_time": "10:16 AM"
-    },
-    {
-      "stock": "LUPIN",
-      "sector": "PHARMA",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.73,
-      "pass_time": "10:16 AM"
-    },
-    {
-      "stock": "CHOLAFIN",
-      "sector": "FINANCIAL 1",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "early_count": 5,
-      "rvol20": 1.23,
-      "pass_time": "10:16 AM"
-    },
-    {
-      "stock": "MARICO",
-      "sector": "FMCG",
+      "stock": "HCLTECH",
+      "sector": "IT",
       "direction": "BUY",
       "stage": "FINAL BUY",
-      "early_count": 8,
-      "rvol20": 2.56,
-      "pass_time": "10:16 AM"
+      "early_count": 6,
+      "rvol20": 1.8,
+      "pass_time": "10:28 AM"
     },
     {
-      "stock": "PATANJALI",
-      "sector": "FMCG",
+      "stock": "OBEROIRLTY",
+      "sector": "REALTY",
       "direction": "BUY",
-      "stage": "FINAL BUY",
-      "early_count": 8,
-      "rvol20": 13.12,
-      "pass_time": "10:16 AM"
-    },
-    {
-      "stock": "UPL",
-      "sector": "CHEMICAL",
-      "direction": "SELL",
-      "stage": "EARLY SELL",
+      "stage": "EARLY BUY",
       "early_count": 7,
-      "rvol20": 3.11,
-      "pass_time": "10:16 AM"
+      "rvol20": 0.62,
+      "pass_time": "10:28 AM"
+    },
+    {
+      "stock": "WAAREEENER",
+      "sector": "ENERGY 2",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 5,
+      "rvol20": 1.77,
+      "pass_time": "10:28 AM"
+    },
+    {
+      "stock": "TATACONSUM",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "FINAL BUY",
+      "early_count": 6,
+      "rvol20": 1.78,
+      "pass_time": "10:28 AM"
+    },
+    {
+      "stock": "RVNL",
+      "sector": "CAPITAL_GOODS",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "early_count": 5,
+      "rvol20": 1.17,
+      "pass_time": "10:28 AM"
     }
   ],
   "big_player": [
     {
-      "stock": "MARICO",
+      "stock": "HCLTECH",
+      "sector": "IT",
+      "direction": "BUY",
+      "stage": "FINAL BUY",
+      "score": 80,
+      "rvol20": 1.8
+    },
+    {
+      "stock": "WAAREEENER",
+      "sector": "ENERGY 2",
+      "direction": "SELL",
+      "stage": "FINAL SELL",
+      "score": 80,
+      "rvol20": 1.77
+    },
+    {
+      "stock": "TATACONSUM",
       "sector": "FMCG",
       "direction": "BUY",
       "stage": "FINAL BUY",
-      "score": 95,
-      "rvol20": 2.56
+      "score": 80,
+      "rvol20": 1.78
     },
     {
-      "stock": "PATANJALI",
-      "sector": "FMCG",
-      "direction": "BUY",
-      "stage": "FINAL BUY",
-      "score": 95,
-      "rvol20": 13.12
-    },
-    {
-      "stock": "COCHINSHIP",
-      "sector": "DEFENCE",
+      "stock": "RVNL",
+      "sector": "CAPITAL_GOODS",
       "direction": "SELL",
       "stage": "FINAL SELL",
-      "score": 80,
-      "rvol20": 1.74
-    },
-    {
-      "stock": "LUPIN",
-      "sector": "PHARMA",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "score": 80,
-      "rvol20": 1.73
-    },
-    {
-      "stock": "UPL",
-      "sector": "CHEMICAL",
-      "direction": "SELL",
-      "stage": "EARLY SELL",
-      "score": 80,
-      "rvol20": 3.11
-    },
-    {
-      "stock": "CHOLAFIN",
-      "sector": "FINANCIAL 1",
-      "direction": "SELL",
-      "stage": "FINAL SELL",
-      "score": 75,
-      "rvol20": 1.23
+      "score": 70,
+      "rvol20": 1.17
     }
   ],
   "final": {
     "sector_count": 0,
-    "scanner_count": 6,
-    "big_player_count": 6,
+    "scanner_count": 5,
+    "big_player_count": 4,
     "signals": []
   }
 }
