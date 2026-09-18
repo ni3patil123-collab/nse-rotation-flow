@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-18T15:58:34.727557+05:30",
+  "last_updated": "2026-09-18T16:13:52.271318+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -2856,6 +2856,35 @@
         "vol_accel": 9.840223577973047,
         "pdh": 1253.4,
         "pdl": 1238.5,
+        "timestamp": "2026-09-18T15:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-18",
+      "stock": "TATAPOWER",
+      "sector": "ENERGY 2",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-09-18T15:25:00+05:30",
+      "metrics": {
+        "close": 374.8,
+        "ema20": 369.1996773552071,
+        "ema20_prev": 368.61016970838676,
+        "ema50": 368.2292709366964,
+        "rsi": 80.87246592098467,
+        "vwap": 372.9834998123358,
+        "di_plus": 57.3252413865966,
+        "di_minus": 11.946899597864089,
+        "adx": 28.301354871339512,
+        "adx_prev": 25.439355474638184,
+        "rvol20": 4.063295584041567,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.0533333333333303,
+        "today_move_pct": 2.7412280701754383,
+        "body_ratio": 1.0,
+        "vol_accel": 8.69712206175461,
+        "pdh": 370.4,
+        "pdl": 360.2,
         "timestamp": "2026-09-18T15:25:00+05:30"
       }
     },
