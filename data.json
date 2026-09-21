@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-09-21T13:54:44.478262+05:30",
+  "last_updated": "2026-09-21T14:10:49.564136+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -943,6 +943,35 @@
         "pdh": 1798.0,
         "pdl": 1743.0,
         "timestamp": "2026-09-21T13:55:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-21",
+      "stock": "SHRIRAMFIN",
+      "sector": "FINANCIAL 2",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-09-21T14:10:00+05:30",
+      "metrics": {
+        "close": 1017.4,
+        "ema20": 1011.7847345638975,
+        "ema20_prev": 1011.1936539916761,
+        "ema50": 1010.3141413718582,
+        "rsi": 73.4015343547535,
+        "vwap": 1010.906803005311,
+        "di_plus": 36.88802514403025,
+        "di_minus": 14.00116048181176,
+        "adx": 25.8446900671366,
+        "adx_prev": 24.37321038349262,
+        "rvol20": 0.4616190126433272,
+        "rvol20_prev": 0.44655810170059207,
+        "move_pct": 0.22657866220076392,
+        "today_move_pct": -0.15701668302257338,
+        "body_ratio": 0.7187499999999756,
+        "vol_accel": 2.0612410605540115,
+        "pdh": 1019.0,
+        "pdl": 1000.5,
+        "timestamp": "2026-09-21T14:10:00+05:30"
       }
     },
     {
