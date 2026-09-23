@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-09-23T12:08:36.084805+05:30",
+  "last_updated": "2026-09-23T12:24:39.871659+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -624,6 +624,35 @@
         "pdh": 562.55,
         "pdl": 555.0,
         "timestamp": "2026-09-23T10:15:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-23",
+      "stock": "COCHINSHIP",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-09-23T12:20:00+05:30",
+      "metrics": {
+        "close": 1372.8,
+        "ema20": 1375.981624881936,
+        "ema20_prev": 1376.316532764245,
+        "ema50": 1379.2148487434952,
+        "rsi": 34.49481951862522,
+        "vwap": 1379.115803958357,
+        "di_plus": 12.771718090209228,
+        "di_minus": 28.189547839617063,
+        "adx": 20.554982445234756,
+        "adx_prev": 19.240748587894185,
+        "rvol20": 0.2956381813698998,
+        "rvol20_prev": 0.29266771840903316,
+        "move_pct": 0.014570887367043966,
+        "today_move_pct": -1.0951008645533173,
+        "body_ratio": 0.10000000000002274,
+        "vol_accel": 1.2340339802565308,
+        "pdh": 1411.0,
+        "pdl": 1376.5,
+        "timestamp": "2026-09-23T12:20:00+05:30"
       }
     },
     {
