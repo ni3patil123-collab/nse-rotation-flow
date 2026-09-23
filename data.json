@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-23T15:29:03.092091+05:30",
+  "last_updated": "2026-09-23T15:48:04.336370+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1986,6 +1986,35 @@
         "vol_accel": 4.970368333636025,
         "pdh": 2032.8,
         "pdl": 2002.2,
+        "timestamp": "2026-09-23T15:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-23",
+      "stock": "TORNTPHARM",
+      "sector": "PHARMA",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-09-23T15:25:00+05:30",
+      "metrics": {
+        "close": 4985.0,
+        "ema20": 4978.740067535168,
+        "ema20_prev": 4978.081127275713,
+        "ema50": 4966.347326306621,
+        "rsi": 60.85029842523085,
+        "vwap": 4972.025731826856,
+        "di_plus": 24.204805915822163,
+        "di_minus": 16.954287787074875,
+        "adx": 28.325351081087355,
+        "adx_prev": 29.149159992731207,
+        "rvol20": 2.4198187992827567,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.0,
+        "today_move_pct": 1.2388302193338747,
+        "body_ratio": 0.0,
+        "vol_accel": 12.70569313205304,
+        "pdh": 4984.0,
+        "pdl": 4910.0,
         "timestamp": "2026-09-23T15:25:00+05:30"
       }
     },
