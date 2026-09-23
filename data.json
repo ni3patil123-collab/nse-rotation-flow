@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-23T15:48:04.336370+05:30",
+  "last_updated": "2026-09-23T16:03:45.154750+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1378,6 +1378,35 @@
         "pdh": 298.65,
         "pdl": 293.2,
         "timestamp": "2026-09-23T13:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-23",
+      "stock": "BAJAJHLDNG",
+      "sector": "FINANCIAL 1",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-09-23T15:25:00+05:30",
+      "metrics": {
+        "close": 11449.0,
+        "ema20": 11382.637110853777,
+        "ema20_prev": 11375.651543575228,
+        "ema50": 11355.821384478324,
+        "rsi": 77.96318340483842,
+        "vwap": 11381.065988174856,
+        "di_plus": 45.04658157433705,
+        "di_minus": 11.69761044959486,
+        "adx": 24.70563538323598,
+        "adx_prev": 22.085244134953772,
+        "rvol20": 0.9178498985801217,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.09598603839441536,
+        "today_move_pct": 1.615336824354309,
+        "body_ratio": 1.0,
+        "vol_accel": 5.545573738649055,
+        "pdh": 11389.0,
+        "pdl": 11103.0,
+        "timestamp": "2026-09-23T15:25:00+05:30"
       }
     },
     {
