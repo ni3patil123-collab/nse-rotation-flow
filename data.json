@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-09-24T14:19:59.957892+05:30",
+  "last_updated": "2026-09-24T14:51:03.057029+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -102,6 +102,35 @@
         "pdh": 1252.0,
         "pdl": 1238.9,
         "timestamp": "2026-09-24T14:20:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-24",
+      "stock": "BANDHANBNK",
+      "sector": "BANKING",
+      "direction": "SELL",
+      "stage": "FINAL",
+      "pass_time": "2026-09-24T14:50:00+05:30",
+      "metrics": {
+        "close": 183.74,
+        "ema20": 184.20609289412715,
+        "ema20_prev": 184.25515530403527,
+        "ema50": 185.3835959021658,
+        "rsi": 38.68700802970339,
+        "vwap": 186.12592907743695,
+        "di_plus": 13.713433119563138,
+        "di_minus": 23.513418204175917,
+        "adx": 35.6766500665385,
+        "adx_prev": 36.39600435996201,
+        "rvol20": 1.6944814711050369,
+        "rvol20_prev": 1.7127967469114194,
+        "move_pct": -0.10873110796998403,
+        "today_move_pct": -1.2150537634408554,
+        "body_ratio": 0.5128205128204643,
+        "vol_accel": 0.7346539536517165,
+        "pdh": 193.0,
+        "pdl": 185.7,
+        "timestamp": "2026-09-24T14:50:00+05:30"
       }
     },
     {
