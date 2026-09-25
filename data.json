@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-09-25T12:11:55.805251+05:30",
+  "last_updated": "2026-09-25T12:28:24.597104+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -247,6 +247,35 @@
         "pdh": 230.6,
         "pdl": 226.7,
         "timestamp": "2026-09-25T09:40:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-25",
+      "stock": "MANAPPURAM",
+      "sector": "FINANCIAL 2",
+      "direction": "BUY",
+      "stage": "FINAL",
+      "pass_time": "2026-09-25T12:25:00+05:30",
+      "metrics": {
+        "close": 331.0,
+        "ema20": 330.63805622353857,
+        "ema20_prev": 330.5999568786479,
+        "ema50": 328.4423580017059,
+        "rsi": 57.57456942639104,
+        "vwap": 329.5519681227869,
+        "di_plus": 22.307463893206844,
+        "di_minus": 16.332410060775587,
+        "adx": 25.54252482728349,
+        "adx_prev": 26.317839023369736,
+        "rvol20": 1.1075694786668526,
+        "rvol20_prev": 1.1154687070873144,
+        "move_pct": 0.10585210948133154,
+        "today_move_pct": 1.861824896137871,
+        "body_ratio": 0.777777777777848,
+        "vol_accel": 0.25470090804131434,
+        "pdh": 327.0,
+        "pdl": 313.15,
+        "timestamp": "2026-09-25T12:25:00+05:30"
       }
     },
     {
