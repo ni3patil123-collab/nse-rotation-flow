@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-28T15:59:52.438824+05:30",
+  "last_updated": "2026-09-28T16:17:29.187157+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -2712,6 +2712,35 @@
         "pdh": 3209.7,
         "pdl": 3155.3,
         "timestamp": "2026-09-28T14:45:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-28",
+      "stock": "CDSL",
+      "sector": "FINANCIAL 1",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-09-28T15:25:00+05:30",
+      "metrics": {
+        "close": 1289.0,
+        "ema20": 1291.5891027024554,
+        "ema20_prev": 1291.8616398290296,
+        "ema50": 1296.090508232113,
+        "rsi": 35.07929332943132,
+        "vwap": 1297.7825095190362,
+        "di_plus": 13.071407606090625,
+        "di_minus": 28.496861954622272,
+        "adx": 32.801724067354925,
+        "adx_prev": 32.4704163939832,
+        "rvol20": 0.9549635511000376,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.015513496742169211,
+        "today_move_pct": -2.2003034901365703,
+        "body_ratio": 0.5,
+        "vol_accel": 2.095153238381006,
+        "pdh": 1337.4,
+        "pdl": 1313.0,
+        "timestamp": "2026-09-28T15:25:00+05:30"
       }
     },
     {
