@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-28T15:38:56.460981+05:30",
+  "last_updated": "2026-09-28T15:59:52.438824+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -3321,6 +3321,35 @@
         "pdh": 880.55,
         "pdl": 832.0,
         "timestamp": "2026-09-28T09:15:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-28",
+      "stock": "MANKIND",
+      "sector": "PHARMA",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-09-28T15:25:00+05:30",
+      "metrics": {
+        "close": 2435.6,
+        "ema20": 2452.8701572702926,
+        "ema20_prev": 2454.688068561902,
+        "ema50": 2456.9378806209033,
+        "rsi": 37.17103523426447,
+        "vwap": 2457.1304206139184,
+        "di_plus": 9.422573056524017,
+        "di_minus": 42.23033203819426,
+        "adx": 26.720618012138733,
+        "adx_prev": 23.89021893788512,
+        "rvol20": 0.8936895021883212,
+        "rvol20_prev": 0.0,
+        "move_pct": -1.2327656123276598,
+        "today_move_pct": -1.5879429471897928,
+        "body_ratio": 0.8760806916426586,
+        "vol_accel": 1.4130312323965701,
+        "pdh": 2504.6,
+        "pdl": 2454.4,
+        "timestamp": "2026-09-28T15:25:00+05:30"
       }
     },
     {
