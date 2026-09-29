@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-29T15:48:35.391808+05:30",
+  "last_updated": "2026-09-29T16:06:56.230056+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -2654,6 +2654,35 @@
         "pdh": 1372.4,
         "pdl": 1327.0,
         "timestamp": "2026-09-29T10:05:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-29",
+      "stock": "HAL",
+      "sector": "DEFENCE",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-09-29T15:25:00+05:30",
+      "metrics": {
+        "close": 4549.3,
+        "ema20": 4666.353868855681,
+        "ema20_prev": 4678.675328735227,
+        "ema50": 4685.9757369638855,
+        "rsi": 13.34581779042962,
+        "vwap": 4585.0444920273385,
+        "di_plus": 8.20348225666395,
+        "di_minus": 59.761825356123026,
+        "adx": 20.097620760660245,
+        "adx_prev": 15.808222733955727,
+        "rvol20": 3.4571594685280256,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.0,
+        "today_move_pct": -3.677747194579713,
+        "body_ratio": 0.0,
+        "vol_accel": 11.624852633452793,
+        "pdh": 4793.9,
+        "pdl": 4720.7,
+        "timestamp": "2026-09-29T15:25:00+05:30"
       }
     },
     {
