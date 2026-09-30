@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-30T16:01:08.299231+05:30",
+  "last_updated": "2026-09-30T16:19:43.973101+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1962,6 +1962,35 @@
     },
     {
       "day": "2026-09-30",
+      "stock": "ADANIGREEN",
+      "sector": "ENERGY 1",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-09-30T15:25:00+05:30",
+      "metrics": {
+        "close": 1278.0,
+        "ema20": 1274.9910909890398,
+        "ema20_prev": 1274.6743637247282,
+        "ema50": 1273.3851266974775,
+        "rsi": 60.86134857049541,
+        "vwap": 1274.3207672463093,
+        "di_plus": 26.170678338590296,
+        "di_minus": 13.584258575151967,
+        "adx": 18.32667365498572,
+        "adx_prev": 17.301031863431945,
+        "rvol20": 1.4578513754950069,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.0,
+        "today_move_pct": 2.207293666026864,
+        "body_ratio": 0.0,
+        "vol_accel": 3.0648336555652804,
+        "pdh": 1260.0,
+        "pdl": 1223.6,
+        "timestamp": "2026-09-30T15:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-30",
       "stock": "ADANIPOWER",
       "sector": "ENERGY 1",
       "direction": "BUY",
@@ -3147,6 +3176,35 @@
         "pdh": 675.0,
         "pdl": 653.0,
         "timestamp": "2026-09-30T15:20:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-30",
+      "stock": "LODHA",
+      "sector": "REALTY",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-09-30T15:25:00+05:30",
+      "metrics": {
+        "close": 1135.0,
+        "ema20": 1122.4677587204696,
+        "ema20_prev": 1121.1485754278874,
+        "ema50": 1116.1744971274975,
+        "rsi": 61.73889542536324,
+        "vwap": 1125.9051863779548,
+        "di_plus": 47.16855478150935,
+        "di_minus": 23.41386838955016,
+        "adx": 33.49321661629611,
+        "adx_prev": 33.48075300925372,
+        "rvol20": 1.6902519114566845,
+        "rvol20_prev": 0.0,
+        "move_pct": -1.3043478260869565,
+        "today_move_pct": 2.901178603807797,
+        "body_ratio": 1.0,
+        "vol_accel": 6.787851098623512,
+        "pdh": 1128.0,
+        "pdl": 1096.3,
+        "timestamp": "2026-09-30T15:25:00+05:30"
       }
     },
     {
