@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-09-30T15:41:01.552487+05:30",
+  "last_updated": "2026-09-30T16:01:08.299231+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -2045,6 +2045,35 @@
         "pdh": 173.26,
         "pdl": 168.43,
         "timestamp": "2026-09-30T12:30:00+05:30"
+      }
+    },
+    {
+      "day": "2026-09-30",
+      "stock": "NHPC",
+      "sector": "ENERGY 1",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-09-30T15:25:00+05:30",
+      "metrics": {
+        "close": 72.81,
+        "ema20": 73.12459448073031,
+        "ema20_prev": 73.15770968922823,
+        "ema50": 73.27569546002098,
+        "rsi": 38.21710679407173,
+        "vwap": 73.14332059304438,
+        "di_plus": 29.812214326299,
+        "di_minus": 17.726233436520516,
+        "adx": 20.094321025210476,
+        "adx_prev": 19.684377122288662,
+        "rvol20": 1.2275719378890726,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.2202339986235328,
+        "today_move_pct": -1.0195758564437194,
+        "body_ratio": 1.0,
+        "vol_accel": 6.261215577460295,
+        "pdh": 74.7,
+        "pdl": 73.3,
+        "timestamp": "2026-09-30T15:25:00+05:30"
       }
     },
     {
