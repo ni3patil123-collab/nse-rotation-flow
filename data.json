@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-01T16:19:33.579533+05:30",
+  "last_updated": "2026-10-01T16:32:25.951539+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -2798,6 +2798,35 @@
         "vol_accel": 5.018538828024818,
         "pdh": 308.25,
         "pdl": 301.1,
+        "timestamp": "2026-10-01T15:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-01",
+      "stock": "COALINDIA",
+      "sector": "ENERGY 1",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-10-01T15:25:00+05:30",
+      "metrics": {
+        "close": 420.4,
+        "ema20": 421.2268163121836,
+        "ema20_prev": 421.3138496082029,
+        "ema50": 421.4002574477921,
+        "rsi": 45.54999964186081,
+        "vwap": 420.20372939748484,
+        "di_plus": 18.479339958181995,
+        "di_minus": 54.538192203594804,
+        "adx": 25.503132752630652,
+        "adx_prev": 23.66615622118331,
+        "rvol20": 1.335315114805987,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.21454112038140102,
+        "today_move_pct": -0.1899335232668593,
+        "body_ratio": 0.8999999999999773,
+        "vol_accel": 5.93193761898679,
+        "pdh": 432.9,
+        "pdl": 423.95,
         "timestamp": "2026-10-01T15:25:00+05:30"
       }
     },
