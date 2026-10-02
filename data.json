@@ -1,6 +1,6 @@
 {
-  "status": "MARKET OPEN",
-  "last_updated": "2026-10-02T15:21:43.928649+05:30",
+  "status": "MARKET CLOSED",
+  "last_updated": "2026-10-02T15:33:43.889445+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
