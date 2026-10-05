@@ -1,6 +1,6 @@
 {
-  "status": "MARKET CLOSED",
-  "last_updated": "2026-10-02T16:25:58.361997+05:30",
+  "status": "PRE-MARKET",
+  "last_updated": "2026-10-05T08:43:20.746260+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -16,127 +16,7 @@
     "final_body_min": 0.4
   },
   "rotation": [],
-  "scanner": [
-    {
-      "day": "2026-10-02",
-      "stock": "HDFCAMC",
-      "sector": "FINANCIAL 1",
-      "direction": "BUY",
-      "stage": "EARLY",
-      "pass_time": "2026-10-01T15:25:00+05:30",
-      "metrics": {
-        "close": 2308.1,
-        "ema20": 2300.99498877317,
-        "ema20_prev": 2300.2470928545563,
-        "ema50": 2295.610694936988,
-        "rsi": 57.79137666311108,
-        "vwap": 2293.57217630805,
-        "di_plus": 27.58407524323495,
-        "di_minus": 9.78635748760175,
-        "adx": 27.003178485782225,
-        "adx_prev": 25.416874402526204,
-        "rvol20": 1.9885168504590818,
-        "rvol20_prev": 1.859770364748109,
-        "move_pct": 0.0,
-        "today_move_pct": 1.1437335670464466,
-        "body_ratio": 0.0,
-        "vol_accel": 0.0,
-        "pdh": 2314.0,
-        "pdl": 2252.6,
-        "timestamp": "2026-10-01T15:25:00+05:30"
-      }
-    },
-    {
-      "day": "2026-10-02",
-      "stock": "MPHASIS",
-      "sector": "IT",
-      "direction": "BUY",
-      "stage": "EARLY",
-      "pass_time": "2026-10-01T15:25:00+05:30",
-      "metrics": {
-        "close": 2250.2,
-        "ema20": 2241.9987550314822,
-        "ema20_prev": 2241.1354660874276,
-        "ema50": 2231.1323803847554,
-        "rsi": 62.686998819042394,
-        "vwap": 2231.5701483350335,
-        "di_plus": 28.84202608478618,
-        "di_minus": 14.803573138166055,
-        "adx": 31.353813742850342,
-        "adx_prev": 31.29144194934057,
-        "rvol20": 3.1986279452012583,
-        "rvol20_prev": 3.0514542306981083,
-        "move_pct": 0.0,
-        "today_move_pct": 4.171103189667141,
-        "body_ratio": 0.0,
-        "vol_accel": 0.0,
-        "pdh": 2252.6,
-        "pdl": 2144.8,
-        "timestamp": "2026-10-01T15:25:00+05:30"
-      }
-    }
-  ],
-  "big_player": [
-    {
-      "day": "2026-10-02",
-      "stock": "MPHASIS",
-      "sector": "IT",
-      "direction": "BUY",
-      "stage": "EARLY",
-      "pass_time": "2026-10-01T15:25:00+05:30",
-      "metrics": {
-        "close": 2250.2,
-        "ema20": 2241.9987550314822,
-        "ema20_prev": 2241.1354660874276,
-        "ema50": 2231.1323803847554,
-        "rsi": 62.686998819042394,
-        "vwap": 2231.5701483350335,
-        "di_plus": 28.84202608478618,
-        "di_minus": 14.803573138166055,
-        "adx": 31.353813742850342,
-        "adx_prev": 31.29144194934057,
-        "rvol20": 3.1986279452012583,
-        "rvol20_prev": 3.0514542306981083,
-        "move_pct": 0.0,
-        "today_move_pct": 4.171103189667141,
-        "body_ratio": 0.0,
-        "vol_accel": 0.0,
-        "pdh": 2252.6,
-        "pdl": 2144.8,
-        "timestamp": "2026-10-01T15:25:00+05:30"
-      },
-      "score": 85
-    },
-    {
-      "day": "2026-10-02",
-      "stock": "HDFCAMC",
-      "sector": "FINANCIAL 1",
-      "direction": "BUY",
-      "stage": "EARLY",
-      "pass_time": "2026-10-01T15:25:00+05:30",
-      "metrics": {
-        "close": 2308.1,
-        "ema20": 2300.99498877317,
-        "ema20_prev": 2300.2470928545563,
-        "ema50": 2295.610694936988,
-        "rsi": 57.79137666311108,
-        "vwap": 2293.57217630805,
-        "di_plus": 27.58407524323495,
-        "di_minus": 9.78635748760175,
-        "adx": 27.003178485782225,
-        "adx_prev": 25.416874402526204,
-        "rvol20": 1.9885168504590818,
-        "rvol20_prev": 1.859770364748109,
-        "move_pct": 0.0,
-        "today_move_pct": 1.1437335670464466,
-        "body_ratio": 0.0,
-        "vol_accel": 0.0,
-        "pdh": 2314.0,
-        "pdl": 2252.6,
-        "timestamp": "2026-10-01T15:25:00+05:30"
-      },
-      "score": 75
-    }
-  ],
+  "scanner": [],
+  "big_player": [],
   "final_dashboard": []
 }
