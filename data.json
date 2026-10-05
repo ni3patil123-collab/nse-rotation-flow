@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-10-05T11:10:59.872088+05:30",
+  "last_updated": "2026-10-05T11:28:14.237939+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -450,6 +450,35 @@
         "pdh": 426.35,
         "pdl": 416.3,
         "timestamp": "2026-10-05T09:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-05",
+      "stock": "IOC",
+      "sector": "ENERGY 1",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-10-05T11:25:00+05:30",
+      "metrics": {
+        "close": 130.7,
+        "ema20": 131.67801339002014,
+        "ema20_prev": 131.78096216791698,
+        "ema50": 132.09253491181622,
+        "rsi": 32.02459096602024,
+        "vwap": 132.5515276715558,
+        "di_plus": 11.777872166921844,
+        "di_minus": 37.52557235262099,
+        "adx": 28.45257082648729,
+        "adx_prev": 26.624082148155235,
+        "rvol20": 1.3301001672311024,
+        "rvol20_prev": 1.3145276946183675,
+        "move_pct": 0.07656967840734634,
+        "today_move_pct": -1.343599033816426,
+        "body_ratio": 0.5,
+        "vol_accel": 1.136710909570928,
+        "pdh": 134.1,
+        "pdl": 131.2,
+        "timestamp": "2026-10-05T11:25:00+05:30"
       }
     },
     {
