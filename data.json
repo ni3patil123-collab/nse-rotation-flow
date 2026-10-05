@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-05T15:54:16.520813+05:30",
+  "last_updated": "2026-10-05T16:13:46.118425+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1436,6 +1436,35 @@
         "pdh": 1730.3,
         "pdl": 1674.8,
         "timestamp": "2026-10-05T12:50:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-05",
+      "stock": "COLPAL",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-05T15:25:00+05:30",
+      "metrics": {
+        "close": 1775.0,
+        "ema20": 1760.468975557302,
+        "ema20_prev": 1758.939394037018,
+        "ema50": 1753.973860648687,
+        "rsi": 76.17328353901809,
+        "vwap": 1759.9059356940572,
+        "di_plus": 57.528649574396255,
+        "di_minus": 3.7685464688100496,
+        "adx": 43.16483038432211,
+        "adx_prev": 39.73873912284216,
+        "rvol20": 0.5139422594291554,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.174343400258698,
+        "today_move_pct": 1.9529006318207927,
+        "body_ratio": 1.0,
+        "vol_accel": 3.691544389317006,
+        "pdh": 1775.4,
+        "pdl": 1716.1,
+        "timestamp": "2026-10-05T15:25:00+05:30"
       }
     },
     {
