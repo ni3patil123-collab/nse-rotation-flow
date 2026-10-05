@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-10-05T11:58:13.269053+05:30",
+  "last_updated": "2026-10-05T12:26:46.508886+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -247,6 +247,35 @@
         "pdh": 955.95,
         "pdl": 937.3,
         "timestamp": "2026-10-05T10:45:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-05",
+      "stock": "CAMS",
+      "sector": "FINANCIAL 1",
+      "direction": "BUY",
+      "stage": "FINAL",
+      "pass_time": "2026-10-05T12:25:00+05:30",
+      "metrics": {
+        "close": 685.2,
+        "ema20": 682.8588193021276,
+        "ema20_prev": 682.6123792286674,
+        "ema50": 681.7486539731813,
+        "rsi": 60.34166273054003,
+        "vwap": 685.0392739716846,
+        "di_plus": 23.25027365661481,
+        "di_minus": 16.40080362105628,
+        "adx": 18.2997058049415,
+        "adx_prev": 18.378578519837102,
+        "rvol20": 1.6567537938756076,
+        "rvol20_prev": 1.6687783924574464,
+        "move_pct": 0.1607952053793338,
+        "today_move_pct": 0.913107511045662,
+        "body_ratio": 0.5641025641025627,
+        "vol_accel": 0.43096832145933023,
+        "pdh": 682.0,
+        "pdl": 665.45,
+        "timestamp": "2026-10-05T12:25:00+05:30"
       }
     },
     {
