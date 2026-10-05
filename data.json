@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-05T15:31:15.955054+05:30",
+  "last_updated": "2026-10-05T15:54:16.520813+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -797,6 +797,35 @@
         "vol_accel": 1.52488061939515,
         "pdh": 180.93,
         "pdl": 172.86,
+        "timestamp": "2026-10-05T15:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-05",
+      "stock": "INDIANB",
+      "sector": "BANKING",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-05T15:25:00+05:30",
+      "metrics": {
+        "close": 810.0,
+        "ema20": 808.0420262938442,
+        "ema20_prev": 807.8359237984594,
+        "ema50": 807.0347205902854,
+        "rsi": 57.64559006044884,
+        "vwap": 809.2414023960259,
+        "di_plus": 25.660211176325692,
+        "di_minus": 21.823679066105882,
+        "adx": 15.199425179863606,
+        "adx_prev": 15.747100198195175,
+        "rvol20": 1.3991213811684071,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.2831466207066299,
+        "today_move_pct": 1.028999064546305,
+        "body_ratio": 0.7419354838709477,
+        "vol_accel": 5.95128211205656,
+        "pdh": 810.5,
+        "pdl": 786.85,
         "timestamp": "2026-10-05T15:25:00+05:30"
       }
     },
