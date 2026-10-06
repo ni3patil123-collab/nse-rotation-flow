@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-06T15:53:34.391877+05:30",
+  "last_updated": "2026-10-06T16:11:54.213361+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1059,6 +1059,35 @@
         "pdh": 120.96,
         "pdl": 118.21,
         "timestamp": "2026-10-06T13:05:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-06",
+      "stock": "ICICIBANK",
+      "sector": "BANKING",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-06T15:25:00+05:30",
+      "metrics": {
+        "close": 1342.8,
+        "ema20": 1341.1571722757044,
+        "ema20_prev": 1340.9842430415679,
+        "ema50": 1338.5190718961262,
+        "rsi": 56.71367764731265,
+        "vwap": 1338.4306447777453,
+        "di_plus": 11.228647480335407,
+        "di_minus": 27.081589632581807,
+        "adx": 33.3324714405929,
+        "adx_prev": 32.713397444046,
+        "rvol20": 1.6995301676181476,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.03722176728951091,
+        "today_move_pct": 0.9548154274114764,
+        "body_ratio": 0.8333333333331439,
+        "vol_accel": 4.308794839578031,
+        "pdh": 1334.7,
+        "pdl": 1303.7,
+        "timestamp": "2026-10-06T15:25:00+05:30"
       }
     },
     {
