@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-07T15:30:54.047618+05:30",
+  "last_updated": "2026-10-07T15:52:43.283132+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -947,6 +947,35 @@
     },
     {
       "day": "2026-10-07",
+      "stock": "EICHERMOT",
+      "sector": "AUTO",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-10-07T15:25:00+05:30",
+      "metrics": {
+        "close": 6960.0,
+        "ema20": 6981.850342588333,
+        "ema20_prev": 6984.150378650262,
+        "ema50": 6993.657203609384,
+        "rsi": 35.540760643670794,
+        "vwap": 6995.73156156404,
+        "di_plus": 13.861486739129123,
+        "di_minus": 25.987758515749977,
+        "adx": 24.979670433494846,
+        "adx_prev": 24.56038604384382,
+        "rvol20": 0.9367702357870499,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.0,
+        "today_move_pct": -0.6282124500285551,
+        "body_ratio": 0.0,
+        "vol_accel": 4.7909455097040174,
+        "pdh": 7074.5,
+        "pdl": 6976.0,
+        "timestamp": "2026-10-07T15:25:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-07",
       "stock": "HYUNDAI",
       "sector": "AUTO",
       "direction": "SELL",
@@ -1726,6 +1755,35 @@
         "pdh": 205.43,
         "pdl": 201.32,
         "timestamp": "2026-10-07T11:50:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-07",
+      "stock": "HINDPETRO",
+      "sector": "ENERGY 1",
+      "direction": "SELL",
+      "stage": "EARLY",
+      "pass_time": "2026-10-07T15:25:00+05:30",
+      "metrics": {
+        "close": 343.15,
+        "ema20": 343.681588892683,
+        "ema20_prev": 343.7375456182286,
+        "ema50": 344.41513202277343,
+        "rsi": 41.597769911719546,
+        "vwap": 344.9103944940798,
+        "di_plus": 12.1933998565862,
+        "di_minus": 23.807695888071926,
+        "adx": 19.12301811623368,
+        "adx_prev": 18.11240785726166,
+        "rvol20": 1.36708401060855,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.04373177842564935,
+        "today_move_pct": -1.2517985611510856,
+        "body_ratio": 0.4285714285713358,
+        "vol_accel": 3.9267112557946304,
+        "pdh": 351.75,
+        "pdl": 343.45,
+        "timestamp": "2026-10-07T15:25:00+05:30"
       }
     },
     {
