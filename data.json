@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-08T15:35:50.180813+05:30",
+  "last_updated": "2026-10-08T15:58:58.259617+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -3031,6 +3031,35 @@
         "pdh": 706.0,
         "pdl": 690.85,
         "timestamp": "2026-10-08T09:20:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-08",
+      "stock": "ICICIGI",
+      "sector": "FINANCIAL 1",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-08T15:25:00+05:30",
+      "metrics": {
+        "close": 1624.0,
+        "ema20": 1619.2497692417683,
+        "ema20_prev": 1618.749744951428,
+        "ema50": 1617.8037411608095,
+        "rsi": 55.941298624199064,
+        "vwap": 1622.896363664765,
+        "di_plus": 51.285382787452264,
+        "di_minus": 18.013886655610882,
+        "adx": 18.086595944777976,
+        "adx_prev": 15.78469385884598,
+        "rvol20": 1.2717491094525857,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.3925417075564334,
+        "today_move_pct": 2.07416719044626,
+        "body_ratio": 0.888888888888896,
+        "vol_accel": 4.853846308248436,
+        "pdh": 1601.0,
+        "pdl": 1574.6,
+        "timestamp": "2026-10-08T15:25:00+05:30"
       }
     },
     {
