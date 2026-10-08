@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-10-08T14:22:49.975126+05:30",
+  "last_updated": "2026-10-08T14:38:46.634419+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -305,6 +305,35 @@
         "pdh": 531.0,
         "pdl": 519.2,
         "timestamp": "2026-10-08T14:00:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-08",
+      "stock": "AMBUJACEM",
+      "sector": "CEMENT",
+      "direction": "SELL",
+      "stage": "FINAL",
+      "pass_time": "2026-10-08T14:35:00+05:30",
+      "metrics": {
+        "close": 346.6,
+        "ema20": 347.9354376632273,
+        "ema20_prev": 348.07601004883014,
+        "ema50": 349.7840451786484,
+        "rsi": 33.76871701537122,
+        "vwap": 351.0235499271861,
+        "di_plus": 8.06982849553663,
+        "di_minus": 21.67740768305688,
+        "adx": 46.82848601442155,
+        "adx_prev": 46.911907118231134,
+        "rvol20": 1.2495619731449572,
+        "rvol20_prev": 1.273829311187507,
+        "move_pct": -0.11527377521613179,
+        "today_move_pct": -2.8859624544690266,
+        "body_ratio": 0.5714285714285482,
+        "vol_accel": 0.7352910860064319,
+        "pdh": 362.75,
+        "pdl": 352.45,
+        "timestamp": "2026-10-08T14:35:00+05:30"
       }
     },
     {
