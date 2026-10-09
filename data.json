@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-09T15:46:28.940882+05:30",
+  "last_updated": "2026-10-09T16:08:09.482420+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1059,6 +1059,35 @@
         "pdh": 4285.9,
         "pdl": 4181.0,
         "timestamp": "2026-10-09T09:20:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-09",
+      "stock": "LT",
+      "sector": "CAPITAL_GOODS",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-09T15:25:00+05:30",
+      "metrics": {
+        "close": 3703.3,
+        "ema20": 3699.5689488058165,
+        "ema20_prev": 3699.17620657485,
+        "ema50": 3691.0303876403077,
+        "rsi": 55.93292738234129,
+        "vwap": 3688.884120958625,
+        "di_plus": 29.614757591645688,
+        "di_minus": 16.85323991014459,
+        "adx": 22.50516493053738,
+        "adx_prev": 22.123791093841994,
+        "rvol20": 0.9318323619765745,
+        "rvol20_prev": 0.0,
+        "move_pct": -0.045883940620777816,
+        "today_move_pct": 1.5158991228070227,
+        "body_ratio": 1.0,
+        "vol_accel": 2.2223331989432307,
+        "pdh": 3702.0,
+        "pdl": 3607.0,
+        "timestamp": "2026-10-09T15:25:00+05:30"
       }
     },
     {
