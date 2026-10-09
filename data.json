@@ -1,6 +1,6 @@
 {
   "status": "MARKET CLOSED",
-  "last_updated": "2026-10-09T15:26:36.866766+05:30",
+  "last_updated": "2026-10-09T15:46:28.940882+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -1523,6 +1523,35 @@
         "pdh": 4539.9,
         "pdl": 4415.0,
         "timestamp": "2026-10-09T11:30:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-09",
+      "stock": "VBL",
+      "sector": "FMCG",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-09T15:25:00+05:30",
+      "metrics": {
+        "close": 441.0,
+        "ema20": 439.92974337216924,
+        "ema20_prev": 439.817084779766,
+        "ema50": 439.0246565739965,
+        "rsi": 63.85863619382141,
+        "vwap": 438.95047543898374,
+        "di_plus": 28.606614722342186,
+        "di_minus": 9.570835045050188,
+        "adx": 22.129764140917636,
+        "adx_prev": 19.996567681256348,
+        "rvol20": 0.5979505758759514,
+        "rvol20_prev": 0.0,
+        "move_pct": 0.0,
+        "today_move_pct": 2.4271280919753777,
+        "body_ratio": 0.0,
+        "vol_accel": 4.005016541914657,
+        "pdh": 442.0,
+        "pdl": 428.95,
+        "timestamp": "2026-10-09T15:25:00+05:30"
       }
     },
     {
