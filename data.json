@@ -1,6 +1,6 @@
 {
   "status": "MARKET OPEN",
-  "last_updated": "2026-10-12T13:01:30.942633+05:30",
+  "last_updated": "2026-10-12T13:25:39.023446+05:30",
   "engine": "NSE ROTATION & FLOW",
   "master_logic": "TRADINGVIEW MASTER MATCHED",
   "settings": {
@@ -740,6 +740,35 @@
         "pdh": 385.5,
         "pdl": 370.5,
         "timestamp": "2026-10-12T10:55:00+05:30"
+      }
+    },
+    {
+      "day": "2026-10-12",
+      "stock": "ANGELONE",
+      "sector": "FINANCIAL 1",
+      "direction": "BUY",
+      "stage": "EARLY",
+      "pass_time": "2026-10-12T13:25:00+05:30",
+      "metrics": {
+        "close": 304.4,
+        "ema20": 303.4683421523813,
+        "ema20_prev": 303.37027290526356,
+        "ema50": 301.51680896759433,
+        "rsi": 59.6267349336543,
+        "vwap": 301.99261519453825,
+        "di_plus": 27.8378886331108,
+        "di_minus": 15.653126454357823,
+        "adx": 27.058480763175357,
+        "adx_prev": 26.984768946048845,
+        "rvol20": 1.6636913036396421,
+        "rvol20_prev": 1.6578775111764898,
+        "move_pct": 0.09865175928969237,
+        "today_move_pct": 3.449447748513161,
+        "body_ratio": 0.39999999999993935,
+        "vol_accel": 1.06396240514201,
+        "pdh": 297.6,
+        "pdl": 288.1,
+        "timestamp": "2026-10-12T13:25:00+05:30"
       }
     },
     {
